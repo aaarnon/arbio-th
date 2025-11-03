@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticketing Hub - Color Theme Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .theme-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .theme-header {
+            margin-bottom: 20px;
+        }
+        
+        .theme-header h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .theme-header .personality {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .theme-header .best-for {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            display: inline-block;
+        }
+        
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .color-swatch {
+            text-align: center;
+        }
+        
+        .color-box {
+            height: 80px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .color-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .color-hex {
+            font-size: 11px;
+            color: #999;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .components-preview {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .components-preview h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .status-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .badge {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .card-preview {
+            background: white;
+            border: 1px solid;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-preview h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .card-preview p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        /* Theme 1: Mission Control */
+        .theme1 .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .theme1 .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        
+        .theme1 .btn-secondary {
+            background: white;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+        
+        .theme1 .btn-ghost {
+            background: transparent;
+            color: #475569;
+        }
+        
+        .theme1 .badge-done {
+            background: #10b981;
+            color: white;
+        }
+        
+        .theme1 .badge-progress {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .theme1 .badge-todo {
+            background: #94a3b8;
+            color: white;
+        }
+        
+        .theme1 .badge-cancelled {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .theme1 .card-preview {
+            border-color: #e2e8f0;
+        }
+        
+        /* Theme 2: Clean Professional */
+        .theme2 .btn-primary {
+            background: #0ea5e9;
+            color: white;
+        }
+        
+        .theme2 .btn-primary:hover {
+            background: #0284c7;
+        }
+        
+        .theme2 .btn-secondary {
+            background: white;
+            color: #0ea5e9;
+            border: 1px solid #0ea5e9;
+        }
+        
+        .theme2 .btn-ghost {
+            background: transparent;
+            color: #64748b;
+        }
+        
+        .theme2 .badge-done {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .theme2 .badge-progress {
+            background: #0ea5e9;
+            color: white;
+        }
+        
+        .theme2 .badge-todo {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        
+        .theme2 .badge-cancelled {
+            background: #fef2f2;
+            color: #dc2626;
+            text-decoration: line-through;
+        }
+        
+        .theme2 .card-preview {
+            border-color: #e2e8f0;
+        }
+        
+        /* Theme 3: Bold Command */
+        .theme3 .btn-primary {
+            background: #1e40af;
+            color: white;
+        }
+        
+        .theme3 .btn-primary:hover {
+            background: #1e3a8a;
+        }
+        
+        .theme3 .btn-secondary {
+            background: white;
+            color: #1e40af;
+            border: 1px solid #1e40af;
+        }
+        
+        .theme3 .btn-ghost {
+            background: transparent;
+            color: #334155;
+        }
+        
+        .theme3 .badge-done {
+            background: #059669;
+            color: white;
+        }
+        
+        .theme3 .badge-progress {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .theme3 .badge-todo {
+            background: #64748b;
+            color: white;
+        }
+        
+        .theme3 .badge-cancelled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+        
+        .theme3 .card-preview {
+            border-color: #cbd5e1;
+        }
+        
+        /* Theme 4: Modern Operator */
+        .theme4 .btn-primary {
+            background: #06b6d4;
+            color: white;
+        }
+        
+        .theme4 .btn-primary:hover {
+            background: #0891b2;
+        }
+        
+        .theme4 .btn-secondary {
+            background: white;
+            color: #06b6d4;
+            border: 1px solid #06b6d4;
+        }
+        
+        .theme4 .btn-ghost {
+            background: transparent;
+            color: #64748b;
+        }
+        
+        .theme4 .badge-done {
+            background: #14b8a6;
+            color: white;
+        }
+        
+        .theme4 .badge-progress {
+            background: #06b6d4;
+            color: white;
+        }
+        
+        .theme4 .badge-todo {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .theme4 .badge-cancelled {
+            background: #fef2f2;
+            color: #ef4444;
+            text-decoration: line-through;
+        }
+        
+        .theme4 .card-preview {
+            border-color: #e0f2fe;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 Ticketing Hub Color Themes</h1>
+        <p>Explore 4 theme options inspired by your mockup. All themes support the "empowered and in control" feeling.</p>
+    </div>
+    
+    <div class="themes-grid">
+        <!-- Theme 1: Mission Control -->
+        <div class="theme-card theme1">
+            <div class="theme-header">
+                <h2>1. Mission Control</h2>
+                <div class="personality">Authoritative & Confident</div>
+                <div class="best-for">Best for: Strong visual hierarchy, clear decision-making</div>
+            </div>
+            
+            <div class="color-palette">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #2563eb;"></div>
+                    <div class="color-label">Primary</div>
+                    <div class="color-hex">#2563eb</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #10b981;"></div>
+                    <div class="color-label">Success</div>
+                    <div class="color-hex">#10b981</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #3b82f6;"></div>
+                    <div class="color-label">Info</div>
+                    <div class="color-hex">#3b82f6</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #ef4444;"></div>
+                    <div class="color-label">Error</div>
+                    <div class="color-hex">#ef4444</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #94a3b8;"></div>
+                    <div class="color-label">Neutral</div>
+                    <div class="color-hex">#94a3b8</div>
+                </div>
+            </div>
+            
+            <div class="components-preview">
+                <h3>Component Examples</h3>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary">+ New Case</button>
+                    <button class="btn btn-secondary">Edit Case</button>
+                    <button class="btn btn-ghost">Cancel</button>
+                </div>
+                
+                <div class="status-badges">
+                    <span class="badge badge-done">DONE</span>
+                    <span class="badge badge-progress">IN PROGRESS</span>
+                    <span class="badge badge-todo">TO DO</span>
+                    <span class="badge badge-cancelled">CANCELLED</span>
+                </div>
+                
+                <div class="card-preview">
+                    <h4>Mold issue reported on unit 12</h4>
+                    <p>This is a case card showing how content appears with this theme. Strong blues provide clear authority and control.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Theme 2: Clean Professional -->
+        <div class="theme-card theme2">
+            <div class="theme-header">
+                <h2>2. Clean Professional</h2>
+                <div class="personality">Approachable & Efficient</div>
+                <div class="best-for">Best for: Balanced, clean interface close to your mockup</div>
+            </div>
+            
+            <div class="color-palette">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #0ea5e9;"></div>
+                    <div class="color-label">Primary</div>
+                    <div class="color-hex">#0ea5e9</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #22c55e;"></div>
+                    <div class="color-label">Success</div>
+                    <div class="color-hex">#22c55e</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #0ea5e9;"></div>
+                    <div class="color-label">Info</div>
+                    <div class="color-hex">#0ea5e9</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #dc2626;"></div>
+                    <div class="color-label">Error</div>
+                    <div class="color-hex">#dc2626</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #e2e8f0;"></div>
+                    <div class="color-label">Neutral</div>
+                    <div class="color-hex">#e2e8f0</div>
+                </div>
+            </div>
+            
+            <div class="components-preview">
+                <h3>Component Examples</h3>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary">+ New Case</button>
+                    <button class="btn btn-secondary">Edit Case</button>
+                    <button class="btn btn-ghost">Cancel</button>
+                </div>
+                
+                <div class="status-badges">
+                    <span class="badge badge-done">DONE</span>
+                    <span class="badge badge-progress">IN PROGRESS</span>
+                    <span class="badge badge-todo">TO DO</span>
+                    <span class="badge badge-cancelled">CANCELLED</span>
+                </div>
+                
+                <div class="card-preview">
+                    <h4>Mold issue reported on unit 12</h4>
+                    <p>Lighter, more approachable blue keeps things professional while feeling accessible. Very close to your mockup aesthetic.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Theme 3: Bold Command -->
+        <div class="theme-card theme3">
+            <div class="theme-header">
+                <h2>3. Bold Command</h2>
+                <div class="personality">Powerful & Decisive</div>
+                <div class="best-for">Best for: Maximum authority, enterprise confidence</div>
+            </div>
+            
+            <div class="color-palette">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #1e40af;"></div>
+                    <div class="color-label">Primary</div>
+                    <div class="color-hex">#1e40af</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #059669;"></div>
+                    <div class="color-label">Success</div>
+                    <div class="color-hex">#059669</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #2563eb;"></div>
+                    <div class="color-label">Info</div>
+                    <div class="color-hex">#2563eb</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #dc2626;"></div>
+                    <div class="color-label">Error</div>
+                    <div class="color-hex">#dc2626</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #64748b;"></div>
+                    <div class="color-label">Neutral</div>
+                    <div class="color-hex">#64748b</div>
+                </div>
+            </div>
+            
+            <div class="components-preview">
+                <h3>Component Examples</h3>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary">+ New Case</button>
+                    <button class="btn btn-secondary">Edit Case</button>
+                    <button class="btn btn-ghost">Cancel</button>
+                </div>
+                
+                <div class="status-badges">
+                    <span class="badge badge-done">DONE</span>
+                    <span class="badge badge-progress">IN PROGRESS</span>
+                    <span class="badge badge-todo">TO DO</span>
+                    <span class="badge badge-cancelled">CANCELLED</span>
+                </div>
+                
+                <div class="card-preview">
+                    <h4>Mold issue reported on unit 12</h4>
+                    <p>Darker, richer blues communicate serious authority. Perfect for "mission control" feeling with maximum confidence.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Theme 4: Modern Operator -->
+        <div class="theme-card theme4">
+            <div class="theme-header">
+                <h2>4. Modern Operator</h2>
+                <div class="personality">Contemporary & Capable</div>
+                <div class="best-for">Best for: Modern aesthetic, softer authority</div>
+            </div>
+            
+            <div class="color-palette">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #06b6d4;"></div>
+                    <div class="color-label">Primary</div>
+                    <div class="color-hex">#06b6d4</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #14b8a6;"></div>
+                    <div class="color-label">Success</div>
+                    <div class="color-hex">#14b8a6</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #06b6d4;"></div>
+                    <div class="color-label">Info</div>
+                    <div class="color-hex">#06b6d4</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #ef4444;"></div>
+                    <div class="color-label">Error</div>
+                    <div class="color-hex">#ef4444</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #f1f5f9;"></div>
+                    <div class="color-label">Neutral</div>
+                    <div class="color-hex">#f1f5f9</div>
+                </div>
+            </div>
+            
+            <div class="components-preview">
+                <h3>Component Examples</h3>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary">+ New Case</button>
+                    <button class="btn btn-secondary">Edit Case</button>
+                    <button class="btn btn-ghost">Cancel</button>
+                </div>
+                
+                <div class="status-badges">
+                    <span class="badge badge-done">DONE</span>
+                    <span class="badge badge-progress">IN PROGRESS</span>
+                    <span class="badge badge-todo">TO DO</span>
+                    <span class="badge badge-cancelled">CANCELLED</span>
+                </div>
+                
+                <div class="card-preview">
+                    <h4>Mold issue reported on unit 12</h4>
+                    <p>Cyan/teal brings contemporary energy while maintaining professional authority. Fresh and capable.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Final Chosen Theme -->
+    <div style="background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); padding: 40px; border-radius: 12px; margin-bottom: 30px; color: white;">
+        <h2 style="margin-bottom: 16px; color: white;">✅ Your Chosen Theme: Bold Command (Modified)</h2>
+        <p style="margin-bottom: 20px; opacity: 0.95;">
+            Black primary actions + Bold Command palette = Maximum authority and control
+        </p>
+    </div>
+    
+    <div class="theme-card" style="background: linear-gradient(to bottom, #f8fafc 0%, #ffffff 100%); border: 2px solid #1e40af;">
+        <div class="theme-header">
+            <h2 style="color: #1e40af;">🎯 Final Theme: Bold Command (Customized)</h2>
+            <div class="personality" style="color: #000;">Powerful, Decisive, Unmistakably Authoritative</div>
+            <div class="best-for" style="background: #1e40af; color: white;">Your Choice: Black primary actions for maximum control</div>
+        </div>
+        
+        <div class="color-palette">
+            <div class="color-swatch">
+                <div class="color-box" style="background: #000000;"></div>
+                <div class="color-label">Primary Action</div>
+                <div class="color-hex">#000000</div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #1e40af;"></div>
+                <div class="color-label">Brand Blue</div>
+                <div class="color-hex">#1e40af</div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #059669;"></div>
+                <div class="color-label">Success</div>
+                <div class="color-hex">#059669</div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #2563eb;"></div>
+                <div class="color-label">In Progress</div>
+                <div class="color-hex">#2563eb</div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #64748b;"></div>
+                <div class="color-label">To Do</div>
+                <div class="color-hex">#64748b</div>
+            </div>
+        </div>
+        
+        <div class="components-preview">
+            <h3>Your Customized Components</h3>
+            
+            <div class="button-group">
+                <button class="btn" style="background: #000; color: white; font-weight: 600;">+ New Case</button>
+                <button class="btn" style="background: white; color: #000; border: 2px solid #000; font-weight: 500;">Edit Case</button>
+                <button class="btn" style="background: transparent; color: #334155;">Cancel</button>
+            </div>
+            
+            <div class="status-badges">
+                <span class="badge" style="background: #059669; color: white;">DONE</span>
+                <span class="badge" style="background: #2563eb; color: white;">IN PROGRESS</span>
+                <span class="badge" style="background: #64748b; color: white;">TO DO</span>
+                <span class="badge" style="background: #e2e8f0; color: #94a3b8; text-decoration: line-through;">CANCELLED</span>
+            </div>
+            
+            <div class="card-preview" style="border: 1px solid #cbd5e1;">
+                <h4 style="color: #0f172a;">Mold issue reported on unit 12</h4>
+                <p style="color: #475569;">Black primary action creates unmistakable authority - Property Managers know exactly what to do. Bold Command blues provide serious professional confidence for status indicators.</p>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 16px; background: #f0f9ff; border-left: 4px solid #1e40af; border-radius: 4px;">
+                <strong style="color: #1e40af;">Why This Works:</strong>
+                <p style="margin-top: 8px; color: #334155; font-size: 14px;">
+                    • Black "New Case" button = Zero ambiguity about primary action<br>
+                    • Black-bordered "Edit" = Strong but doesn't compete<br>
+                    • Deep blues = Professional authority throughout<br>
+                    • High contrast = Fast scanning, reduced cognitive load<br>
+                    • Perfect for "empowered and in control" feeling
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 30px;">
+        <h2 style="margin-bottom: 16px;">✅ Theme Locked In!</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            Bold Command with black primary actions - maximum authority and control.<br>
+            This theme will be applied throughout your design specification.
+        </p>
+        <p style="font-size: 14px; color: #1e40af; font-weight: 600;">
+            Next: Defining your design direction and layout patterns...
+        </p>
+    </div>
+</body>
+</html>
+

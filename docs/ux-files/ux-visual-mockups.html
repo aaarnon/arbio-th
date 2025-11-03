@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticketing Hub - Visual Mockups (Minimalist)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafb;
+            color: #111827;
+        }
+        
+        /* Navigation Controls */
+        .mockup-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mockup-nav h1 {
+            font-size: 20px;
+            color: #111827;
+            font-weight: 600;
+        }
+        
+        .mockup-nav .screen-selector {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .mockup-nav button {
+            padding: 8px 16px;
+            border: none;
+            background: #f3f4f6;
+            color: #374151;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .mockup-nav button.active {
+            background: #111827;
+            color: white;
+        }
+        
+        .mockup-nav button:hover {
+            background: #e5e7eb;
+        }
+        
+        .mockup-nav button.active:hover {
+            background: #000;
+        }
+        
+        /* Screen Container */
+        .screen-container {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .screen {
+            display: none;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        /* Navbar Component */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .navbar-logo {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        
+        .navbar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .navbar-search {
+            width: 400px;
+            padding: 7px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #f9fafb;
+        }
+        
+        .navbar-search:focus {
+            outline: none;
+            border-color: #111827;
+            background: white;
+        }
+        
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification-bell {
+            position: relative;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .notification-bell:hover {
+            background: #f9fafb;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #dc2626;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 5px;
+            border-radius: 10px;
+        }
+        
+        .btn-primary {
+            background: #000;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .btn-primary:hover {
+            background: #1a1a1a;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #111827;
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #111827;
+        }
+        
+        /* Case List Screen */
+        .case-list-layout {
+            display: flex;
+            min-height: calc(100vh - 129px);
+        }
+        
+        .sidebar-nav {
+            width: 64px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            padding: 16px 8px;
+        }
+        
+        .sidebar-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #6b7280;
+            transition: all 0.15s;
+        }
+        
+        .sidebar-icon:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+        
+        .sidebar-icon.active {
+            background: #111827;
+            color: white;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            background: #f9fafb;
+        }
+        
+        .page-header {
+            margin-bottom: 32px;
+        }
+        
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #111827;
+        }
+        
+        .page-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-select {
+            padding: 7px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 140px;
+            background: white;
+            color: #374151;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #111827;
+        }
+        
+        .case-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 4px;
+        }
+        
+        .case-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            padding: 8px 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .case-row {
+            background: white;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .case-row:hover {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+        }
+        
+        .case-row td {
+            padding: 16px;
+            font-size: 14px;
+        }
+        
+        .case-row td:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .case-row td:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .case-id {
+            color: #1e40af;
+            font-weight: 500;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 13px;
+        }
+        
+        .case-title {
+            color: #111827;
+            font-weight: 400;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .badge-property {
+            background: #eff6ff;
+            color: #1e40af;
+        }
+        
+        .badge-reservation {
+            background: #faf5ff;
+            color: #7c3aed;
+        }
+        
+        .badge-finance {
+            background: #ecfdf5;
+            color: #059669;
+        }
+        
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .status-todo {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .status-progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-done {
+            background: #d1fae5;
+            color: #059669;
+        }
+        
+        /* Case Detail Screen */
+        .case-detail-layout {
+            display: flex;
+            min-height: calc(100vh - 129px);
+        }
+        
+        .case-main {
+            flex: 1;
+            max-width: 65%;
+            padding: 32px;
+            background: #f9fafb;
+        }
+        
+        .case-sidebar {
+            width: 35%;
+            background: white;
+            padding: 32px 24px;
+            border-left: 1px solid #e5e7eb;
+        }
+        
+        .breadcrumb {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        
+        .breadcrumb a:hover {
+            color: #111827;
+        }
+        
+        .case-header {
+            margin-bottom: 24px;
+        }
+        
+        .case-header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .case-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            flex: 1;
+            color: #111827;
+        }
+        
+        .case-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        
+        .case-owner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-header {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #111827;
+        }
+        
+        .section-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .description-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #4b5563;
+        }
+        
+        /* Task List */
+        .task-list {
+            list-style: none;
+        }
+        
+        .task-item {
+            background: white;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.15s;
+        }
+        
+        .task-item:hover {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .task-item.subtask {
+            margin-left: 24px;
+            background: #fafafa;
+        }
+        
+        .task-expand {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+        
+        .task-id {
+            font-size: 12px;
+            color: #9ca3af;
+            font-family: 'SF Mono', Monaco, monospace;
+            min-width: 60px;
+        }
+        
+        .task-title {
+            flex: 1;
+            font-size: 14px;
+            color: #111827;
+        }
+        
+        .task-count {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        /* Attachments */
+        .attachment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        .attachment-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .attachment-card:hover {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .attachment-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .attachment-name {
+            font-size: 12px;
+            color: #111827;
+            font-weight: 500;
+        }
+        
+        .attachment-meta {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        
+        /* Comments */
+        .comment-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .comment {
+            display: flex;
+            gap: 12px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        
+        .comment-author {
+            font-size: 14px;
+            font-weight: 500;
+            color: #111827;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #4b5563;
+        }
+        
+        .comment-input {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .comment-input textarea {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            background: white;
+        }
+        
+        .comment-input textarea:focus {
+            outline: none;
+            border-color: #111827;
+        }
+        
+        /* Context Sidebar */
+        .context-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .context-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .context-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .context-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f9fafb;
+        }
+        
+        .context-item:last-child {
+            border-bottom: none;
+        }
+        
+        .context-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .context-value {
+            font-size: 13px;
+            color: #111827;
+            font-weight: 500;
+            text-align: right;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 12px;
+            width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+        }
+        
+        .modal-content {
+            padding: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+        
+        .form-label .required {
+            color: #dc2626;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #111827;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid #f3f4f6;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mockup Navigation -->
+    <div class="mockup-nav">
+        <h1>Ticketing Hub - Clean Minimal Design</h1>
+        <div class="screen-selector">
+            <button class="active" onclick="showScreen('case-list')">Case List</button>
+            <button onclick="showScreen('case-detail')">Case Detail</button>
+            <button onclick="showScreen('create-modal')">Create Case</button>
+        </div>
+    </div>
+    
+    <!-- Screen 1: Case List -->
+    <div class="screen-container">
+        <div id="case-list-screen" class="screen active">
+            <!-- Navbar -->
+            <div class="navbar">
+                <div class="navbar-left">
+                    <div class="navbar-logo">⭕ Arbio Nexus</div>
+                    <div class="navbar-title">🎫 Ticketing Hub</div>
+                    <input type="text" class="navbar-search" placeholder="Search for deals, listings, reservations and customers">
+                </div>
+                <div class="navbar-right">
+                    <div class="notification-bell">
+                        🔔
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <button class="btn-primary" onclick="showScreen('create-modal')">+ New Case</button>
+                </div>
+            </div>
+            
+            <!-- Main Layout -->
+            <div class="case-list-layout">
+                <!-- Sidebar -->
+                <div class="sidebar-nav">
+                    <div class="sidebar-icon active" title="Ticketing Hub">🎫</div>
+                    <div class="sidebar-icon" title="Deals">💼</div>
+                    <div class="sidebar-icon" title="Listings">🏠</div>
+                    <div class="sidebar-icon" title="Reservations">📅</div>
+                    <div class="sidebar-icon" title="Operations">⚙️</div>
+                    <div class="sidebar-icon" title="Finance">💰</div>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="main-content">
+                    <div class="page-header">
+                        <h1>All Cases</h1>
+                        <p>Track and manage operational issues</p>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="filters">
+                        <select class="filter-select">
+                            <option>All Status</option>
+                            <option>To Do</option>
+                            <option>In Progress</option>
+                            <option>Done</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>All Domains</option>
+                            <option>Property</option>
+                            <option>Reservation</option>
+                            <option>Finance</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Case Table -->
+                    <table class="case-table">
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Title</th>
+                                <th>Domain</th>
+                                <th>Status</th>
+                                <th>Owner</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="case-row" onclick="showScreen('case-detail')">
+                                <td><span class="case-id">TK-2847</span></td>
+                                <td><span class="case-title">Mold issue reported on unit 12</span></td>
+                                <td><span class="badge badge-property">Property</span></td>
+                                <td><span class="status-badge status-progress">In Progress</span></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div class="avatar">PM</div>
+                                        <span style="color: #6b7280;">Property Management</span>
+                                    </div>
+                                </td>
+                                <td style="color: #9ca3af;">Oct 6, 2025</td>
+                            </tr>
+                            <tr class="case-row">
+                                <td><span class="case-id">TK-2846</span></td>
+                                <td><span class="case-title">WiFi connectivity issues in unit 34</span></td>
+                                <td><span class="badge badge-property">Property</span></td>
+                                <td><span class="status-badge status-todo">To Do</span></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div class="avatar">GC</div>
+                                        <span style="color: #6b7280;">Guest Comm</span>
+                                    </div>
+                                </td>
+                                <td style="color: #9ca3af;">Oct 5, 2025</td>
+                            </tr>
+                            <tr class="case-row">
+                                <td><span class="case-id">TK-2845</span></td>
+                                <td><span class="case-title">Refund request for early checkout</span></td>
+                                <td><span class="badge badge-finance">Finance</span></td>
+                                <td><span class="status-badge status-progress">In Progress</span></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div class="avatar">FN</div>
+                                        <span style="color: #6b7280;">Finance</span>
+                                    </div>
+                                </td>
+                                <td style="color: #9ca3af;">Oct 4, 2025</td>
+                            </tr>
+                            <tr class="case-row">
+                                <td><span class="case-id">TK-2844</span></td>
+                                <td><span class="case-title">Guest complaint about noise levels</span></td>
+                                <td><span class="badge badge-reservation">Reservation</span></td>
+                                <td><span class="status-badge status-done">Done</span></td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div class="avatar">GC</div>
+                                        <span style="color: #6b7280;">Guest Comm</span>
+                                    </div>
+                                </td>
+                                <td style="color: #9ca3af;">Oct 3, 2025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Screen 2: Case Detail -->
+        <div id="case-detail-screen" class="screen">
+            <!-- Navbar -->
+            <div class="navbar">
+                <div class="navbar-left">
+                    <div class="navbar-logo">⭕ Arbio Nexus</div>
+                    <div class="navbar-title">🎫 Ticketing Hub</div>
+                    <input type="text" class="navbar-search" placeholder="Search for deals, listings, reservations and customers">
+                </div>
+                <div class="navbar-right">
+                    <div class="notification-bell">
+                        🔔
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <button class="btn-primary">+ New Case</button>
+                </div>
+            </div>
+            
+            <!-- Main Layout -->
+            <div class="case-list-layout">
+                <!-- Sidebar -->
+                <div class="sidebar-nav">
+                    <div class="sidebar-icon active">🎫</div>
+                    <div class="sidebar-icon">💼</div>
+                    <div class="sidebar-icon">🏠</div>
+                    <div class="sidebar-icon">📅</div>
+                    <div class="sidebar-icon">⚙️</div>
+                    <div class="sidebar-icon">💰</div>
+                </div>
+                
+                <!-- Case Detail Layout -->
+                <div class="case-detail-layout">
+                    <!-- Main Content -->
+                    <div class="case-main">
+                        <!-- Breadcrumb -->
+                        <div class="breadcrumb">
+                            <a href="#" onclick="showScreen('case-list'); return false;">Ticketing Hub</a> › TK-2847
+                        </div>
+                        
+                        <!-- Case Header -->
+                        <div class="case-header">
+                            <div class="case-header-top">
+                                <h1>Mold issue reported on unit 12</h1>
+                                <span class="badge badge-property">Property</span>
+                            </div>
+                            <div class="case-meta">
+                                <select class="filter-select" style="width: auto; min-width: 120px; font-size: 13px; padding: 6px 10px;">
+                                    <option>In Progress</option>
+                                    <option>To Do</option>
+                                    <option>Done</option>
+                                </select>
+                                <div class="case-owner">
+                                    <div class="avatar">PM</div>
+                                    <span>Property Management</span>
+                                </div>
+                                <span>Oct 6, 2025</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="section">
+                            <div class="section-header">
+                                Description
+                            </div>
+                            <div class="section-content">
+                                <p class="description-text">This is a freeform text that the user will provide in this text box to give a bit more insights to the case they are reporting in the ticketing hub. This text can be unstructured but should involve some type of insights. AI will take this and learn from it in the future :)</p>
+                                <p class="description-text" style="margin-top: 12px; font-size: 12px; color: #9ca3af;">The AI will analyze this information to determine priority and create appropriate workflows.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Tasks -->
+                        <div class="section">
+                            <div class="section-header">
+                                Tasks
+                                <button class="btn-primary" style="padding: 6px 14px; font-size: 13px;">+ Add Task</button>
+                            </div>
+                            <ul class="task-list">
+                                <li class="task-item">
+                                    <span class="task-expand">▼</span>
+                                    <span class="task-id">TK-2848</span>
+                                    <span class="task-title">Maintenance action</span>
+                                    <span class="status-badge status-done" style="padding: 3px 8px; font-size: 10px;">Done</span>
+                                    <div class="avatar" style="width: 22px; height: 22px; font-size: 9px;">PM</div>
+                                </li>
+                                <li class="task-item">
+                                    <span class="task-expand">▶</span>
+                                    <span class="task-id">TK-2849</span>
+                                    <span class="task-title">Resolution communication</span>
+                                    <span class="task-count">1/3</span>
+                                    <span class="status-badge status-progress" style="padding: 3px 8px; font-size: 10px;">In Progress</span>
+                                    <div class="avatar" style="width: 22px; height: 22px; font-size: 9px;">GC</div>
+                                </li>
+                                <li class="task-item">
+                                    <span class="task-expand"></span>
+                                    <span class="task-id">TK-2850</span>
+                                    <span class="task-title">Refund request</span>
+                                    <span class="status-badge status-todo" style="padding: 3px 8px; font-size: 10px;">To Do</span>
+                                    <div class="avatar" style="width: 22px; height: 22px; font-size: 9px;">FN</div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Attachments -->
+                        <div class="section">
+                            <div class="section-header">
+                                Attachments
+                            </div>
+                            <div class="attachment-grid">
+                                <div class="attachment-card">
+                                    <div class="attachment-icon">📄</div>
+                                    <div class="attachment-name">Photo 1 Bathroom mold</div>
+                                    <div class="attachment-meta">Uploaded by Guest</div>
+                                </div>
+                                <div class="attachment-card">
+                                    <div class="attachment-icon">📄</div>
+                                    <div class="attachment-name">Photo 2 Close-up</div>
+                                    <div class="attachment-meta">Uploaded by Guest</div>
+                                </div>
+                                <div class="attachment-card">
+                                    <div class="attachment-icon">📄</div>
+                                    <div class="attachment-name">Proof of receipt.pdf</div>
+                                    <div class="attachment-meta">Uploaded by PM</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Comments -->
+                        <div class="section">
+                            <div class="section-header">
+                                Comments
+                            </div>
+                            <div class="section-content">
+                                <div class="comment-list">
+                                    <div class="comment">
+                                        <div class="comment-avatar">GA</div>
+                                        <div class="comment-content">
+                                            <div class="comment-header">
+                                                <span class="comment-author">Guest Experience Agent</span>
+                                                <span class="comment-time">Today at 9:30 AM</span>
+                                            </div>
+                                            <p class="comment-text">I see wifi issue is solved. I'll notify the guest that everything is fixed and you are out of the apartment now.</p>
+                                        </div>
+                                    </div>
+                                    <div class="comment">
+                                        <div class="comment-avatar">JO</div>
+                                        <div class="comment-content">
+                                            <div class="comment-header">
+                                                <span class="comment-author">Jens Otto</span>
+                                                <span class="comment-time">Today at 9:25 AM</span>
+                                            </div>
+                                            <p class="comment-text">Going to check on the WiFi issue today.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="comment-input">
+                                    <textarea placeholder="Add a comment... (Use @ to mention users)"></textarea>
+                                    <button class="btn-primary" style="align-self: flex-end;">Post Comment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Context Sidebar (ALL WHITE) -->
+                    <div class="case-sidebar">
+                        <!-- Property Context -->
+                        <div class="context-panel">
+                            <div class="context-panel-header">
+                                <span style="font-size: 16px;">🏠</span>
+                                <span class="context-panel-title">Property Context</span>
+                            </div>
+                            <div class="context-panel-content">
+                                <div class="context-item">
+                                    <span class="context-label">Unit</span>
+                                    <span class="context-value">DE_BER_003_Constantin...</span>
+                                </div>
+                                <div class="context-item">
+                                    <span class="context-label">Status</span>
+                                    <span class="context-value">Occupied</span>
+                                </div>
+                                <div class="context-item">
+                                    <span class="context-label">Last Maintenance</span>
+                                    <span class="context-value">Sept 28, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Reservation Context -->
+                        <div class="context-panel">
+                            <div class="context-panel-header">
+                                <span style="font-size: 16px;">📅</span>
+                                <span class="context-panel-title">Reservation Context</span>
+                            </div>
+                            <div class="context-panel-content">
+                                <div class="context-item">
+                                    <span class="context-label">Reservation ID</span>
+                                    <span class="context-value">rsv-644f5e4aac88</span>
+                                </div>
+                                <div class="context-item">
+                                    <span class="context-label">Guest Name</span>
+                                    <span class="context-value">Sarah Martinez</span>
+                                </div>
+                                <div class="context-item">
+                                    <span class="context-label">Check-in</span>
+                                    <span class="context-value">Oct 6, 2025</span>
+                                </div>
+                                <div class="context-item">
+                                    <span class="context-label">Check-out</span>
+                                    <span class="context-value">Oct 12, 2025</span>
+                                </div>
+                                <div class="context-item">
+                                    <span class="context-label">Total Nights</span>
+                                    <span class="context-value">6 nights</span>
+                                </div>
+                                <div class="context-item">
+                                    <span class="context-label">Booking Value</span>
+                                    <span class="context-value">$1,840</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guest Communication -->
+                        <div class="context-panel">
+                            <div class="context-panel-header">
+                                <span style="font-size: 16px;">💬</span>
+                                <span class="context-panel-title">Guest Communication</span>
+                            </div>
+                            <div class="context-panel-content">
+                                <div class="context-item">
+                                    <span class="context-label">Conduit (SMS)</span>
+                                    <button class="btn-secondary" style="padding: 4px 12px; font-size: 12px;">View</button>
+                                </div>
+                                <div class="context-item">
+                                    <span class="context-label">Last message</span>
+                                    <span class="context-value">Today at 6:41 AM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Screen 3: Create Case Modal -->
+        <div id="create-modal-screen" class="screen">
+            <!-- Navbar -->
+            <div class="navbar">
+                <div class="navbar-left">
+                    <div class="navbar-logo">⭕ Arbio Nexus</div>
+                    <div class="navbar-title">🎫 Ticketing Hub</div>
+                    <input type="text" class="navbar-search" placeholder="Search for deals, listings, reservations and customers">
+                </div>
+                <div class="navbar-right">
+                    <div class="notification-bell">
+                        🔔
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <button class="btn-primary">+ New Case</button>
+                </div>
+            </div>
+            
+            <!-- Main Layout (blurred) -->
+            <div class="case-list-layout" style="filter: blur(4px); opacity: 0.5;">
+                <div class="sidebar-nav">
+                    <div class="sidebar-icon active">🎫</div>
+                </div>
+                <div class="main-content">
+                    <div class="page-header">
+                        <h1>All Cases</h1>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal -->
+            <div class="modal-overlay active">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h2>Create New Case</h2>
+                    </div>
+                    <div class="modal-content">
+                        <div class="form-group">
+                            <label class="form-label">Domain Type <span class="required">*</span></label>
+                            <select class="form-select">
+                                <option value="">Select domain...</option>
+                                <option value="property">Property</option>
+                                <option value="reservation">Reservation</option>
+                                <option value="finance">Finance</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Property <span class="required">*</span></label>
+                            <select class="form-select">
+                                <option value="">Select property...</option>
+                                <option value="unit1">DE_BER_003_Constantin_01_038_01_01_A001</option>
+                                <option value="unit2">DE_BER_004_Martin_02_042_02_03_B015</option>
+                            </select>
+                            <p class="form-hint">Or select Reservation below. At least one is required.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Reservation</label>
+                            <select class="form-select">
+                                <option value="">Select reservation...</option>
+                                <option value="rsv1">rsv-644f5e4aac88 (Sarah Martinez)</option>
+                                <option value="rsv2">rsv-773g6f5bbd99 (John Doe)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Description <span class="required">*</span></label>
+                            <textarea class="form-textarea" placeholder="Describe the issue in detail..."></textarea>
+                            <p class="form-hint">Provide context, severity, and any relevant details.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Assign To</label>
+                            <select class="form-select">
+                                <option value="">Select team member...</option>
+                                <option value="pm">Property Management Team</option>
+                                <option value="gc">Guest Communications Team</option>
+                                <option value="fn">Finance Team</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Attachments</label>
+                            <div style="border: 1px dashed #e5e7eb; border-radius: 8px; padding: 32px; text-align: center; color: #9ca3af; cursor: pointer; background: #fafafa;">
+                                <div style="font-size: 28px; margin-bottom: 8px;">📎</div>
+                                <p style="font-size: 14px;">Drag and drop files here, or click to browse</p>
+                                <p style="font-size: 12px; margin-top: 4px;">Supports images, PDFs, and documents</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn-secondary" onclick="showScreen('case-list')">Cancel</button>
+                        <button class="btn-primary" onclick="showScreen('case-detail')">Create Case</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showScreen(screenName) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.mockup-nav button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (screenName === 'case-list') {
+                document.getElementById('case-list-screen').classList.add('active');
+                document.querySelectorAll('.mockup-nav button')[0].classList.add('active');
+            } else if (screenName === 'case-detail') {
+                document.getElementById('case-detail-screen').classList.add('active');
+                document.querySelectorAll('.mockup-nav button')[1].classList.add('active');
+            } else if (screenName === 'create-modal') {
+                document.getElementById('create-modal-screen').classList.add('active');
+                document.querySelectorAll('.mockup-nav button')[2].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
