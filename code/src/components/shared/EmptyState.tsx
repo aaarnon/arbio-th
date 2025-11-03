@@ -12,7 +12,7 @@ interface EmptyStateProps {
 }
 
 /**
- * Empty State Component
+ * Empty State Component - Linear-inspired minimalist
  * Displays when no data is available with optional action button
  */
 export function EmptyState({ 
@@ -22,15 +22,15 @@ export function EmptyState({
   icon 
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center">
+    <div className="flex flex-col items-center justify-center rounded-card bg-white p-24 text-center">
       {icon && (
-        <div className="mb-4 text-gray-400">
+        <div className="mb-6 text-neutral-300">
           {icon}
         </div>
       )}
       {!icon && (
         <svg
-          className="mb-4 h-16 w-16 text-gray-400"
+          className="mb-6 h-16 w-16 text-neutral-300"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -43,8 +43,8 @@ export function EmptyState({
           />
         </svg>
       )}
-      <h3 className="mb-2 text-lg font-semibold text-gray-900">{title}</h3>
-      <p className="mb-6 max-w-sm text-sm text-gray-600">{message}</p>
+      <h3 className="mb-2 text-base font-medium text-neutral-800">{title}</h3>
+      <p className="mb-8 max-w-sm text-sm text-neutral-500">{message}</p>
       {action && (
         <Button onClick={action.onClick}>
           {action.label}

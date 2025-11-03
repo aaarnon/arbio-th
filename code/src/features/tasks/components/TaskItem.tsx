@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import type { Task, Status } from '@/types';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { Button } from '@/components/ui/button';
@@ -19,6 +20,7 @@ interface TaskItemProps {
   depth: number;
   caseId: string;
   onStatusChange?: (taskId: string, newStatus: Status) => void;
+  onAddTask?: () => void;
 }
 
 /**
@@ -26,16 +28,19 @@ interface TaskItemProps {
  * Recursively renders tasks with their subtasks
  * Supports expand/collapse for tasks with subtasks
  */
-export function TaskItem({ task, depth, caseId, onStatusChange }: TaskItemProps) {
+export function TaskItem({ task, depth, caseId, onStatusChange, onAddTask }: TaskItemProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAddingSubtask, setIsAddingSubtask] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { isStatusDisabled, getIncompleteSubtasks } = useStatusValidation();
+  const navigate = useNavigate();
+  const { taskId: currentTaskId } = useParams();
   
   const hasSubtasks = task.subtasks && task.subtasks.length > 0;
   const indent = depth * 24; // 24px per nesting level
   const isDoneDisabled = isStatusDisabled(task, 'DONE');
   const incompleteSubtasks = getIncompleteSubtasks(task);
+  const isTopLevelTask = !task.id.includes('.', task.id.indexOf('.') + 1); // e.g., TK-2847.1 but not TK-2847.1.1
 
   // Prevent infinite recursion
   if (depth > MAX_NESTING_DEPTH) {
@@ -55,25 +60,34 @@ export function TaskItem({ task, depth, caseId, onStatusChange }: TaskItemProps)
     setIsExpanded(!isExpanded);
   };
 
+  const handleTaskClick = () => {
+    // Only navigate if task has subtasks and is a top-level task (not already on task detail page)
+    if (hasSubtasks && isTopLevelTask && !currentTaskId) {
+      navigate(`/cases/${caseId}/tasks/${task.id}`);
+    }
+  };
+
   return (
     <div 
-      className="border-l-2 border-gray-200"
+      className=""
       style={{ marginLeft: `${indent}px` }}
       role="treeitem"
       aria-expanded={hasSubtasks ? isExpanded : undefined}
       aria-level={depth + 1}
     >
       {/* Task Row */}
-      <div className="group flex items-center gap-3 rounded-lg bg-white p-3 hover:bg-gray-50 border border-gray-200 mb-2">
+      <div className="group flex items-center gap-3 h-12 px-3 hover:bg-neutral-50 rounded-subtle mb-2 transition-colors">
         {/* Expand/Collapse Button */}
         {hasSubtasks ? (
           <Button
+            variant="ghost"
+            size="sm"
             onClick={handleToggleExpand}
-            className="h-6 w-6 p-0 hover:bg-gray-200"
+            className="h-5 w-5 p-0 hover:bg-neutral-100"
             aria-label={isExpanded ? 'Collapse subtasks' : 'Expand subtasks'}
           >
             <svg
-              className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+              className={`h-3 w-3 transition-transform text-neutral-500 ${isExpanded ? 'rotate-90' : ''}`}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -87,22 +101,26 @@ export function TaskItem({ task, depth, caseId, onStatusChange }: TaskItemProps)
             </svg>
           </Button>
         ) : (
-          <div className="h-6 w-6" /> // Spacer for alignment
+          <div className="h-5 w-5" /> // Spacer for alignment
         )}
 
         {/* Task ID */}
-        <span className="text-xs font-mono text-gray-500 min-w-[60px]">
+        <span className="text-xs font-mono text-neutral-400 min-w-[60px]">
           {task.id}
         </span>
 
         {/* Task Title */}
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-gray-900 truncate">
-            {task.title}
-          </p>
-          {task.description && (
-            <p className="text-xs text-gray-600 truncate mt-1">
-              {task.description}
+          {hasSubtasks && isTopLevelTask && !currentTaskId ? (
+            <button
+              onClick={handleTaskClick}
+              className="text-sm font-normal text-neutral-800 truncate hover:text-neutral-900 hover:underline text-left w-full"
+            >
+              {task.title}
+            </button>
+          ) : (
+            <p className="text-sm font-normal text-neutral-800 truncate">
+              {task.title}
             </p>
           )}
         </div>
@@ -110,78 +128,71 @@ export function TaskItem({ task, depth, caseId, onStatusChange }: TaskItemProps)
         {/* Status Badge with Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">
+            <button className="focus:outline-none focus:ring-1 focus:ring-neutral-400 rounded">
               <StatusBadge status={task.status} className="text-xs cursor-pointer hover:opacity-80" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => onStatusChange?.(task.id, 'TODO')}>
-              <span className="text-gray-600">● To Do</span>
+              <span className="text-neutral-600">● To Do</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => onStatusChange?.(task.id, 'IN_PROGRESS')}>
-              <span className="text-blue-600">● In Progress</span>
+              <span className="text-neutral-600">● In Progress</span>
             </DropdownMenuItem>
             <DropdownMenuItem 
               onClick={() => !isDoneDisabled && onStatusChange?.(task.id, 'DONE')}
               disabled={isDoneDisabled}
               className={isDoneDisabled ? 'opacity-50 cursor-not-allowed' : ''}
             >
-              <span className="text-green-600">● Done</span>
+              <span className="text-neutral-600">● Done</span>
               {isDoneDisabled && incompleteSubtasks.length > 0 && (
-                <span className="ml-2 text-xs text-gray-500">
+                <span className="ml-2 text-xs text-neutral-400">
                   ({incompleteSubtasks.length} subtask{incompleteSubtasks.length > 1 ? 's' : ''})
                 </span>
               )}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => onStatusChange?.(task.id, 'CANCELLED')}>
-              <span className="text-red-600">● Cancelled</span>
+              <span className="text-neutral-500">● Cancelled</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
         {/* Assigned User */}
-        {assignedUser && (
-          <div className="flex items-center gap-1 text-xs text-gray-600">
-            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
-            <span className="hidden sm:inline">{assignedUser.name.split(' ')[0]}</span>
-          </div>
-        )}
-
-        {/* Subtask Count Indicator */}
-        {hasSubtasks && (
-          <div className="flex items-center gap-1 text-xs text-gray-500">
-            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-              />
-            </svg>
-            <span>{task.subtasks!.length}</span>
-          </div>
-        )}
+        <div className="flex items-center gap-1 text-xs text-neutral-500">
+          <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+          <span className="hidden sm:inline">
+            {assignedUser ? assignedUser.name.split(' ')[0] : 'Not assigned'}
+          </span>
+        </div>
 
         {/* Action Buttons */}
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          {/* Add Subtask Button */}
+          {/* Add Subtask/Task Button */}
           <Button
-            className="h-6 w-6 p-0 hover:bg-gray-200"
+            variant="ghost"
+            size="sm"
+            className="h-5 w-5 p-0 hover:bg-neutral-100"
             onClick={() => {
-              setIsAddingSubtask(true);
-              setIsExpanded(true);
+              if (isTopLevelTask && onAddTask) {
+                // Top-level task: open modal to add new task
+                onAddTask();
+              } else {
+                // Subtask: open inline form to add subtask
+                setIsAddingSubtask(true);
+                setIsExpanded(true);
+              }
             }}
-            aria-label="Add subtask"
-            title="Add subtask"
+            aria-label={isTopLevelTask ? "Add task" : "Add subtask"}
+            title={isTopLevelTask ? "Add task" : "Add subtask"}
           >
-            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-3 w-3 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -193,7 +204,9 @@ export function TaskItem({ task, depth, caseId, onStatusChange }: TaskItemProps)
           
           {/* Edit Button */}
           <Button
-            className="h-6 w-6 p-0 hover:bg-gray-200"
+            variant="ghost"
+            size="sm"
+            className="h-5 w-5 p-0 hover:bg-neutral-100"
             onClick={() => {
               setIsEditing(true);
               setIsExpanded(true);
@@ -201,7 +214,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange }: TaskItemProps)
             aria-label="Edit task"
             title="Edit task"
           >
-            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-3 w-3 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -247,6 +260,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange }: TaskItemProps)
               depth={depth + 1}
               caseId={caseId}
               onStatusChange={onStatusChange}
+              onAddTask={onAddTask}
             />
           ))}
         </div>

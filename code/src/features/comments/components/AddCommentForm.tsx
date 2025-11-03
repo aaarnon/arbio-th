@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 
 interface AddCommentFormProps {
   caseId: string;
@@ -79,41 +78,37 @@ export function AddCommentForm({ caseId }: AddCommentFormProps) {
   };
 
   return (
-    <Card className="border-2 border-indigo-200">
-      <CardContent className="p-4">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Add a comment..."
-                      rows={3}
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="text"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Textarea
+                  placeholder="Add a comment... (Use @ to mention users)"
+                  rows={4}
+                  className="resize-none border-neutral-200 focus:border-neutral-400 text-sm bg-neutral-50 focus:bg-white transition-colors"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <div className="flex justify-end">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                size="sm"
-              >
-                {isSubmitting ? 'Adding...' : 'Add Comment'}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+        <div className="flex justify-end">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            size="default"
+          >
+            {isSubmitting ? 'Posting...' : 'Post Comment'}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }
 

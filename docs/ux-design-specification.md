@@ -135,83 +135,90 @@
 
 ## Visual Foundation
 
-**Design Aesthetic:** Clean Minimalism (Linear/Notion Style)
+**Design Aesthetic:** Minimalist Neutrality (Notes/Linear Style)
 
 **Layout Philosophy:**
-- **Light gray background** `#f9fafb` - Main content area for visual separation
-- **All white surfaces** - Cards, panels, sidebar, navbar are pure white
-- **No heavy borders** - Use subtle shadows: `box-shadow: 0 1px 2px rgba(0,0,0,0.05)`
-- **Elevation over borders** - Depth through shadow, not lines
-- **Generous spacing** - Let content breathe
+- **Ultra-light grey background** `#fafafa` - Main content area for subtle separation
+- **Pure white surfaces** - Cards, panels, sidebar, navbar
+- **Whisper-thin borders** - `1px solid #e5e5e5` - barely visible separation
+- **Flat elevation** - Minimal shadows, rely on subtle borders for definition
+- **Maximum spacing** - Let content breathe with generous white space
 
 **Color Palette:**
 
 **Primary Actions:**
-- Primary button: `#000000` (Black) - Used for critical actions like "+ New Case"
-- Primary button hover: `#1a1a1a` (Slightly lighter black)
+- Primary button: `#171717` (Near black) - Subtle, not stark
+- Primary button hover: `#262626` (Lighter charcoal)
+- Text style: Medium weight (500), not bold
 
 **Secondary Actions:**
-- Secondary button: White background, `#e5e7eb` border (subtle)
-- Hover state: Border changes to `#111827` (black)
-- Used for "Edit", "Cancel", "View"
+- Secondary button: White background, `#e5e5e5` border (whisper-thin)
+- Hover state: Background `#fafafa`, border stays same
+- Text: `#525252` (Medium grey)
 
-**Semantic Colors (Softer than corporate):**
-- Primary brand: `#1e40af` (Deep blue) - Links, active navigation
-- Success/Done: `#059669` (Rich green)
-- Info/In Progress: `#2563eb` (Vibrant blue)
-- Warning: `#f59e0b` (Amber)
-- Error: `#dc2626` (Red)
+**Minimal Color Accents:**
+- Interactive elements: `#737373` (Medium grey) - Links, active states
+- Subtle highlight: `#a3a3a3` (Light grey) - Very subtle when needed
+- Success indicator: `#525252` text on `#f5f5f5` background
+- Error (when necessary): `#737373` text with subtle red tint `#fecaca` background
 
-**Status Indicators (Minimal style with soft backgrounds):**
-- Done: `#d1fae5` background, `#059669` text
-- In Progress: `#dbeafe` background, `#1e40af` text  
-- To Do: `#f3f4f6` background, `#6b7280` text
+**Status Indicators (Extremely minimal):**
+- Done: `#fafafa` background, `#525252` text, subtle checkmark icon
+- In Progress: `#f5f5f5` background, `#737373` text
+- To Do: `#ffffff` background, `#a3a3a3` text, `#e5e5e5` border
 
-**Neutral Scale (Clean minimalist palette):**
-- Page background: `#f9fafb` (Light gray) - Main content area
-- Card/Surface: `#ffffff` (Pure white) - All cards, sidebar
-- Border (subtle): `#e5e7eb` (Very light gray)
-- Dividers: `#f3f4f6` (Ultra subtle)
-- Text primary: `#111827` (Near black)
-- Text secondary: `#374151` (Dark gray)
-- Text tertiary: `#6b7280` (Medium gray)
-- Text metadata: `#9ca3af` (Light gray)
+**Neutral Scale (Minimalist grey palette):**
+- Page background: `#fafafa` (Ultra light grey)
+- Card/Surface: `#ffffff` (Pure white)
+- Border/Divider: `#e5e5e5` (Whisper grey)
+- Subtle hover: `#f5f5f5` (Barely visible)
+- Text primary: `#171717` (Near black)
+- Text secondary: `#525252` (Medium grey)
+- Text tertiary: `#737373` (Light grey)
+- Text metadata: `#a3a3a3` (Very light grey)
+- Disabled: `#d4d4d4` (Pale grey)
 
 **Typography System:**
 
 **Font Families:**
-- Headings: System font stack (-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif)
-- Body: Same as headings (consistent, fast loading)
-- Monospace: 'Courier New', monospace (for IDs, codes)
+- All text: System font stack (-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif)
+- Monospace: SF Mono, Monaco, 'Courier New', monospace (for IDs)
 
-**Type Scale (Clean, readable):**
-- H1 (Page title): 24px / 1.3 / 600 weight
-- H2 (Section header): 14px / 1.4 / 600 weight
+**Type Scale (Clean, lightweight):**
+- H1 (Page title): 20px / 1.4 / 500 weight (not bold!)
+- H2 (Section header): 13px / 1.4 / 500 weight / Title case (first letter uppercase, rest lowercase) / `#171717` color (black)
 - H3 (Subsection): 14px / 1.4 / 500 weight
-- Body: 14px / 1.5 / 400 weight
+- Body: 14px / 1.6 / 400 weight
 - Secondary: 13px / 1.5 / 400 weight
-- Metadata: 12px / 1.4 / 400 weight
-- Labels (uppercase): 11px / 1.4 / 500-600 weight
+- Metadata: 12px / 1.4 / 400 weight / `#a3a3a3` color
+- Labels: 11px / 1.4 / 500 weight / Title case / `#a3a3a3` color
 
-**Spacing System:**
+**Spacing System (Linear-inspired):**
 - Base unit: 4px
-- Scale: 4px, 8px, 12px, 16px, 20px, 24px, 32px, 40px, 48px, 64px
-- Used as: xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl
+- Component internal padding: 16px (buttons, badges, inputs)
+- Between related items: 12px (e.g., form fields)
+- Between sections: 32px (major content sections)
+- Between major blocks: 48px (page sections)
+- Page margins: 32-48px (content to edge)
+- Scale reference: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80
+- **Key principle:** Use space as the primary separator, not lines
 
-**Layout Grid:**
-- 12-column grid (shadcn/ui default)
-- Container max-width: 1280px
-- Gutter: 24px
-- Main content area: 65% width
-- Sidebar: 35% width
+**Layout Grid (Linear-style):**
+- Three-column layout: Left nav (240px fixed) | Main content (flexible, max 900px) | Right sidebar (320px fixed)
+- Container max-width: 1600px (allows larger screens)
+- Content area padding: 48px horizontal, 32px vertical
+- Section spacing: 48px between major sections
+- Card/panel spacing: 24px between cards
+- List item spacing: 12px between items, 32px between groups
 
 **Rationale:**
-- **Light gray background with white cards** creates depth without heavy borders (Linear/Notion style)
-- **Subtle shadows over borders** keeps the UI clean and modern
-- **Black primary button** creates unmistakable authority - clear main action
-- **Generous white space** reduces visual clutter and cognitive load
-- **Softer status colors** less corporate, more approachable while maintaining professionalism
-- Perfect for "empowered and in control" feeling without corporate heaviness
+- **Extreme minimalism** reduces cognitive load to absolute minimum
+- **Grey-first palette** eliminates color distraction
+- **Whisper-thin borders** define space without visual weight
+- **Lighter type weights** feel modern and unobtrusive
+- **Title case section labels** (first letter uppercase) provide hierarchy without visual shouting
+- **Generous spacing** creates calm, focused environment
+- Perfect for "quietly confident" control without visual noise
 
 ---
 
@@ -259,40 +266,37 @@ When PM changes a task status from "To Do" to "In Progress":
 
 ## Design Direction Decision
 
-**Chosen Direction: "Mission Control Dashboard"**
+**Chosen Direction: "Linear-Inspired Minimalist Workspace"**
 
-**Layout Pattern: Information-Rich Dashboard**
-- 2-column layout: Main content (65% width) / Context sidebar (35% width)
-- Left sidebar navigation (collapsed icon-only style from Arbio Nexus)
-- Persistent contextual information on right (Property/Reservation panels)
-- Content flows vertically with clear section separation
-- Fixed navbar at top with search, notifications, New Case button
+**Layout Pattern: Three-Column Clarity**
+- **Left Navigation (240px fixed):** Icon + label navigation items, clean hover states, subtle background on active
+- **Main Content (flexible, max 900px):** Primary work area with generous 48px padding, content never wider than 900px for readability
+- **Right Sidebar (320px fixed):** Contextual properties and metadata, organized in stacked sections with clear labels
+- **Spacing philosophy:** Use 48px between major page sections, 32px between section content, 24px between cards
 
-**Visual Hierarchy: Clean Minimalism**
-- Multiple information sections visible without feeling cluttered
-- Subtle section headers with minimal styling
-- White content cards on light gray background
-- No heavy borders - use subtle shadows (0 1px 3px rgba(0,0,0,0.1))
-- Task list with clean hierarchy styling
-- Status badges with softer colors
-- Generous padding and white space throughout
+**Visual Hierarchy: Space-First Design**
+- **Section headers:** 11px Title case (first letter uppercase, rest lowercase), `#171717` (black), letter-spacing 0.05em, 32px bottom margin
+- **Content blocks:** White background, 1px `#e5e5e5` border, 8px border-radius, 24px internal padding
+- **No drop shadows:** Completely flat, borders define all boundaries
+- **List items:** 12px spacing, 40px height minimum, hover state `#fafafa`
+- **Metadata:** Always 12px grey text, positioned consistently
+- **Generous white space:** 48px+ margins around major sections
 
-**Interaction Pattern: Inline Everything**
-- Status dropdowns directly on case/tasks/subtasks
-- Inline task/subtask creation (click "+ Add Task" → form appears in place)
-- Inline editing (click any field → editable, Save/Cancel buttons appear)
-- Comment input always visible at bottom of comments section
-- No separate edit pages or modals for editing - everything in context
-- Add buttons appear on hover for clean default state
+**Interaction Pattern: Ghost-First Buttons**
+- **Most actions are ghost buttons** - transparent with grey text
+- **ONE black button per page** - the primary action (+ New Case)
+- **Status changes:** Inline, minimal animation (200ms fade)
+- **Hover states:** Subtle background `#f5f5f5`, no heavy effects
+- **Focus states:** 2px `#e5e5e5` outline, not blue
+- **No tooltips:** Labels should be clear enough without them
 
-**Information Density: Clean Minimalism (Linear/Notion style)**
-- Shows comprehensive information but stays highly scannable
-- Generous section spacing (32px between major sections)
-- Minimal borders - use elevation/shadows instead
-- Light gray background (#f8fafc) with white content cards
-- Subtle shadows for depth (no heavy borders)
-- Ample white space for breathing room
-- Clean, uncluttered aesthetic
+**Information Density: Spacious & Scannable (Linear style)**
+- **Vertical rhythm:** Consistent 48px spacing between sections creates calm flow
+- **Horizontal padding:** 48px content area padding, never cramped
+- **List spacing:** 12px between items, 32px between groups
+- **Typography spacing:** 16px between paragraphs, 8px between label/value pairs
+- **Card spacing:** 24px between stacked cards
+- **Breathing room priority:** When in doubt, add more space
 
 **Key Design Elements:**
 - ✅ Breadcrumb navigation: "Ticketing Hub > TK-2847"
@@ -552,67 +556,87 @@ When PM changes a task status from "To Do" to "In Progress":
 
 **Custom Components Needed:**
 
-### 1. HierarchicalTaskList
+### 1. HierarchicalTaskList (Linear-style)
 **Purpose:** Display infinite nested task/subtask hierarchy with expand/collapse
 
+**Layout & Spacing:**
+- **Task row height:** 40px minimum (comfortable click target)
+- **Row spacing:** 4px between tasks (tight grouping)
+- **Group spacing:** 24px between task groups (clear separation)
+- **Horizontal padding:** 16px left/right within each row
+- **Indentation:** 24px per nesting level (clear hierarchy)
+- **Border:** 1px `#e5e5e5` bottom border on each row
+
 **Anatomy:**
-- Task row container (32px height)
-- Indentation indicator (20px per level, visual line connecting to parent)
-- Expand/collapse arrow (if has subtasks)
-- Task ID (clickable link)
-- Title (editable on click)
-- Status badge dropdown
-- Assignee avatar
-- Subtask count badge "(2/5)"
-- "+ Add Subtask" button (appears on hover)
+- Expand/collapse icon (16px, `#a3a3a3`, 8px left margin)
+- Task ID (12px mono font, `#a3a3a3`, 12px left margin)
+- Title (14px, `#171717`, flex-grow, editable on click)
+- Status badge (inline, 8px right margin)
+- Assignee avatar (24px circle, 8px right margin)
+- Subtask indicator "(2/5)" (12px, `#a3a3a3`)
+- "+ Add Subtask" button (ghost, appears on hover, right-aligned)
 
 **States:**
-- Default: Collapsed if has subtasks
-- Expanded: Shows all child subtasks
-- Hover: Shows "+ Add Subtask" button
-- Editing: Inline form replaces display
-- Loading: Subtle spinner only if async operation
+- Default: Clean, minimal border-bottom only
+- Hover: Background `#fafafa`, show "+ Add Subtask"
+- Active/Selected: Background `#f5f5f5`, no border change
+- Editing: Inline form with 24px padding, white background
+- Empty: Show "+ Add Task" centered with 80px vertical padding
+
+**Visual Hierarchy:**
+- Level 0: No indentation, 14px font
+- Level 1: 24px indent, subtle grey line connects to parent
+- Level 2+: Additional 24px per level, max indent 120px
 
 **Interaction:**
-- Click arrow → expand/collapse children
-- Click title → inline edit mode
-- Click status badge → dropdown menu
-- Click "+ Add Subtask" → inline creation form appears below
-- Drag handles (future enhancement)
+- Click anywhere on row (except icons) → navigate to task detail
+- Click expand icon → toggle children (200ms smooth animation)
+- Click status → minimal dropdown (8px border-radius, 1px border)
+- Hover → show ghost "+ Add Subtask" button (no background until hover)
+- Click "+ Add Subtask" → inline form slides in below (300ms)
 
 **Accessibility:**
-- ARIA tree role
-- Keyboard navigation (arrow keys to expand/collapse, tab to navigate)
-- Screen reader announces hierarchy level and subtask count
+- ARIA tree role, proper hierarchy levels
+- Keyboard: Enter (open), Space (select), Arrows (navigate/expand)
+- Focus indicator: 2px `#e5e5e5` outline, not blue
 
 ---
 
-### 2. ContextSidebarPanel
+### 2. ContextSidebarPanel (Linear-style)
 **Purpose:** Display Property or Reservation context information
 
+**Layout & Spacing:**
+- **Panel spacing:** 24px between stacked panels
+- **Internal padding:** 24px all sides
+- **Section header:** 11px Title case, `#171717` (black), 16px bottom margin
+- **Row spacing:** 16px between key-value pairs
+- **Border:** 1px `#e5e5e5` all sides
+- **Border radius:** 8px
+- **Background:** White `#ffffff`
+
 **Anatomy:**
-- Panel header with icon (🏠 Property / 📅 Reservation)
-- Title: "Property Context" or "Reservation Context"
-- Key-value pairs (label + value grid)
-- Collapsible sections (future enhancement)
+- Section header: "Property context" (11px, Title case, `#171717`, tracking 0.05em)
+- Key-value rows stacked vertically
+- Each row: Label above value (not side-by-side)
+- Label: 11px `#a3a3a3`, 4px bottom margin
+- Value: 14px `#171717`, line-height 1.5
 
 **Variants:**
-- Property: Unit ID, Status, Last Maintenance
-- Reservation: Reservation ID, Guest Name, Check-in/out dates, Total Nights, Booking Value
-- Guest Communication: Conduit link, last message timestamp
+- Property: Unit ID, Status, Last Maintenance, Address
+- Reservation: Reservation ID, Guest Name, Check-in/out, Total Nights, Booking Value
+- Guest Communication: Last message, Conduit link
 
 **States:**
-- Default: Visible with data
-- Empty: Message if no context available
-- Loading: Skeleton placeholders
+- Default: Clean, minimal styling
+- Empty: Grey text "No property attached" centered, 40px vertical padding
+- Loading: Skeleton lines (16px height, `#f5f5f5`, 8px border-radius)
+- Interactive links: `#737373` hover `#525252`
 
-**Visual:**
-- White background
-- Light border (#cbd5e1)
-- 16px padding
-- 12px gap between items
-- Labels: 11px gray text
-- Values: 14px black text
+**Visual Details:**
+- No icons in labels (keep it minimal)
+- Links underlined only on hover
+- Copyable fields show copy icon on hover (16px, right-aligned)
+- Dividers between major groups: 1px `#e5e5e5`, 24px vertical margin
 
 ---
 
@@ -640,27 +664,28 @@ When PM changes a task status from "To Do" to "In Progress":
 **Purpose:** Display and change case/task status
 
 **Variants:**
-- To Do: Gray background (#64748b), white text
-- In Progress: Blue background (#2563eb), white text
-- Done: Green background (#059669), white text
-- Cancelled: Light gray background, gray text, strikethrough
+- To Do: `#ffffff` background, `#a3a3a3` text, `#e5e5e5` border, 400 weight
+- In Progress: `#f5f5f5` background, `#737373` text, no border, 400 weight
+- Done: `#fafafa` background, `#525252` text, subtle checkmark icon, 400 weight
+- Cancelled: `#ffffff` background, `#d4d4d4` text, strikethrough, 400 weight
 
 **Anatomy:**
-- Badge pill (rounded corners)
-- Text in uppercase
-- Dropdown indicator (small down arrow)
-- 6px vertical padding, 10px horizontal
+- Pill shape (4px rounded corners - subtle, not fully rounded)
+- Text in normal case (not uppercase)
+- 4px vertical padding, 10px horizontal
+- 12px font size, 400 weight
+- Optional small icon (8px)
 
 **States:**
-- Default: Shows current status
-- Hover: Slight darkening, cursor pointer
-- Open: Dropdown menu with status options
-- Disabled: No dropdown, lighter opacity
+- Default: Minimal, barely visible
+- Hover: Slight background darken (`#f5f5f5` → `#ebebeb`)
+- No dropdown arrows - click entire badge
+- Disabled: Lower opacity (60%)
 
 **Interaction:**
-- Click → dropdown menu appears with all status options
-- Select status → badge updates instantly
-- Validation error → error message below
+- Click → minimal dropdown menu appears
+- Select status → smooth fade transition (300ms)
+- No validation toasts unless error
 
 ---
 
@@ -720,29 +745,50 @@ When PM changes a task status from "To Do" to "In Progress":
 ## UX Pattern Decisions
 
 **Button Hierarchy:**
-- **Primary action:** Black background (#000), white text, 600 weight
-  - Used for: "+ New Case", "Create Case", "Save Task", "Post Comment"
-- **Secondary action:** White background, black border (2px), black text, 500 weight
-  - Used for: "Edit Case", "Cancel", "View Details"
-- **Ghost/Tertiary:** Transparent background, gray text
-  - Used for: "Cancel" in forms, less important actions
-- **Destructive:** Red text on white background
+- **Primary action (Black - The Different One):** `#171717` background, white text, 500 weight
+  - Used ONLY for: "+ New Case" (main action) - makes it unmistakable
+  - Padding: 10px 16px (generous internal space)
+  - Border radius: 6px
+  - Hover: `#262626` background
+  - This is the ONLY button that stands out visually
+  
+- **Secondary action:** White background, `#e5e5e5` border (1px), `#525252` text, 400 weight
+  - Used for: "Save", "Create", "Update" - important but not primary
+  - Padding: 10px 16px
+  - Border radius: 6px
+  - Hover: `#fafafa` background
+  
+- **Ghost/Tertiary (Most common):** Transparent background, `#737373` text, 400 weight
+  - Used for: "Edit", "Cancel", "View", most actions
+  - Padding: 10px 12px (slightly less)
+  - Border radius: 6px
+  - Hover: `#f5f5f5` background
+  
+- **Destructive:** `#737373` text, no background
   - Used for: "Delete", "Remove" (with confirmation)
+  - Padding: 10px 12px
+  - Hover: `#525252` text on `#fef2f2` (very subtle red tint)
 
 **Feedback Patterns:**
-- **Success:** Green toast notification, bottom-right, auto-dismiss 3s
-- **Error:** Red toast notification, bottom-right, manual dismiss, with action button
-- **Warning:** Yellow toast notification, bottom-right, auto-dismiss 5s
-- **Info:** Blue toast notification, bottom-right, auto-dismiss 3s
-- **Loading:** Inline spinner (16px) only for async operations > 300ms
+- **Success:** Minimal grey toast, `#fafafa` background, `#525252` text, bottom-right, auto-dismiss 3s
+- **Error:** Subtle toast, `#fecaca` background, `#737373` text, bottom-right, manual dismiss
+- **Warning:** Grey toast, `#f5f5f5` background, `#525252` text, bottom-right, auto-dismiss 5s
+- **Info:** Minimal toast, `#f5f5f5` background, `#737373` text, bottom-right, auto-dismiss 3s
+- **Loading:** Inline spinner (16px, `#a3a3a3` color) only for async operations > 300ms
 
-**Form Patterns:**
-- **Label position:** Above input (8px gap)
-- **Required indicator:** Red asterisk (*) after label
-- **Validation timing:** onBlur for individual fields, onSubmit for form
-- **Error display:** Red border on input + error message below (12px red text)
-- **Help text:** Gray text below input (11px)
-- **Placeholder text:** Light gray, provides example format
+**Form Patterns (Linear-style):**
+- **Field spacing:** 24px between form fields
+- **Label position:** Above input, 8px gap
+- **Label style:** 12px, `#525252`, 500 weight
+- **Input height:** 40px minimum
+- **Input padding:** 12px horizontal
+- **Input border:** 1px `#e5e5e5`, focus: 1px `#171717` (not blue!)
+- **Input border-radius:** 6px
+- **Required indicator:** Subtle `#a3a3a3` asterisk after label
+- **Validation timing:** onBlur for individual fields
+- **Error display:** Input border `#ef4444`, error text 12px `#737373` below (not red!)
+- **Help text:** 12px `#a3a3a3` below input, 4px spacing
+- **Placeholder text:** `#d4d4d4`, subtle example
 
 **Modal Patterns:**
 - **Sizes:** Small (400px), Medium (600px), Large (800px)
@@ -849,65 +895,85 @@ When PM changes a task status from "To Do" to "In Progress":
 
 **What We've Created Together:**
 
-1. **Design System:** shadcn/ui with custom black primary actions
-2. **Visual Foundation:** Bold Command theme with black primary buttons, deep blues, and professional authority
-3. **Design Direction:** "Mission Control Dashboard" - information-rich, inline editing, maximum situational awareness
+1. **Design System:** shadcn/ui with Linear-inspired minimalist customization
+2. **Visual Foundation:** Minimalist grey palette with generous spacing and flat design
+3. **Design Direction:** "Linear-Inspired Minimalist Workspace" - spacious, scannable, ghost-first interactions
 4. **User Journeys:** 3 complete flows designed with specific UX decisions at every step
-5. **Component Library:** 6 custom components specified beyond shadcn/ui base
-6. **UX Patterns:** Complete consistency rules for buttons, feedback, forms, modals, status transitions
+5. **Component Library:** 6 custom components with detailed spacing specifications
+6. **UX Patterns:** Complete consistency rules for buttons, feedback, forms, spacing, and interactions
 7. **Accessibility:** WCAG 2.1 Level AA compliance strategy with testing plan
 
 **Core Deliverables:**
 
-- ✅ UX Design Specification: `/Users/arnon/Desktop/ticketing-hub/docs/ux-design-specification.md`
-- ✅ Color Theme Visualizer: `/Users/arnon/Desktop/ticketing-hub/docs/ux-color-themes.html`
+- ✅ UX Design Specification: `docs/ux-design-specification.md`
+- ✅ Minimalist Theme Visualizer: `docs/ux-files/ux-minimalist-theme.html`
+- ✅ Implementation Summary: `docs/design-update-summary.md`
 
 **Design Decisions Summary:**
 
-**Theme:** Bold Command (Modified)
-- Black primary actions (#000) for unmistakable authority
-- Deep blue (#1e40af) brand color for trust and professionalism
-- Status colors: Green (Done), Blue (In Progress), Gray (To Do)
+**Theme:** Linear-Inspired Minimalist
+- **Grey-only palette** - No vibrant colors, pure neutral hierarchy
+- **ONE black button** (`#171717`) - Primary action stands out unmistakably
+- **Whisper-thin borders** (`#e5e5e5`) - 1px flat design, no shadows
+- **Light typography** - 400-500 weights, Title case section headers (black)
+- **Status indicators** - Subtle grey variations, normal case text
 
-**Layout:** Mission Control Dashboard
-- 2-column: 65% main content / 35% context sidebar
-- Inline editing everywhere
-- No separate edit pages or unnecessary modals
-- Information-dense but scannable
+**Layout:** Three-Column Clarity
+- **Left nav:** 240px fixed with icon + label items
+- **Main content:** Flexible, max 900px for readability
+- **Right sidebar:** 320px fixed for contextual properties
+- **Spacing philosophy:** 48px between sections, 24px between cards, 12px between items
+
+**Spacing System (Linear-inspired):**
+- **Between major sections:** 48px (generous breathing room)
+- **Between content blocks:** 32px (clear separation)
+- **Between cards:** 24px (grouped but distinct)
+- **Between form fields:** 24px (visual rhythm)
+- **Between list items:** 12px (tight grouping)
+- **Component padding:** 24px internal, 48px horizontal for content areas
+- **Key principle:** Use space as the primary separator, not lines
 
 **Interaction Philosophy:**
-- **Speed:** Instant, optimistic UI updates
-- **Guidance:** Minimal, contextual only
-- **Flexibility:** Structured hierarchy with infinite nesting
-- **Feedback:** Clear, immediate, professional (not celebratory)
+- **Ghost-first:** Most buttons are transparent with grey text
+- **Minimal hover:** Subtle `#f5f5f5` background on interaction
+- **Flat design:** No drop shadows, only 1px borders
+- **Speed:** Instant, optimistic UI updates with 150-200ms transitions
+- **Feedback:** Minimal grey toasts, professional tone
 
 **What Developers Need:**
-- Complete color palette with hex codes
-- Typography system and spacing scale
-- Component specifications with states and interactions
+- Complete neutral color scale (50-900 grey palette)
+- Tailwind config with spacing utilities and custom classes
+- Base CSS with `.section-spacing`, `.content-spacing`, `.card-spacing` utilities
+- Component specifications with precise measurements and spacing
 - User journey flows with detailed screen-by-screen guidance
-- UX pattern rules for consistent implementation
 - Accessibility requirements and testing strategy
 
-**What Happens Next:**
+**Implementation Quick Start:**
 
-For v0 MVP implementation:
-1. Set up React + TypeScript + Tailwind + shadcn/ui
-2. Implement color theme variables
-3. Build custom components (HierarchicalTaskList, ContextSidebarPanel, etc.)
-4. Follow user journey flows for feature implementation
-5. Apply UX patterns consistently across all screens
-6. Run accessibility audits throughout development
+```tsx
+// Button hierarchy
+<button className="btn-primary">+ New Case</button>      // Black, ONE per page
+<button className="btn-secondary">Save</button>          // White with border
+<button className="btn-ghost">Edit</button>              // Transparent, most common
+
+// Layout with spacing
+<section className="section-spacing">                    // 48px bottom margin
+  <h2 className="section-header">Case details</h2>      // Title case, black
+  <div className="card card-spacing">...</div>            // 24px bottom margin
+</section>
+```
 
 **Success Criteria:**
-- Property Managers feel "empowered and in control"
-- Case details visible at-a-glance without scrolling
-- Status changes feel instant
-- No confusion about next actions
+- Property Managers feel "quietly confident" control without visual noise
+- Generous spacing creates calm, focused environment
+- ONE black button makes primary action unmistakable
+- Grey hierarchy provides clarity without color distraction
+- 40px touch targets ensure comfortable interaction
+- Status changes feel instant with minimal feedback
 - Keyboard navigation works flawlessly
 - WCAG 2.1 AA compliance achieved
 
 ---
 
-**🎨 Ready for implementation!** All design decisions documented with rationale. Developers have everything needed to build a professional, accessible, authority-driven Ticketing Hub that makes Property Managers feel in control.
+**🎨 Ready for implementation!** All design decisions documented with Linear-inspired rationale. The design now features extreme minimalism with generous spacing, flat borders, and a grey-first palette that eliminates distraction while maintaining clear hierarchy.
 

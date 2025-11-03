@@ -6,6 +6,13 @@ import { useCaseContext } from '@/store/CaseContext';
 import { taskSchema, type TaskFormData } from '../schemas';
 import { mockUsers } from '@/data/mockUsers';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
   Form,
   FormControl,
   FormField,
@@ -23,27 +30,27 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-interface CreateTaskFormProps {
+interface CreateTaskModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   caseId: string;
-  onSuccess?: () => void;
 }
 
 /**
- * Create Task Form Component
- * Form to add a new top-level task to a case
+ * Create Task Modal Component
+ * Modal dialog with form to create a new task for a case
  */
-export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
+export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalProps) {
   const { state, dispatch } = useCaseContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const form = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
       title: '',
       description: '',
+      domain: '',
       assignedTo: '',
     },
   });
@@ -52,7 +59,7 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
     setIsSubmitting(true);
 
     try {
-      // Find the case to get current task count for ID generation
+      // Find the case to get current task count
       const caseData = state.cases.find((c) => c.id === caseId);
       if (!caseData) {
         toast.error('Case not found');
@@ -69,6 +76,7 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
         title: data.title,
         description: data.description || undefined,
         status: 'TODO' as const,
+        domain: data.domain ? (data.domain as any) : undefined,
         assignedTo: data.assignedTo || undefined,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -88,10 +96,9 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
         description: `Task ${newTaskId} has been added`,
       });
 
-      // Reset form
+      // Reset form and close modal
       form.reset();
-      setIsExpanded(false);
-      onSuccess?.();
+      onOpenChange(false);
     } catch (error) {
       toast.error('Failed to create task', {
         description: 'Please try again',
@@ -101,60 +108,16 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
     }
   };
 
-  if (!isExpanded) {
-    return (
-      <Button
-        variant="ghost"
-        onClick={() => setIsExpanded(true)}
-        className="w-full justify-start text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50"
-      >
-        <svg
-          className="mr-2 h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-        Add task
-      </Button>
-    );
-  }
-
   return (
-    <Card className="border-2 border-indigo-200">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Add New Task</CardTitle>
-          <Button
-            onClick={() => {
-              form.reset();
-              setIsExpanded(false);
-            }}
-            className="h-8 w-8 p-0 hover:bg-gray-200"
-          >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[600px]">
+        <DialogHeader>
+          <DialogTitle>Create New Task</DialogTitle>
+          <DialogDescription>
+            Add a new task to track work for this case
+          </DialogDescription>
+        </DialogHeader>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Title */}
@@ -163,9 +126,11 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title *</FormLabel>
+                  <FormLabel>
+                    Title <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Task title" {...field} />
+                    <Input placeholder="Brief description of the task" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -178,11 +143,13 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description (Optional)</FormLabel>
+                  <FormLabel>
+                    Description <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Task description..."
-                      rows={3}
+                      placeholder="Detailed description of the task..."
+                      rows={4}
                       {...field}
                     />
                   </FormControl>
@@ -191,13 +158,39 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
               )}
             />
 
-            {/* Assigned To */}
+            {/* Domain */}
+            <FormField
+              control={form.control}
+              name="domain"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Domain</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select domain" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="PROPERTY">Property</SelectItem>
+                      <SelectItem value="RESERVATION">Reservation</SelectItem>
+                      <SelectItem value="FINANCE">Finance</SelectItem>
+                      <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
+                      <SelectItem value="GUEST_REQUEST">Guest Request</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Assign To */}
             <FormField
               control={form.control}
               name="assignedTo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Assign To (Optional)</FormLabel>
+                  <FormLabel>Assign To</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -205,7 +198,6 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="">Unassigned</SelectItem>
                       {mockUsers.map((user) => (
                         <SelectItem key={user.id} value={user.id}>
                           {user.name} - {user.role}
@@ -219,15 +211,15 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
             />
 
             {/* Actions */}
-            <div className="flex justify-end gap-3">
+            <div className="flex justify-end gap-3 pt-4">
               <Button
                 type="button"
+                variant="secondary"
                 onClick={() => {
                   form.reset();
-                  setIsExpanded(false);
+                  onOpenChange(false);
                 }}
                 disabled={isSubmitting}
-                className="border border-gray-300"
               >
                 Cancel
               </Button>
@@ -237,8 +229,8 @@ export function CreateTaskForm({ caseId, onSuccess }: CreateTaskFormProps) {
             </div>
           </form>
         </Form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 }
 

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticketing Hub - Minimalist Grey Theme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            padding: 48px;
+            color: #171717;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            margin-bottom: 48px;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #171717;
+        }
+        
+        .header p {
+            color: #737373;
+            font-size: 14px;
+            font-weight: 400;
+        }
+        
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        
+        .color-swatch {
+            text-align: center;
+        }
+        
+        .color-box {
+            height: 80px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .color-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #525252;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .color-hex {
+            font-size: 11px;
+            color: #a3a3a3;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .components-section {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+        
+        .section-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #a3a3a3;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: #171717;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #262626;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #525252;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .btn-secondary:hover {
+            background: #fafafa;
+        }
+        
+        .btn-ghost {
+            background: transparent;
+            color: #737373;
+        }
+        
+        .btn-ghost:hover {
+            background: #f5f5f5;
+        }
+        
+        .status-badges {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        
+        .badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        
+        .badge-done {
+            background: #fafafa;
+            color: #525252;
+        }
+        
+        .badge-done::before {
+            content: '✓ ';
+            font-size: 10px;
+        }
+        
+        .badge-progress {
+            background: #f5f5f5;
+            color: #737373;
+        }
+        
+        .badge-todo {
+            background: white;
+            color: #a3a3a3;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .badge-cancelled {
+            background: white;
+            color: #d4d4d4;
+            text-decoration: line-through;
+        }
+        
+        .card-example {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        
+        .card-example h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #171717;
+            margin-bottom: 8px;
+        }
+        
+        .card-example p {
+            font-size: 14px;
+            color: #737373;
+            line-height: 1.6;
+        }
+        
+        .case-list-example {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .case-row {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: background 0.15s;
+        }
+        
+        .case-row:hover {
+            background: #fafafa;
+        }
+        
+        .case-row:last-child {
+            border-bottom: none;
+        }
+        
+        .case-id {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            color: #a3a3a3;
+            width: 80px;
+        }
+        
+        .case-title {
+            flex: 1;
+            font-size: 14px;
+            color: #171717;
+            font-weight: 400;
+        }
+        
+        .case-meta {
+            font-size: 12px;
+            color: #a3a3a3;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .comparison-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .comparison-card h3 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .comparison-card.old h3 {
+            color: #dc2626;
+        }
+
+        .comparison-card.new h3 {
+            color: #059669;
+        }
+
+        .comparison-item {
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .comparison-item strong {
+            color: #171717;
+            font-weight: 500;
+        }
+
+        .comparison-item span {
+            color: #737373;
+        }
+
+        .highlight-box {
+            background: #f5f5f5;
+            border-left: 3px solid #737373;
+            padding: 16px;
+            margin: 32px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box h4 {
+            font-size: 13px;
+            font-weight: 500;
+            color: #171717;
+            margin-bottom: 8px;
+        }
+
+        .highlight-box p {
+            font-size: 13px;
+            color: #525252;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Minimalist Grey Theme</h1>
+            <p>Clean, neutral, focused — inspired by your reference image</p>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Design Philosophy</h4>
+            <p>This minimalist grey theme eliminates color distraction and creates a calm, focused environment. Every element uses subtle grey variations to create hierarchy without visual noise.</p>
+        </div>
+        
+        <div class="components-section">
+            <div class="section-title">Color Palette</div>
+            <div class="palette-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #fafafa;"></div>
+                    <div class="color-label">Background</div>
+                    <div class="color-hex">#fafafa</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #ffffff;"></div>
+                    <div class="color-label">Surface</div>
+                    <div class="color-hex">#ffffff</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #f5f5f5;"></div>
+                    <div class="color-label">Hover</div>
+                    <div class="color-hex">#f5f5f5</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #e5e5e5;"></div>
+                    <div class="color-label">Border</div>
+                    <div class="color-hex">#e5e5e5</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #171717;"></div>
+                    <div class="color-label">Primary</div>
+                    <div class="color-hex">#171717</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #525252;"></div>
+                    <div class="color-label">Text Secondary</div>
+                    <div class="color-hex">#525252</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #737373;"></div>
+                    <div class="color-label">Text Tertiary</div>
+                    <div class="color-hex">#737373</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #a3a3a3;"></div>
+                    <div class="color-label">Text Metadata</div>
+                    <div class="color-hex">#a3a3a3</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="components-section">
+            <div class="section-title">Buttons</div>
+            <div class="button-group">
+                <button class="btn btn-primary">+ New Case</button>
+                <button class="btn btn-secondary">Edit Case</button>
+                <button class="btn btn-ghost">Cancel</button>
+            </div>
+        </div>
+        
+        <div class="components-section">
+            <div class="section-title">Status Badges</div>
+            <div class="status-badges">
+                <span class="badge badge-done">Done</span>
+                <span class="badge badge-progress">In progress</span>
+                <span class="badge badge-todo">To do</span>
+                <span class="badge badge-cancelled">Cancelled</span>
+            </div>
+        </div>
+        
+        <div class="components-section">
+            <div class="section-title">Card Example</div>
+            <div class="card-example">
+                <h3>Mold issue reported on unit 12</h3>
+                <p>Guest reported visible mold spots in bathroom. Requires immediate attention from maintenance team. Photos attached to case.</p>
+            </div>
+        </div>
+        
+        <div class="components-section">
+            <div class="section-title">Case List Example</div>
+            <div class="case-list-example">
+                <div class="case-row">
+                    <div class="case-id">TK-2847</div>
+                    <div class="case-title">WiFi connectivity issues in unit 204</div>
+                    <span class="badge badge-progress">In progress</span>
+                    <div class="case-meta">2 hours ago</div>
+                </div>
+                <div class="case-row">
+                    <div class="case-id">TK-2846</div>
+                    <div class="case-title">HVAC not cooling properly</div>
+                    <span class="badge badge-todo">To do</span>
+                    <div class="case-meta">5 hours ago</div>
+                </div>
+                <div class="case-row">
+                    <div class="case-id">TK-2845</div>
+                    <div class="case-title">Guest checkout procedure completed</div>
+                    <span class="badge badge-done">Done</span>
+                    <div class="case-meta">Yesterday</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comparison-grid">
+            <div class="comparison-card old">
+                <h3>❌ Previous Design (Bold Command)</h3>
+                <div class="comparison-item"><strong>Primary:</strong> <span>Black #000000</span></div>
+                <div class="comparison-item"><strong>Brand:</strong> <span>Deep Blue #1e40af</span></div>
+                <div class="comparison-item"><strong>Success:</strong> <span>Rich Green #059669</span></div>
+                <div class="comparison-item"><strong>In Progress:</strong> <span>Vibrant Blue #2563eb</span></div>
+                <div class="comparison-item"><strong>Typography:</strong> <span>Bold weights (600)</span></div>
+                <div class="comparison-item"><strong>Badges:</strong> <span>UPPERCASE, colored backgrounds</span></div>
+                <div class="comparison-item"><strong>Style:</strong> <span>Authoritative, high contrast</span></div>
+            </div>
+            
+            <div class="comparison-card new">
+                <h3>✅ New Design (Minimalist Grey)</h3>
+                <div class="comparison-item"><strong>Primary:</strong> <span>Near Black #171717</span></div>
+                <div class="comparison-item"><strong>Accents:</strong> <span>Grey variations only</span></div>
+                <div class="comparison-item"><strong>Success:</strong> <span>Grey with subtle checkmark</span></div>
+                <div class="comparison-item"><strong>In Progress:</strong> <span>Light grey #f5f5f5</span></div>
+                <div class="comparison-item"><strong>Typography:</strong> <span>Light weights (400-500)</span></div>
+                <div class="comparison-item"><strong>Badges:</strong> <span>Normal case, minimal styling</span></div>
+                <div class="comparison-item"><strong>Style:</strong> <span>Calm, subtle, focused</span></div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4>Key Changes Made</h4>
+            <p>
+                • Removed all vibrant colors (blues, greens) in favor of grey scale<br>
+                • Changed borders from shadows to whisper-thin lines (#e5e5e5)<br>
+                • Reduced font weights from 600 → 500/400<br>
+                • Badges now use normal case instead of UPPERCASE<br>
+                • Status indicators use subtle grey variations<br>
+                • Increased spacing for more breathing room<br>
+                • Updated Tailwind config with new neutral color scale
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

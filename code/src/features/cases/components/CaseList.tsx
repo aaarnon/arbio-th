@@ -1,21 +1,17 @@
-import { useState } from 'react';
 import { useCaseContext } from '@/store/CaseContext';
 import { useCaseFilters } from '../hooks/useCaseFilters';
 import { CaseListItem } from './CaseListItem';
 import { CaseFilters } from './CaseFilters';
-import { CreateCaseModal } from './CreateCaseModal';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { LoadingSkeleton } from '@/components/shared/LoadingSkeleton';
-import { Button } from '@/components/ui/button';
 
 /**
  * Case List Component
- * Displays all cases in a list with filters and create button
+ * Displays all cases in a list with filters
  */
 export function CaseList() {
   const { state } = useCaseContext();
   const { cases, loading } = state;
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   
   const {
     filters,
@@ -25,15 +21,11 @@ export function CaseList() {
     setSearchFilter,
   } = useCaseFilters(cases);
 
-  const handleCreateCase = () => {
-    setIsCreateModalOpen(true);
-  };
-
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Cases</h1>
+      <div className="max-w-content mx-auto">
+        <div className="flex items-center justify-between section-spacing">
+          <h1 className="text-xl font-medium text-neutral-800">Cases</h1>
         </div>
         <LoadingSkeleton />
       </div>
@@ -41,46 +33,30 @@ export function CaseList() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-content mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Cases</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            Manage and track all support cases
-          </p>
-        </div>
-        <Button onClick={handleCreateCase}>
-          <svg 
-            className="mr-2 h-4 w-4" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M12 4v16m8-8H4" 
-            />
-          </svg>
-          Create Case
-        </Button>
+      <div className="mb-6">
+        <h1 className="text-xl font-medium text-neutral-800">Cases</h1>
+        <p className="mt-1 text-sm text-neutral-500">
+          Manage and track all support cases
+        </p>
       </div>
 
       {/* Filters */}
-      <CaseFilters
-        statusFilter={filters.status}
-        domainFilter={filters.domain}
-        searchFilter={filters.search}
-        onStatusChange={setStatusFilter}
-        onDomainChange={setDomainFilter}
-        onSearchChange={setSearchFilter}
-      />
+      <div className="mb-6">
+        <CaseFilters
+          statusFilter={filters.status}
+          domainFilter={filters.domain}
+          searchFilter={filters.search}
+          onStatusChange={setStatusFilter}
+          onDomainChange={setDomainFilter}
+          onSearchChange={setSearchFilter}
+        />
+      </div>
 
       {/* Results Count */}
       {filteredCases.length !== cases.length && (
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-neutral-400 mb-4">
           Showing {filteredCases.length} of {cases.length} cases
         </p>
       )}
@@ -91,28 +67,43 @@ export function CaseList() {
           title={cases.length === 0 ? "No cases yet" : "No matching cases"}
           message={
             cases.length === 0
-              ? "Get started by creating your first support case. Cases help you track and manage customer issues efficiently."
+              ? "Get started by creating your first case using the New Case button in the navbar"
               : "Try adjusting your filters to find what you're looking for."
-          }
-          action={
-            cases.length === 0
-              ? {
-                  label: 'Create First Case',
-                  onClick: handleCreateCase,
-                }
-              : undefined
           }
         />
       ) : (
-        <div className="space-y-4" role="list" aria-label="Cases list">
-          {filteredCases.map((caseData) => (
-            <CaseListItem key={caseData.id} case={caseData} />
-          ))}
+        <div className="bg-white rounded-card px-6 py-4">
+          <table className="w-full table-fixed">
+            <colgroup>
+              <col style={{ width: '12%' }} />
+              <col style={{ width: '60%' }} />
+              <col style={{ width: '18%' }} />
+              <col style={{ width: '10%' }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th className="text-left pr-6 py-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Case ID
+                </th>
+                <th className="text-left px-6 py-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="text-left px-6 py-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="text-left pl-6 py-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Created
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCases.map((caseData) => (
+                <CaseListItem key={caseData.id} case={caseData} />
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
-
-      {/* Create Case Modal */}
-      <CreateCaseModal open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen} />
     </div>
   );
 }

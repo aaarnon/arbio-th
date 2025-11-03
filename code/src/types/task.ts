@@ -17,6 +17,9 @@ export interface Task {
   /** Current status of the task */
   status: Status;
   
+  /** Domain/category of the task */
+  domain?: Domain;
+  
   /** User assigned to this task */
   assignedTo?: string;
   

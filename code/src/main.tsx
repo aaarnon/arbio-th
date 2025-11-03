@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <CaseProvider>
           <App />
-          <Toaster position="top-right" richColors />
+          <Toaster position="bottom-center" richColors duration={6000} />
         </CaseProvider>
       </BrowserRouter>
     </ErrorBoundary>

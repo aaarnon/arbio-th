@@ -6,14 +6,14 @@ interface LayoutProps {
 }
 
 /**
- * Main layout wrapper component
- * Provides consistent page structure with navbar and content area
+ * Main layout wrapper component - Linear-inspired minimalist
+ * Provides consistent page structure with navbar and generous spacing
  */
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-50">
       <Navbar />
-      <main className="mx-auto max-w-7xl px-6 py-8">
+      <main className="mx-auto max-w-[1600px] px-12 py-8 pt-24">
         {children}
       </main>
     </div>

@@ -30,7 +30,7 @@ export function CaseFilters({
   onSearchChange,
 }: CaseFiltersProps) {
   return (
-    <div className="flex flex-wrap items-center gap-4 rounded-lg border border-gray-200 bg-white p-4">
+    <div className="flex flex-wrap items-center gap-4 bg-white rounded-card p-4">
       {/* Search Input */}
       <div className="flex-1 min-w-[240px]">
         <div className="relative">

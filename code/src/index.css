@@ -1,3 +1,84 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Minimalist Grey Theme */
+  body {
+    @apply bg-neutral-50 text-neutral-800;
+  }
+  
+  /* Typography defaults */
+  h1 {
+    @apply text-xl font-medium text-neutral-800;
+  }
+  
+  h2 {
+    @apply text-sm font-medium text-neutral-400 uppercase tracking-wider;
+  }
+  
+  h3 {
+    @apply text-sm font-medium text-neutral-800;
+  }
+}
+
+@layer components {
+  /* Button styles - Linear-inspired with generous spacing */
+  .btn-primary {
+    @apply bg-neutral-800 text-white font-medium px-4 py-2.5 rounded-md hover:bg-neutral-700 transition-colors duration-150;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-neutral-600 border border-neutral-200 font-normal px-4 py-2.5 rounded-md hover:bg-neutral-50 transition-colors duration-150;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent text-neutral-500 font-normal px-3 py-2.5 rounded-md hover:bg-neutral-100 transition-colors duration-150;
+  }
+  
+  /* Status badges - Minimal grey variations, NO BORDERS */
+  .badge-done {
+    @apply bg-neutral-100 text-neutral-600 px-2.5 py-1 rounded text-xs font-normal;
+  }
+  
+  .badge-progress {
+    @apply bg-neutral-100 text-neutral-500 px-2.5 py-1 rounded text-xs font-normal;
+  }
+  
+  .badge-todo {
+    @apply bg-neutral-50 text-neutral-400 px-2.5 py-1 rounded text-xs font-normal;
+  }
+  
+  /* Card styles - NO BORDERS, just background */
+  .card {
+    @apply bg-white rounded-card p-6;
+  }
+  
+  /* Layout utilities - GENEROUS Linear spacing */
+  .section-spacing {
+    @apply mb-16;  /* 64px between major sections */
+  }
+  
+  .content-spacing {
+    @apply mb-12;  /* 48px between content blocks */
+  }
+  
+  .card-spacing {
+    @apply mb-8;   /* 32px between cards */
+  }
+  
+  /* Section headers - Linear style (UPPERCASE) */
+  .section-header {
+    @apply text-xs font-medium text-neutral-900 uppercase tracking-wider mb-6;
+  }
+  
+  /* Form inputs - Subtle borders only */
+  .input {
+    @apply h-10 px-3 border border-neutral-200 rounded-md text-sm focus:outline-none focus:border-neutral-400 transition-colors duration-150;
+  }
+  
+  /* List items - NO BORDERS */
+  .list-item {
+    @apply min-h-[44px] py-2 px-4 hover:bg-neutral-50 rounded-md transition-colors duration-150;
+  }
+}

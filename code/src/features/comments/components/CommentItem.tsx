@@ -1,7 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 import type { Comment } from '@/types';
 import { mockUsers } from '@/data/mockUsers';
-import { Card, CardContent } from '@/components/ui/card';
 
 interface CommentItemProps {
   comment: Comment;
@@ -16,39 +15,33 @@ export function CommentItem({ comment }: CommentItemProps) {
   const timeAgo = formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true });
 
   return (
-    <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-2">
-          <div className="flex items-center gap-2">
-            {/* Avatar */}
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm">
-              {author?.name.charAt(0) || '?'}
-            </div>
-            
-            {/* Author Info */}
-            <div>
-              <p className="text-sm font-semibold text-gray-900">
-                {author?.name || 'Unknown User'}
-              </p>
-              <p className="text-xs text-gray-500">
-                {author?.role || 'Team Member'}
-              </p>
-            </div>
+    <div className="py-6">
+      <div className="flex gap-3">
+        {/* Avatar */}
+        <div className="flex-shrink-0">
+          <div className="h-10 w-10 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-600 font-medium text-sm">
+            {author?.name.split(' ').map(n => n[0]).join('').toUpperCase() || '?'}
+          </div>
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          {/* Author and Timestamp */}
+          <div className="flex items-baseline gap-2 mb-2">
+            <span className="text-sm font-medium text-neutral-900">
+              {author?.name || 'Unknown User'}
+            </span>
+            <span className="text-xs text-neutral-400" title={comment.createdAt}>
+              {timeAgo}
+            </span>
           </div>
 
-          {/* Timestamp */}
-          <span className="text-xs text-gray-500" title={comment.createdAt}>
-            {timeAgo}
-          </span>
+          {/* Comment Text */}
+          <p className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed">
+            {comment.text}
+          </p>
         </div>
-
-        {/* Comment Text */}
-        <p className="text-sm text-gray-700 whitespace-pre-wrap ml-10">
-          {comment.text}
-        </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 

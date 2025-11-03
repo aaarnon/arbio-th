@@ -22,7 +22,6 @@ export const mockCases: Case[] = [
         title: 'Emergency inspection and assessment',
         description: 'Inspect ceiling and identify source of leak',
         status: 'DONE',
-        assignedTo: 'user-3',
         createdAt: '2025-11-02T08:35:00Z',
         updatedAt: '2025-11-02T10:20:00Z',
         subtasks: [

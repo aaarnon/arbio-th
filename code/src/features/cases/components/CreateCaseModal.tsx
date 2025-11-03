@@ -190,7 +190,6 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
                         {mockProperties.map((property) => (
                           <SelectItem key={property.id} value={property.id}>
                             {property.unitId} - {property.address.split(',')[0]}
@@ -217,7 +216,6 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">None</SelectItem>
                         {mockReservations.map((reservation) => (
                           <SelectItem key={reservation.id} value={reservation.id}>
                             {reservation.guestName} - {reservation.id}
@@ -245,7 +243,6 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="">Unassigned</SelectItem>
                       {mockUsers.map((user) => (
                         <SelectItem key={user.id} value={user.id}>
                           {user.name} - {user.role}

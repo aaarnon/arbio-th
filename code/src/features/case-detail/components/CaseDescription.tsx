@@ -1,5 +1,5 @@
 import type { Case } from '@/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 interface CaseDescriptionProps {
@@ -13,10 +13,10 @@ interface CaseDescriptionProps {
 export function CaseDescription({ case: caseData }: CaseDescriptionProps) {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-6">
         <div className="flex items-center justify-between">
-          <CardTitle>Description</CardTitle>
-          <Button className="hover:bg-gray-100" size="sm">
+          <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">Description</h2>
+          <Button variant="ghost" size="sm">
             <svg 
               className="h-4 w-4" 
               fill="none" 
@@ -34,7 +34,7 @@ export function CaseDescription({ case: caseData }: CaseDescriptionProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <p className="whitespace-pre-wrap text-gray-700">{caseData.description}</p>
+        <p className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed">{caseData.description}</p>
       </CardContent>
     </Card>
   );

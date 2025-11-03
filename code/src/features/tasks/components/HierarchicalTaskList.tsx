@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import type { Task, Status } from '@/types';
 import { TaskItem } from './TaskItem';
-import { CreateTaskForm } from './CreateTaskForm';
+import { CreateTaskModal } from './CreateTaskModal';
 import { EmptyState } from '@/components/shared/EmptyState';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface HierarchicalTaskListProps {
   tasks: Task[];
@@ -15,11 +17,13 @@ interface HierarchicalTaskListProps {
  * Displays a tree structure of tasks and subtasks
  */
 export function HierarchicalTaskList({ tasks, caseId, onStatusChange }: HierarchicalTaskListProps) {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   if (!tasks || tasks.length === 0) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Tasks</CardTitle>
+        <CardHeader className="pb-6">
+          <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">Tasks</h2>
         </CardHeader>
         <CardContent>
           <EmptyState
@@ -27,7 +31,7 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange }: Hierarch
             message="Tasks will be added to track the work needed to resolve this case."
             icon={
               <svg
-                className="h-16 w-16 text-gray-400"
+                className="h-16 w-16 text-neutral-300"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -54,11 +58,11 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange }: Hierarch
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-6">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Tasks</CardTitle>
-            <p className="mt-1 text-sm text-gray-600">
+            <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-2">Tasks</h2>
+            <p className="text-sm text-neutral-500 font-normal">
               {doneTasks} of {totalTasks} tasks completed ({completionPercentage}%)
               {inProgressTasks > 0 && ` · ${inProgressTasks} in progress`}
             </p>
@@ -66,19 +70,19 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange }: Hierarch
           
           {/* Progress Bar */}
           <div className="flex items-center gap-3">
-            <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-32 h-2 bg-neutral-100 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-green-500 transition-all duration-300"
+                className="h-full bg-neutral-600 transition-all duration-300"
                 style={{ width: `${completionPercentage}%` }}
               />
             </div>
-            <span className="text-sm font-medium text-gray-700">{completionPercentage}%</span>
+            <span className="text-sm font-normal text-neutral-600">{completionPercentage}%</span>
           </div>
         </div>
       </CardHeader>
       
       <CardContent>
-        <div role="tree" className="space-y-2">
+        <div role="tree" className="space-y-1">
           {tasks.map((task) => (
             <TaskItem
               key={task.id}
@@ -86,15 +90,42 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange }: Hierarch
               depth={0}
               caseId={caseId}
               onStatusChange={onStatusChange}
+              onAddTask={() => setIsCreateModalOpen(true)}
             />
           ))}
         </div>
         
-        {/* Add Task Form */}
-        <div className="mt-4">
-          <CreateTaskForm caseId={caseId} />
+        {/* Add Task Button */}
+        <div className="mt-6">
+          <Button
+            variant="ghost"
+            onClick={() => setIsCreateModalOpen(true)}
+            className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
+          >
+            <svg
+              className="mr-2 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add task
+          </Button>
         </div>
       </CardContent>
+
+      {/* Create Task Modal */}
+      <CreateTaskModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
+        caseId={caseId}
+      />
     </Card>
   );
 }

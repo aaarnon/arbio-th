@@ -1,11 +1,15 @@
-import { formatDistanceToNow } from 'date-fns';
 import type { Attachment } from '@/types';
-import { mockUsers } from '@/data/mockUsers';
-import { Card, CardContent } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 
 interface AttachmentItemProps {
   attachment: Attachment;
+  onRemove?: (attachmentId: string) => void;
 }
 
 /**
@@ -18,12 +22,12 @@ function formatFileSize(bytes: number): string {
 }
 
 /**
- * Get file icon based on file type
+ * Get minimal file icon based on file type
  */
 function getFileIcon(fileType: string) {
   if (fileType.startsWith('image/')) {
     return (
-      <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -35,7 +39,7 @@ function getFileIcon(fileType: string) {
   }
   if (fileType === 'application/pdf') {
     return (
-      <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -46,7 +50,7 @@ function getFileIcon(fileType: string) {
     );
   }
   return (
-    <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -58,57 +62,83 @@ function getFileIcon(fileType: string) {
 }
 
 /**
- * Attachment Item Component
- * Displays a single attachment with download button
+ * Attachment Item Component - Linear-inspired minimal design
+ * Displays a single attachment with hover actions
  */
-export function AttachmentItem({ attachment }: AttachmentItemProps) {
-  const uploader = mockUsers.find((u) => u.id === attachment.uploadedBy);
-  const timeAgo = formatDistanceToNow(new Date(attachment.uploadedAt), { addSuffix: true });
+export function AttachmentItem({ attachment, onRemove }: AttachmentItemProps) {
+  const handleDownload = () => {
+    // In a real app, this would download the file
+    window.open(attachment.url, '_blank');
+  };
+
+  const handleRemove = () => {
+    if (onRemove) {
+      onRemove(attachment.id);
+    }
+  };
 
   return (
-    <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        <div className="flex items-start gap-4">
-          {/* File Icon */}
-          <div className="flex-shrink-0 text-indigo-500">
-            {getFileIcon(attachment.fileType)}
-          </div>
+    <div className="group flex items-center gap-3 py-2 px-3 hover:bg-neutral-50 rounded-md transition-colors">
+      {/* File Icon */}
+      <div className="flex-shrink-0 text-neutral-400">
+        {getFileIcon(attachment.fileType)}
+      </div>
 
-          {/* File Info */}
-          <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-semibold text-gray-900 truncate">
-              {attachment.fileName}
-            </h4>
-            <p className="text-xs text-gray-500 mt-1">
-              {formatFileSize(attachment.fileSize)} · Uploaded {timeAgo}
-            </p>
-            <p className="text-xs text-gray-500">
-              by {uploader?.name || 'Unknown User'}
-            </p>
-          </div>
+      {/* File Name */}
+      <div className="flex-1 min-w-0">
+        <span className="text-sm text-neutral-800 truncate">
+          {attachment.fileName}
+        </span>
+      </div>
 
-          {/* Download Button */}
-          <Button
-            size="sm"
-            className="flex-shrink-0"
-            onClick={() => {
-              // In a real app, this would download the file
-              window.open(attachment.url, '_blank');
-            }}
-          >
-            <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-              />
-            </svg>
-            Download
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+      {/* File Size */}
+      <span className="text-xs text-neutral-400 flex-shrink-0">
+        {formatFileSize(attachment.fileSize)}
+      </span>
+
+      {/* Action Menu (shows on hover) */}
+      <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0 hover:bg-neutral-200"
+            >
+              <svg className="h-4 w-4 text-neutral-500" fill="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="5" r="2" />
+                <circle cx="12" cy="12" r="2" />
+                <circle cx="12" cy="19" r="2" />
+              </svg>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleDownload}>
+              <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
+              Download
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleRemove} className="text-red-600">
+              <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+              Remove
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
   );
 }
 

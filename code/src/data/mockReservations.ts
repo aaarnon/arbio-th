@@ -6,15 +6,15 @@ import type { Reservation } from '@/types';
  */
 export const mockReservations: Reservation[] = [
   {
-    id: 'res-1',
+    id: 'rsv-644f5e4aac88',
     propertyId: 'prop-1',
-    guestName: 'John Smith',
-    guestEmail: 'john.smith@email.com',
+    guestName: 'Sarah Martinez',
+    guestEmail: 'sarah.martinez@email.com',
     guestPhone: '+1 (555) 123-4567',
-    checkIn: '2025-11-10T15:00:00Z',
-    checkOut: '2025-11-17T11:00:00Z',
+    checkIn: '2025-10-06T15:00:00Z',
+    checkOut: '2025-10-12T11:00:00Z',
     numberOfGuests: 4,
-    totalValue: 2450.00,
+    totalValue: 1840.00,
     status: 'CONFIRMED',
   },
   {

@@ -37,15 +37,15 @@ export function NotificationItem({ notification, onClose }: NotificationItemProp
   return (
     <button
       onClick={handleClick}
-      className={`w-full text-left p-4 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 ${
-        !notification.isRead ? 'bg-indigo-50' : ''
+      className={`w-full text-left p-4 hover:bg-neutral-50 transition-colors ${
+        !notification.isRead ? 'bg-neutral-50' : ''
       }`}
     >
       <div className="flex gap-3">
         {/* Unread indicator */}
         {!notification.isRead && (
           <div className="flex-shrink-0 mt-1">
-            <div className="h-2 w-2 rounded-full bg-blue-600"></div>
+            <div className="h-2 w-2 rounded-full bg-neutral-800"></div>
           </div>
         )}
         
@@ -56,18 +56,18 @@ export function NotificationItem({ notification, onClose }: NotificationItemProp
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-gray-900 mb-1">
+          <p className="text-sm font-medium text-neutral-800 mb-1">
             {notification.title}
           </p>
-          <p className="text-sm text-gray-600 mb-2">
+          <p className="text-sm text-neutral-600 mb-2 font-normal">
             {notification.message}
           </p>
-          <div className="flex items-center gap-2 text-xs text-gray-500">
+          <div className="flex items-center gap-2 text-xs text-neutral-500">
             <span>{timeAgo}</span>
             {notification.caseId && (
               <>
                 <span>•</span>
-                <span className="text-indigo-600 font-medium">
+                <span className="text-neutral-700 font-medium">
                   {notification.caseId}
                 </span>
               </>
