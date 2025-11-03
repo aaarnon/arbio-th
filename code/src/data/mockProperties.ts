@@ -9,7 +9,7 @@ export const mockProperties: Property[] = [
     id: 'DE_BER_003_Constantin_01_038_01_01_A001',
     unitId: 'A-101',
     address: '123 Ocean View Drive, Miami Beach, FL 33139',
-    status: 'Occupied',
+    status: 'ACTIVE',
     bedrooms: 2,
     bathrooms: 2,
     lastMaintenance: '2025-09-28T14:30:00Z',
