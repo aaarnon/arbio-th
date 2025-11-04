@@ -77,7 +77,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAddTask }: Tas
     >
       {/* Task Row */}
       <div className="group flex items-center gap-3 h-12 px-3 hover:bg-neutral-50 rounded-subtle mb-2 transition-colors">
-        {/* Expand/Collapse Button */}
+        {/* Expand/Collapse Button or Em-dash indicator */}
         {hasSubtasks ? (
           <Button
             variant="ghost"
@@ -101,7 +101,9 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAddTask }: Tas
             </svg>
           </Button>
         ) : (
-          <div className="h-5 w-5" /> // Spacer for alignment
+          <div className="h-5 w-5 flex items-center justify-center">
+            <span className="text-neutral-300 text-sm">—</span>
+          </div>
         )}
 
         {/* Task ID */}
