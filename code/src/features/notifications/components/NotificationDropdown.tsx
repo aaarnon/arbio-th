@@ -82,16 +82,13 @@ export function NotificationDropdown() {
               </div>
 
               {/* Stats */}
-              <div className="flex items-center gap-3 mt-2">
-                {unreadCount > 0 && (
+              {unreadCount > 0 && (
+                <div className="mt-2">
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">
                     {unreadCount} New
                   </span>
-                )}
-                <span className="text-sm text-neutral-500">
-                  {state.notifications.length} total notification{state.notifications.length !== 1 ? 's' : ''}
-                </span>
-              </div>
+                </div>
+              )}
             </CardHeader>
 
             {/* Notification List */}

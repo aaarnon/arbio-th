@@ -2,7 +2,6 @@ import { formatDistanceToNow } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import type { Notification } from '@/types';
 import { useCaseContext } from '@/store/CaseContext';
-import { getNotificationIcon } from '../utils/notificationHelpers';
 
 interface NotificationItemProps {
   notification: Notification;
@@ -48,11 +47,6 @@ export function NotificationItem({ notification, onClose }: NotificationItemProp
             <div className="h-2 w-2 rounded-full bg-neutral-800"></div>
           </div>
         )}
-        
-        {/* Icon */}
-        <div className="flex-shrink-0">
-          {getNotificationIcon(notification.type)}
-        </div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
