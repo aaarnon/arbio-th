@@ -71,11 +71,9 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
       <div className="group flex items-center gap-3 h-12 px-3 hover:bg-neutral-50 rounded-subtle mb-2 transition-colors">
         {/* Expand/Collapse Button or Em-dash indicator */}
         {hasSubtasks ? (
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={handleToggleExpand}
-            className="h-5 w-5 p-0 hover:bg-neutral-100"
+            className="h-5 w-5 p-0 hover:bg-neutral-100 rounded flex items-center justify-center"
             aria-label={isExpanded ? 'Collapse subtasks' : 'Expand subtasks'}
           >
             <svg
@@ -91,7 +89,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
                 d="M9 5l7 7-7 7"
               />
             </svg>
-          </Button>
+          </button>
         ) : (
           <div className="h-5 w-5 flex items-center justify-center">
             <span className="text-neutral-300 text-sm">—</span>
