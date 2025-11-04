@@ -50,7 +50,7 @@ export function SearchableSelect({
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setOpen(false)
-        setSearchQuery("")
+        // Don't clear search query - keep it for next search
       }
     }
 
@@ -66,16 +66,35 @@ export function SearchableSelect({
   const handleSelect = (optionValue: string) => {
     onValueChange(optionValue)
     setOpen(false)
-    setSearchQuery("")
-  }
-
-  const handleInputFocus = () => {
-    setOpen(true)
+    setSearchQuery("") // Clear search query after selection
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value)
-    if (!open) setOpen(true)
+    // Close dropdown when typing (search must be triggered explicitly)
+    if (open) {
+      setOpen(false)
+    }
+  }
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      setOpen(true)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleSearch()
+    }
+  }
+
+  const handleInputFocus = () => {
+    // Clear the displayed value on focus to allow searching
+    if (displayLabel && !searchQuery) {
+      setSearchQuery("")
+    }
   }
 
   return (
@@ -85,25 +104,32 @@ export function SearchableSelect({
         <input
           ref={inputRef}
           type="text"
-          value={open ? searchQuery : displayLabel}
+          value={searchQuery || displayLabel}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           onFocus={handleInputFocus}
           placeholder={placeholder}
-          className="flex h-10 w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800 transition-colors duration-150 placeholder:text-neutral-300 focus-visible:outline-none focus-visible:border-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-10 w-full rounded-md border border-neutral-200 bg-white px-3 py-2 pr-10 text-sm text-neutral-800 transition-colors duration-150 placeholder:text-neutral-300 focus-visible:outline-none focus-visible:border-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
         />
-        <svg
-          className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400 pointer-events-none"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+        <button
+          type="button"
+          onClick={handleSearch}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-800 transition-colors"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </button>
       </div>
 
       {/* Dropdown */}
