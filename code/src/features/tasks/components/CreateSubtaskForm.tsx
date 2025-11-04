@@ -50,6 +50,8 @@ export function CreateSubtaskForm({
     defaultValues: {
       title: '',
       description: '',
+      domain: undefined,
+      team: undefined,
       assignedTo: '',
     },
   });
@@ -68,6 +70,8 @@ export function CreateSubtaskForm({
         title: data.title,
         description: data.description || undefined,
         status: 'TODO',
+        domain: data.domain ? (data.domain as any) : undefined,
+        team: data.team ? (data.team as any) : undefined,
         assignedTo: data.assignedTo || undefined,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -145,6 +149,57 @@ export function CreateSubtaskForm({
               </FormItem>
             )}
           />
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Domain */}
+            <FormField
+              control={form.control}
+              name="domain"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Domain</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select domain" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="PROPERTY">Property</SelectItem>
+                      <SelectItem value="RESERVATION">Reservation</SelectItem>
+                      <SelectItem value="FINANCE">Finance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Team */}
+            <FormField
+              control={form.control}
+              name="team"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Team</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select team" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
+                      <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
+                      <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
+                      <SelectItem value="FINOPS">FinOps</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           {/* Assigned To */}
           <FormField

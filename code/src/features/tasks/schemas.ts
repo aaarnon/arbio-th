@@ -6,7 +6,8 @@ import { z } from 'zod';
 export const taskSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
-  domain: z.string().optional(),
+  domain: z.enum(['PROPERTY', 'RESERVATION', 'FINANCE']).optional(),
+  team: z.enum(['PROPERTY_MANAGEMENT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS']).optional(),
   assignedTo: z.string().optional(),
 });
 
