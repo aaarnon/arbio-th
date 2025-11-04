@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useCaseContext } from '@/store/CaseContext';
 import { CaseSidebar } from '@/features/case-detail/components/CaseSidebar';
 import { TaskItem } from '@/features/tasks/components/TaskItem';
-import { CreateSubtaskForm } from '@/features/tasks/components/CreateSubtaskForm';
+import { CreateSubtaskModal } from '@/features/tasks/components/CreateSubtaskModal';
 import { useTaskActions } from '@/features/tasks/hooks/useTaskActions';
 import { AddCommentForm } from '@/features/comments/components/AddCommentForm';
 import { AttachmentList } from '@/features/attachments/components/AttachmentList';
@@ -69,7 +69,7 @@ export function TaskDetail() {
   }
 
   const hasSubtasks = task.subtasks && task.subtasks.length > 0;
-  const [isAddingSubtask, setIsAddingSubtask] = useState(false);
+  const [isCreateSubtaskModalOpen, setIsCreateSubtaskModalOpen] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [descriptionValue, setDescriptionValue] = useState(task.description || '');
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -254,36 +254,27 @@ export function TaskDetail() {
               </div>
             )}
             
-            {/* Add Subtask Button/Form */}
-            {isAddingSubtask ? (
-              <CreateSubtaskForm 
-                caseId={caseId || ''} 
-                parentTask={task}
-                onSuccess={() => setIsAddingSubtask(false)}
-                onCancel={() => setIsAddingSubtask(false)}
-              />
-            ) : (
-              <Button
-                variant="ghost"
-                onClick={() => setIsAddingSubtask(true)}
-                className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
+            {/* Add Subtask Button */}
+            <Button
+              variant="ghost"
+              onClick={() => setIsCreateSubtaskModalOpen(true)}
+              className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
+            >
+              <svg
+                className="mr-2 h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                <svg
-                  className="mr-2 h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Add subtask
-              </Button>
-            )}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Add subtask
+            </Button>
           </CardContent>
         </Card>
 
@@ -341,6 +332,14 @@ export function TaskDetail() {
       <div className="fixed top-16 right-0 bottom-0 w-96">
         <CaseSidebar case={caseData} />
       </div>
+
+      {/* Create Subtask Modal */}
+      <CreateSubtaskModal
+        open={isCreateSubtaskModalOpen}
+        onOpenChange={setIsCreateSubtaskModalOpen}
+        caseId={caseId || ''}
+        parentTask={task}
+      />
     </>
   );
 }
