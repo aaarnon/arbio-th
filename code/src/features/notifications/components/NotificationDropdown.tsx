@@ -57,7 +57,7 @@ export function NotificationDropdown() {
 
         {/* Badge */}
         {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 h-5 w-5 flex items-center justify-center text-xs font-medium text-white bg-neutral-800 rounded-full">
+          <span className="absolute top-0.5 right-0.5 h-4 w-4 flex items-center justify-center text-[10px] font-medium text-white bg-red-600 rounded-full">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -65,7 +65,7 @@ export function NotificationDropdown() {
 
       {/* Dropdown Panel */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-96 max-h-[600px] bg-white rounded-card overflow-hidden z-50 shadow-lg">
+        <div className="absolute right-0 mt-2 w-96 max-h-[600px] bg-white rounded-card overflow-hidden z-50 shadow-lg border border-neutral-200">
           <Card className="border-0 shadow-none">
             {/* Header */}
             <CardHeader className="pb-6">
