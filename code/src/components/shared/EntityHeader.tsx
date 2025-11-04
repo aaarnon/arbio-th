@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-import { StatusDropdown } from './StatusDropdown';
 
 interface Breadcrumb {
   label: string;
@@ -18,7 +17,7 @@ interface EntityHeaderProps {
   onTeamChange?: (team: string) => void;
 }
 
-type DropdownType = 'team' | 'domain' | null;
+type DropdownType = 'status' | 'team' | 'domain' | null;
 
 /**
  * Shared Entity Header Component - Linear-inspired flat design
@@ -86,6 +85,13 @@ export function EntityHeader({
     { value: 'FINANCE', label: 'Finance' },
   ];
 
+  const statusOptions = [
+    { value: 'TODO', label: 'To Do' },
+    { value: 'IN_PROGRESS', label: 'In Progress' },
+    { value: 'DONE', label: 'Done' },
+    { value: 'CANCELLED', label: 'Cancelled' },
+  ];
+
   return (
     <div className="mb-8">
       {/* Breadcrumb */}
@@ -114,27 +120,49 @@ export function EntityHeader({
       {/* Status Row */}
       <div className="mb-3 flex items-center">
         <div className="w-24 text-sm text-neutral-600">Status</div>
-        <StatusDropdown
-          currentStatus={status}
-          onStatusChange={(newStatus) => onStatusChange?.(newStatus)}
-          trigger={
-            <button className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900">
-              {formatText(status)}
-              <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          }
-        />
+        <div className="relative">
+          <button 
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+            onClick={() => setOpenDropdown(openDropdown === 'status' ? null : 'status')}
+          >
+            {formatText(status)}
+            <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {/* Status Dropdown */}
+          {openDropdown === 'status' && (
+            <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+              {statusOptions.map((option) => (
+                <button
+                  key={option.value}
+                  className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                  onClick={() => {
+                    onStatusChange?.(option.value);
+                    setOpenDropdown(null);
+                  }}
+                >
+                  <span className="text-neutral-900">{option.label}</span>
+                  {status === option.value && (
+                    <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Properties Row */}
       {(team || domain) && (
-        <div className="flex items-center relative">
+        <div className="flex items-center">
           <div className="w-24 text-sm text-neutral-600">Properties</div>
           <div className="flex items-center gap-6">
             {team && (
-              <>
+              <div className="relative">
                 <button 
                   className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                   onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
@@ -145,7 +173,7 @@ export function EntityHeader({
 
                 {/* Team Dropdown */}
                 {openDropdown === 'team' && (
-                  <div className="absolute top-full left-24 mt-2 w-64 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
                     {teamOptions.map((option) => (
                       <button
                         key={option.value}
@@ -165,11 +193,11 @@ export function EntityHeader({
                     ))}
                   </div>
                 )}
-              </>
+              </div>
             )}
 
             {domain && (
-              <>
+              <div className="relative">
                 <button 
                   className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                   onClick={() => setOpenDropdown(openDropdown === 'domain' ? null : 'domain')}
@@ -180,7 +208,7 @@ export function EntityHeader({
 
                 {/* Domain Dropdown */}
                 {openDropdown === 'domain' && (
-                  <div className="absolute top-full left-96 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
                     {domainOptions.map((option) => (
                       <button
                         key={option.value}
@@ -200,7 +228,7 @@ export function EntityHeader({
                     ))}
                   </div>
                 )}
-              </>
+              </div>
             )}
           </div>
         </div>
