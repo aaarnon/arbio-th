@@ -52,7 +52,7 @@ export function StatusDropdown({
       <DropdownMenuTrigger asChild>
         {trigger}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-white w-48">
+      <DropdownMenuContent align="end" className="bg-white rounded-lg shadow-lg border border-neutral-200 py-2 w-48">
         {STATUS_OPTIONS.map((option) => (
           <DropdownMenuItem
             key={option.value}
@@ -63,7 +63,7 @@ export function StatusDropdown({
               }
             }}
             disabled={disabled && option.value === 'DONE'}
-            className={`flex items-center justify-between py-2.5 ${
+            className={`flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors focus:bg-neutral-50 rounded-none ${
               disabled && option.value === 'DONE' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
             }`}
           >
