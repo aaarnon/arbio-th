@@ -40,7 +40,7 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
       }}
     >
       {/* Case ID */}
-      <td className="pr-6 py-3 whitespace-nowrap">
+      <td className="pl-6 pr-6 py-3 whitespace-nowrap">
         <span className="text-sm font-normal text-neutral-400">{caseData.id}</span>
       </td>
 
@@ -60,7 +60,7 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
       </td>
 
       {/* Created */}
-      <td className="pl-6 py-3 whitespace-nowrap">
+      <td className="pl-6 pr-6 py-3 whitespace-nowrap">
         <span className="text-sm font-normal text-neutral-500">{formatRelativeDate(caseData.createdAt)}</span>
       </td>
     </tr>

@@ -75,7 +75,7 @@ export function CaseList() {
           }
         />
       ) : (
-        <div className="bg-white rounded-card px-6 py-3">
+        <div className="bg-white rounded-card py-3">
           <table className="w-full table-fixed">
             <colgroup>
               <col style={{ width: '12%' }} />
@@ -85,7 +85,7 @@ export function CaseList() {
             </colgroup>
             <thead>
               <tr className="border-b border-neutral-100">
-                <th className="text-left pr-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left pl-6 pr-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Case ID
                 </th>
                 <th className="text-left px-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
@@ -94,7 +94,7 @@ export function CaseList() {
                 <th className="text-left px-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="text-left pl-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left pl-6 pr-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Created
                 </th>
               </tr>
