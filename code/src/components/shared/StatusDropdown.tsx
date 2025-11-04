@@ -17,6 +17,8 @@ interface StatusDropdownProps {
   disabled?: boolean;
   disabledMessage?: string;
   trigger: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const STATUS_OPTIONS: StatusOption[] = [
@@ -36,8 +38,14 @@ export function StatusDropdown({
   disabled = false,
   disabledMessage,
   trigger,
+  open: externalOpen,
+  onOpenChange: externalOnOpenChange,
 }: StatusDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  
+  // Use external control if provided, otherwise use internal state
+  const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setIsOpen = externalOnOpenChange || setInternalOpen;
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>

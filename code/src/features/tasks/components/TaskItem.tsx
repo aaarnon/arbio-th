@@ -23,7 +23,7 @@ interface TaskItemProps {
  */
 export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChange, onAddTask }: TaskItemProps) {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [showAssigneeDropdown, setShowAssigneeDropdown] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<'status' | 'assignee' | null>(null);
   const { isStatusDisabled, getIncompleteSubtasks } = useStatusValidation();
   const navigate = useNavigate();
   const { taskId: currentTaskId } = useParams();
@@ -127,6 +127,8 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
               ? `Complete ${incompleteSubtasks.length} subtask${incompleteSubtasks.length > 1 ? 's' : ''} first`
               : undefined
           }
+          open={openDropdown === 'status'}
+          onOpenChange={(isOpen) => setOpenDropdown(isOpen ? 'status' : null)}
           trigger={
             <button className="focus:outline-none focus:ring-1 focus:ring-neutral-400 rounded">
               <StatusBadge status={task.status} className="text-xs cursor-pointer hover:opacity-80" />
@@ -139,7 +141,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setShowAssigneeDropdown(!showAssigneeDropdown);
+              setOpenDropdown(openDropdown === 'assignee' ? null : 'assignee');
             }}
             className="flex items-center gap-1 text-xs text-neutral-500 hover:text-neutral-800 transition-colors px-2 py-1 rounded hover:bg-neutral-100"
           >
@@ -157,14 +159,14 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
           </button>
 
           {/* Assignee Dropdown */}
-          {showAssigneeDropdown && (
+          {openDropdown === 'assignee' && (
             <div className="absolute top-full right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
               <button
                 className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-neutral-50 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   onAssignedToChange?.(task.id, '');
-                  setShowAssigneeDropdown(false);
+                  setOpenDropdown(null);
                 }}
               >
                 <span className="text-neutral-500">Not assigned</span>
@@ -181,7 +183,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
                   onClick={(e) => {
                     e.stopPropagation();
                     onAssignedToChange?.(task.id, user.id);
-                    setShowAssigneeDropdown(false);
+                    setOpenDropdown(null);
                   }}
                 >
                   <span className="text-neutral-900">{user.name}</span>
