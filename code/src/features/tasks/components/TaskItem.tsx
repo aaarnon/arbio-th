@@ -3,10 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import type { Task, Status } from '@/types';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { StatusDropdown } from '@/components/shared/StatusDropdown';
-import { Button } from '@/components/ui/button';
 import { useStatusValidation } from '@/features/tasks/hooks/useStatusValidation';
-import { CreateSubtaskForm } from './CreateSubtaskForm';
-import { EditTaskForm } from './EditTaskForm';
 import { mockUsers } from '@/data/mockUsers';
 import { MAX_NESTING_DEPTH } from '@/utils/constants';
 
@@ -26,8 +23,6 @@ interface TaskItemProps {
  */
 export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChange, onAddTask }: TaskItemProps) {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [isAddingSubtask, setIsAddingSubtask] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [showAssigneeDropdown, setShowAssigneeDropdown] = useState(false);
   const { isStatusDisabled, getIncompleteSubtasks } = useStatusValidation();
   const navigate = useNavigate();
@@ -202,87 +197,10 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
             </div>
           )}
         </div>
-
-        {/* Action Buttons */}
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          {/* Add Subtask/Task Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-5 w-5 p-0 hover:bg-neutral-100"
-            onClick={() => {
-              if (isTopLevelTask && onAddTask) {
-                // Top-level task: open modal to add new task
-                onAddTask();
-              } else {
-                // Subtask: open inline form to add subtask
-                setIsAddingSubtask(true);
-                setIsExpanded(true);
-              }
-            }}
-            aria-label={isTopLevelTask ? "Add task" : "Add subtask"}
-            title={isTopLevelTask ? "Add task" : "Add subtask"}
-          >
-            <svg className="h-3 w-3 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-          </Button>
-          
-          {/* Edit Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-5 w-5 p-0 hover:bg-neutral-100"
-            onClick={() => {
-              setIsEditing(true);
-              setIsExpanded(true);
-            }}
-            aria-label="Edit task"
-            title="Edit task"
-          >
-            <svg className="h-3 w-3 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-              />
-            </svg>
-          </Button>
-        </div>
       </div>
 
-      {/* Edit Task Form */}
-      {isEditing && (
-        <div className="mt-2">
-          <EditTaskForm
-            caseId={caseId}
-            task={task}
-            onSuccess={() => setIsEditing(false)}
-            onCancel={() => setIsEditing(false)}
-          />
-        </div>
-      )}
-
-      {/* Add Subtask Form */}
-      {isAddingSubtask && !isEditing && (
-        <div className="mt-2">
-          <CreateSubtaskForm
-            caseId={caseId}
-            parentTask={task}
-            onSuccess={() => setIsAddingSubtask(false)}
-            onCancel={() => setIsAddingSubtask(false)}
-          />
-        </div>
-      )}
-
       {/* Recursive Subtasks */}
-      {hasSubtasks && isExpanded && !isEditing && (
+      {hasSubtasks && isExpanded && (
         <div className="ml-4" role="group">
           {task.subtasks!.map((subtask) => (
             <TaskItem
