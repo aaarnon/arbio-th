@@ -18,12 +18,19 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
     navigate(`/cases/${caseData.id}`);
   };
 
-  // Format domain text to title case
-  const formatDomain = (domain: string) => {
-    return domain
-      .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
+  // Format team text with proper display names
+  const formatTeam = (team?: string) => {
+    if (!team) return 'No Team';
+    
+    // Special mapping for team names to preserve exact formatting
+    const teamMapping: Record<string, string> = {
+      'PROPERTY_MANAGEMENT': 'Property Management',
+      'GUEST_COMM': 'Guest Comm',
+      'GUEST_EXPERIENCE': 'Guest Experience',
+      'FINOPS': 'FinOps',
+    };
+    
+    return teamMapping[team] || team;
   };
 
   return (
@@ -49,7 +56,7 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
         <div>
           <div className="text-sm font-normal text-neutral-900 mb-0.5 line-clamp-1">{caseData.title}</div>
           <span className="inline-block text-[11px] text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded">
-            {formatDomain(caseData.domain)}
+            {formatTeam(caseData.team)}
           </span>
         </div>
       </td>
