@@ -32,7 +32,6 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
   const indent = depth * 24; // 24px per nesting level
   const isDoneDisabled = isStatusDisabled(task, 'DONE');
   const incompleteSubtasks = getIncompleteSubtasks(task);
-  const isTopLevelTask = !task.id.includes('.', task.id.indexOf('.') + 1); // e.g., TK-2847.1 but not TK-2847.1.1
 
   // Prevent infinite recursion
   if (depth > MAX_NESTING_DEPTH) {

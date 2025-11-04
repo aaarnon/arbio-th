@@ -180,8 +180,8 @@ export function TaskDetail() {
 
   // Generate breadcrumbs for task hierarchy
   // For TK-2848.3.1 -> [TK-2848, TK-2848.3, TK-2848.3.1]
-  const generateTaskBreadcrumbs = () => {
-    const breadcrumbs = [
+  const generateTaskBreadcrumbs = (): Array<{ label: string; to?: string }> => {
+    const breadcrumbs: Array<{ label: string; to?: string }> = [
       { label: 'Ticketing Hub', to: '/' },
       { label: caseData.id, to: `/cases/${caseId}` },
     ];

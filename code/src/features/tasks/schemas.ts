@@ -6,9 +6,7 @@ import { z } from 'zod';
 export const taskSchema = z.object({
   title: z.string().min(1, 'This field is required'),
   description: z.string().optional(),
-  team: z.enum(['PROPERTY_MANAGEMENT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS'], {
-    errorMap: () => ({ message: 'This field is required' })
-  }).optional(),
+  team: z.enum(['PROPERTY_MANAGEMENT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS']).optional(),
   assignedTo: z.string().optional(),
 });
 
@@ -19,9 +17,7 @@ export const editTaskSchema = z.object({
   title: z.string().min(1, 'This field is required'),
   description: z.string().optional(),
   assignedTo: z.string().optional(),
-  status: z.enum(['TODO', 'IN_PROGRESS', 'DONE', 'CANCELLED'], {
-    errorMap: () => ({ message: 'This field is required' })
-  }),
+  status: z.enum(['TODO', 'IN_PROGRESS', 'DONE', 'CANCELLED']),
 });
 
 /**
