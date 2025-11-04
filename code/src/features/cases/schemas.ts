@@ -6,9 +6,6 @@ import { z } from 'zod';
 export const caseSchema = z.object({
   title: z.string().min(1, 'This field is required'),
   description: z.string().min(10, 'This field is required'),
-  domain: z.enum(['PROPERTY', 'RESERVATION', 'FINANCE'], {
-    errorMap: () => ({ message: 'This field is required' })
-  }),
   team: z.enum(['PROPERTY_MANAGEMENT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS'], {
     errorMap: () => ({ message: 'This field is required' })
   }),

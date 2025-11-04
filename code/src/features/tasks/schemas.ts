@@ -6,9 +6,6 @@ import { z } from 'zod';
 export const taskSchema = z.object({
   title: z.string().min(1, 'This field is required'),
   description: z.string().optional(),
-  domain: z.enum(['PROPERTY', 'RESERVATION', 'FINANCE'], {
-    errorMap: () => ({ message: 'This field is required' })
-  }).optional(),
   team: z.enum(['PROPERTY_MANAGEMENT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS'], {
     errorMap: () => ({ message: 'This field is required' })
   }).optional(),

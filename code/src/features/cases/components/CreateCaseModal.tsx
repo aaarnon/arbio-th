@@ -54,7 +54,6 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
     defaultValues: {
       title: '',
       description: '',
-      domain: undefined,
       team: undefined,
       propertyId: '',
       reservationId: '',
@@ -100,7 +99,6 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         title: data.title,
         description: data.description,
         status: 'TODO' as const,
-        domain: data.domain,
         team: data.team,
         propertyId: data.propertyId || undefined,
         reservationId: data.reservationId || undefined,
@@ -179,56 +177,30 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
               )}
             />
 
-            <div className="grid grid-cols-2 gap-4">
-              {/* Domain */}
-              <FormField
-                control={form.control}
-                name="domain"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Domain *</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select domain" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="PROPERTY">Property</SelectItem>
-                        <SelectItem value="RESERVATION">Reservation</SelectItem>
-                        <SelectItem value="FINANCE">Finance</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Team */}
-              <FormField
-                control={form.control}
-                name="team"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Team *</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select team" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
-                        <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
-                        <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
-                        <SelectItem value="FINOPS">FinOps</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {/* Team */}
+            <FormField
+              control={form.control}
+              name="team"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Team *</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select team" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
+                      <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
+                      <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
+                      <SelectItem value="FINOPS">FinOps</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="grid grid-cols-2 gap-4">
               {/* Property */}
