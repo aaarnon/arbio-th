@@ -162,7 +162,7 @@ export function EntityHeader({
       </div>
 
       {/* Properties Row */}
-      {(team || domain) && (
+      {(team || domain || assignedTo !== undefined) && (
         <div className="flex items-center">
           <div className="w-24 text-sm text-neutral-600">Properties</div>
           <div className="flex items-center gap-6">
@@ -235,59 +235,56 @@ export function EntityHeader({
                 )}
               </div>
             )}
-          </div>
-        </div>
-      )}
 
-      {/* Assigned To Row */}
-      {assignedTo !== undefined && (
-        <div className="flex items-center">
-          <div className="w-24 text-sm text-neutral-600">Assigned To</div>
-          <div className="relative">
-            <button 
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-              onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
-            >
-              <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              {assignedTo ? mockUsers.find(u => u.id === assignedTo)?.name || 'Unknown' : 'Not assigned'}
-            </button>
-
-            {/* Assigned To Dropdown */}
-            {openDropdown === 'assignedTo' && (
-              <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
-                <button
-                  className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
-                  onClick={() => {
-                    onAssignedToChange?.('');
-                    setOpenDropdown(null);
-                  }}
+            {assignedTo !== undefined && (
+              <div className="relative">
+                <button 
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                  onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
                 >
-                  <span className="text-neutral-500">Not assigned</span>
-                  {!assignedTo && (
-                    <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
+                  <span className="font-normal text-neutral-600">Assigned To:</span>
+                  <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span>{assignedTo ? mockUsers.find(u => u.id === assignedTo)?.name || 'Unknown' : 'Not assigned'}</span>
                 </button>
-                {mockUsers.map((user) => (
-                  <button
-                    key={user.id}
-                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
-                    onClick={() => {
-                      onAssignedToChange?.(user.id);
-                      setOpenDropdown(null);
-                    }}
-                  >
-                    <span className="text-neutral-900">{user.name}</span>
-                    {assignedTo === user.id && (
-                      <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </button>
-                ))}
+
+                {/* Assigned To Dropdown */}
+                {openDropdown === 'assignedTo' && (
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                    <button
+                      className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                      onClick={() => {
+                        onAssignedToChange?.('');
+                        setOpenDropdown(null);
+                      }}
+                    >
+                      <span className="text-neutral-500">Not assigned</span>
+                      {!assignedTo && (
+                        <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </button>
+                    {mockUsers.map((user) => (
+                      <button
+                        key={user.id}
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                        onClick={() => {
+                          onAssignedToChange?.(user.id);
+                          setOpenDropdown(null);
+                        }}
+                      >
+                        <span className="text-neutral-900">{user.name}</span>
+                        {assignedTo === user.id && (
+                          <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
