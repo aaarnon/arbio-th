@@ -162,7 +162,7 @@ export function EntityHeader({
       </div>
 
       {/* Properties Row */}
-      {(team || domain || assignedTo !== undefined) && (
+      {(team || domain || onAssignedToChange) && (
         <div className="flex items-center">
           <div className="w-24 text-sm text-neutral-600">Properties</div>
           <div className="flex items-center gap-6">
@@ -236,7 +236,7 @@ export function EntityHeader({
               </div>
             )}
 
-            {assignedTo !== undefined && (
+            {onAssignedToChange && (
               <div className="relative">
                 <button 
                   className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"

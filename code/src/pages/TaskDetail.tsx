@@ -106,7 +106,7 @@ export function TaskDetail() {
       payload: {
         caseId: caseId || '',
         taskId: task.id,
-        updates: { assignedTo: newUserId || undefined },
+        updates: { assignedTo: newUserId },
       },
     });
     toast.success('Assignment updated');
@@ -114,7 +114,7 @@ export function TaskDetail() {
 
   // Handle subtask assignee change
   const handleTaskAssignedToChange = (taskId: string, newUserId: string) => {
-    updateTask(taskId, { assignedTo: newUserId || undefined });
+    updateTask(taskId, { assignedTo: newUserId });
   };
 
   return (

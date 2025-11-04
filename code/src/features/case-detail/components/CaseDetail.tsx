@@ -27,7 +27,7 @@ export function CaseDetail() {
 
   // Handle task assignee change
   const handleTaskAssignedToChange = (taskId: string, newUserId: string) => {
-    updateTask(taskId, { assignedTo: newUserId || undefined });
+    updateTask(taskId, { assignedTo: newUserId });
   };
 
   // Handle case not found

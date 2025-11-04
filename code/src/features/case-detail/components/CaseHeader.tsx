@@ -52,7 +52,7 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
       type: 'UPDATE_CASE',
       payload: {
         caseId: caseData.id,
-        updates: { assignedTo: newUserId || undefined },
+        updates: { assignedTo: newUserId },
       },
     });
     toast.success('Assignment updated');
