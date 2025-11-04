@@ -21,7 +21,7 @@ export interface Case {
   status: Status;
   
   /** Business domain this case belongs to */
-  domain: DomainType;
+  domain?: DomainType;
   
   /** Team responsible for this case */
   team?: TeamType;

@@ -6,9 +6,7 @@ import { z } from 'zod';
 export const caseSchema = z.object({
   title: z.string().min(1, 'This field is required'),
   description: z.string().min(10, 'This field is required'),
-  team: z.enum(['PROPERTY_MANAGEMENT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS'], {
-    errorMap: () => ({ message: 'This field is required' })
-  }),
+  team: z.enum(['PROPERTY_MANAGEMENT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS'], { message: 'This field is required' }),
   propertyId: z.string().optional(),
   reservationId: z.string().optional(),
 }).superRefine((data, ctx) => {
