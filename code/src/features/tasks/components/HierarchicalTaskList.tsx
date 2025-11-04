@@ -2,7 +2,6 @@ import { useState } from 'react';
 import type { Task, Status } from '@/types';
 import { TaskItem } from './TaskItem';
 import { CreateTaskModal } from './CreateTaskModal';
-import { EmptyState } from '@/components/shared/EmptyState';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -26,26 +25,35 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange }: Hierarch
           <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">Tasks</h2>
         </CardHeader>
         <CardContent>
-          <EmptyState
-            title="No tasks yet"
-            message="Tasks will be added to track the work needed to resolve this case."
-            icon={
-              <svg
-                className="h-16 w-16 text-neutral-300"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                />
-              </svg>
-            }
-          />
+          {/* Add Task Button */}
+          <Button
+            variant="ghost"
+            onClick={() => setIsCreateModalOpen(true)}
+            className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
+          >
+            <svg
+              className="mr-2 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add task
+          </Button>
         </CardContent>
+
+        {/* Create Task Modal */}
+        <CreateTaskModal
+          open={isCreateModalOpen}
+          onOpenChange={setIsCreateModalOpen}
+          caseId={caseId}
+        />
       </Card>
     );
   }
