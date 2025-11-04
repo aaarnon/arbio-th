@@ -14,6 +14,7 @@ interface EntityHeaderProps {
   domain?: string;
   team?: string;
   assignedTo?: string;
+  onTitleChange?: (title: string) => void;
   onStatusChange?: (status: string) => void;
   onDomainChange?: (domain: string) => void;
   onTeamChange?: (team: string) => void;
@@ -34,13 +35,17 @@ export function EntityHeader({
   domain,
   team,
   assignedTo,
+  onTitleChange,
   onStatusChange,
   onDomainChange,
   onTeamChange,
   onAssignedToChange,
 }: EntityHeaderProps) {
   const [openDropdown, setOpenDropdown] = useState<DropdownType>(null);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [titleValue, setTitleValue] = useState(title);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const titleInputRef = useRef<HTMLInputElement>(null);
 
   // Format text to display format
   const formatText = (text: string) => {
@@ -64,6 +69,19 @@ export function EntityHeader({
       .join(' ');
   };
 
+  // Sync titleValue with prop when it changes
+  useEffect(() => {
+    setTitleValue(title);
+  }, [title]);
+
+  // Focus input when editing starts
+  useEffect(() => {
+    if (isEditingTitle && titleInputRef.current) {
+      titleInputRef.current.focus();
+      titleInputRef.current.select();
+    }
+  }, [isEditingTitle]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -75,6 +93,26 @@ export function EntityHeader({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Handle title save
+  const handleTitleBlur = () => {
+    setIsEditingTitle(false);
+    if (titleValue.trim() && titleValue !== title) {
+      onTitleChange?.(titleValue.trim());
+    } else {
+      setTitleValue(title); // Reset if empty or unchanged
+    }
+  };
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleTitleBlur();
+    } else if (e.key === 'Escape') {
+      setTitleValue(title);
+      setIsEditingTitle(false);
+    }
+  };
 
   // Dropdown options
   const teamOptions = [
@@ -119,8 +157,26 @@ export function EntityHeader({
         ))}
       </div>
 
-      {/* Title */}
-      <h1 className="mb-6 text-3xl font-normal text-neutral-900">{title}</h1>
+      {/* Title - Inline Editable */}
+      {isEditingTitle ? (
+        <input
+          ref={titleInputRef}
+          type="text"
+          value={titleValue}
+          onChange={(e) => setTitleValue(e.target.value)}
+          onBlur={handleTitleBlur}
+          onKeyDown={handleTitleKeyDown}
+          className="mb-6 text-3xl font-normal text-neutral-900 bg-transparent border-none outline-none focus:outline-none w-full"
+          placeholder="Enter title..."
+        />
+      ) : (
+        <h1
+          onClick={() => onTitleChange && setIsEditingTitle(true)}
+          className={`mb-6 text-3xl font-normal text-neutral-900 ${onTitleChange ? 'cursor-text hover:bg-neutral-50 rounded px-2 -mx-2 transition-colors' : ''}`}
+        >
+          {title}
+        </h1>
+      )}
 
       {/* Status Row */}
       <div className="mb-3 flex items-center">

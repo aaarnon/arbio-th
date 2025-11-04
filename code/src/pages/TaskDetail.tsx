@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useCaseContext } from '@/store/CaseContext';
 import { CaseSidebar } from '@/features/case-detail/components/CaseSidebar';
 import { TaskItem } from '@/features/tasks/components/TaskItem';
@@ -70,6 +70,36 @@ export function TaskDetail() {
 
   const hasSubtasks = task.subtasks && task.subtasks.length > 0;
   const [isAddingSubtask, setIsAddingSubtask] = useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [descriptionValue, setDescriptionValue] = useState(task.description || '');
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+
+  // Sync description with task prop
+  useEffect(() => {
+    setDescriptionValue(task.description || '');
+  }, [task.description]);
+
+  // Focus description textarea when editing starts
+  useEffect(() => {
+    if (isEditingDescription && descriptionRef.current) {
+      descriptionRef.current.focus();
+      descriptionRef.current.style.height = 'auto';
+      descriptionRef.current.style.height = descriptionRef.current.scrollHeight + 'px';
+    }
+  }, [isEditingDescription]);
+
+  // Handle title change
+  const handleTitleChange = (newTitle: string) => {
+    dispatch({
+      type: 'UPDATE_TASK',
+      payload: {
+        caseId: caseId || '',
+        taskId: task.id,
+        updates: { title: newTitle },
+      },
+    });
+    toast.success('Title updated');
+  };
 
   // Handle status/team/domain changes
   const handleStatusChange = (newStatus: string) => {
@@ -117,6 +147,37 @@ export function TaskDetail() {
     updateTask(taskId, { assignedTo: newUserId });
   };
 
+  // Handle description save
+  const handleDescriptionBlur = () => {
+    setIsEditingDescription(false);
+    if (descriptionValue.trim() !== (task.description || '')) {
+      dispatch({
+        type: 'UPDATE_TASK',
+        payload: {
+          caseId: caseId || '',
+          taskId: task.id,
+          updates: { description: descriptionValue.trim() },
+        },
+      });
+      toast.success('Description updated');
+    } else {
+      setDescriptionValue(task.description || '');
+    }
+  };
+
+  const handleDescriptionKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setDescriptionValue(task.description || '');
+      setIsEditingDescription(false);
+    }
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescriptionValue(e.target.value);
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
+  };
+
   return (
     <>
       {/* Main Content - With right margin for sidebar */}
@@ -133,27 +194,42 @@ export function TaskDetail() {
           team={task.team || caseData.team}
           domain={task.domain || caseData.domain}
           assignedTo={task.assignedTo || caseData.assignedTo}
+          onTitleChange={handleTitleChange}
           onStatusChange={handleStatusChange}
           onTeamChange={handleTeamChange}
           onDomainChange={handleDomainChange}
           onAssignedToChange={handleAssignedToChange}
         />
 
-        {/* Task Description */}
-        {task.description && (
-          <Card>
-            <CardHeader className="pb-4">
-              <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">
-                DESCRIPTION
-              </h2>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <p className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed">
-                {task.description}
+        {/* Task Description - Inline Editable */}
+        <Card>
+          <CardHeader className="pb-6">
+            <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">
+              DESCRIPTION
+            </h2>
+          </CardHeader>
+          <CardContent className="pt-0">
+            {isEditingDescription ? (
+              <textarea
+                ref={descriptionRef}
+                value={descriptionValue}
+                onChange={handleDescriptionChange}
+                onBlur={handleDescriptionBlur}
+                onKeyDown={handleDescriptionKeyDown}
+                className="w-full text-sm text-neutral-700 font-normal leading-relaxed bg-transparent border-none outline-none focus:outline-none resize-none"
+                placeholder="Enter description..."
+                rows={3}
+              />
+            ) : (
+              <p
+                onClick={() => setIsEditingDescription(true)}
+                className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed cursor-text hover:bg-neutral-50 rounded p-2 -m-2 transition-colors"
+              >
+                {task.description || 'Click to add description...'}
               </p>
-            </CardContent>
-          </Card>
-        )}
+            )}
+          </CardContent>
+        </Card>
 
         {/* Subtasks Section */}
         <Card>

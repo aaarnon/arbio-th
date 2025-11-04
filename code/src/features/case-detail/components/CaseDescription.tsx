@@ -1,40 +1,95 @@
+import { useState, useRef, useEffect } from 'react';
+import { useCaseContext } from '@/store/CaseContext';
+import { toast } from 'sonner';
 import type { Case } from '@/types';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 
 interface CaseDescriptionProps {
   case: Case;
 }
 
 /**
- * Case Description Component
- * Displays the case description with edit capability
+ * Case Description Component - Inline Editable
+ * Click to edit, auto-saves on blur
  */
 export function CaseDescription({ case: caseData }: CaseDescriptionProps) {
+  const { dispatch } = useCaseContext();
+  const [isEditing, setIsEditing] = useState(false);
+  const [descriptionValue, setDescriptionValue] = useState(caseData.description);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Sync descriptionValue with prop when it changes
+  useEffect(() => {
+    setDescriptionValue(caseData.description);
+  }, [caseData.description]);
+
+  // Focus and resize textarea when editing starts
+  useEffect(() => {
+    if (isEditing && textareaRef.current) {
+      textareaRef.current.focus();
+      // Auto-resize textarea
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
+  }, [isEditing]);
+
+  // Handle save on blur
+  const handleBlur = () => {
+    setIsEditing(false);
+    if (descriptionValue.trim() !== caseData.description) {
+      dispatch({
+        type: 'UPDATE_CASE',
+        payload: {
+          caseId: caseData.id,
+          updates: { description: descriptionValue.trim() },
+        },
+      });
+      toast.success('Description updated');
+    } else {
+      setDescriptionValue(caseData.description); // Reset if unchanged
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setDescriptionValue(caseData.description);
+      setIsEditing(false);
+    }
+    // Allow Enter for new lines (don't save on Enter)
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescriptionValue(e.target.value);
+    // Auto-resize
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
+  };
+
   return (
     <Card>
       <CardHeader className="pb-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">Description</h2>
-          <Button variant="ghost" size="sm">
-            <svg 
-              className="h-4 w-4" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" 
-              />
-            </svg>
-          </Button>
-        </div>
+        <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">Description</h2>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed">{caseData.description}</p>
+        {isEditing ? (
+          <textarea
+            ref={textareaRef}
+            value={descriptionValue}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            className="w-full text-sm text-neutral-700 font-normal leading-relaxed bg-transparent border-none outline-none focus:outline-none resize-none"
+            placeholder="Enter description..."
+            rows={3}
+          />
+        ) : (
+          <p
+            onClick={() => setIsEditing(true)}
+            className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed cursor-text hover:bg-neutral-50 rounded p-2 -m-2 transition-colors"
+          >
+            {caseData.description || 'Click to add description...'}
+          </p>
+        )}
       </CardContent>
     </Card>
   );

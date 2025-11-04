@@ -14,6 +14,17 @@ interface CaseHeaderProps {
 export function CaseHeader({ case: caseData }: CaseHeaderProps) {
   const { dispatch } = useCaseContext();
 
+  const handleTitleChange = (newTitle: string) => {
+    dispatch({
+      type: 'UPDATE_CASE',
+      payload: {
+        caseId: caseData.id,
+        updates: { title: newTitle },
+      },
+    });
+    toast.success('Title updated');
+  };
+
   const handleStatusChange = (newStatus: string) => {
     dispatch({
       type: 'UPDATE_CASE',
@@ -69,6 +80,7 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
       team={caseData.team}
       domain={caseData.domain}
       assignedTo={caseData.assignedTo}
+      onTitleChange={handleTitleChange}
       onStatusChange={handleStatusChange}
       onTeamChange={handleTeamChange}
       onDomainChange={handleDomainChange}
