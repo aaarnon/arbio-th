@@ -178,17 +178,44 @@ export function TaskDetail() {
     e.target.style.height = e.target.scrollHeight + 'px';
   };
 
+  // Generate breadcrumbs for task hierarchy
+  // For TK-2848.3.1 -> [TK-2848, TK-2848.3, TK-2848.3.1]
+  const generateTaskBreadcrumbs = () => {
+    const breadcrumbs = [
+      { label: 'Ticketing Hub', to: '/' },
+      { label: caseData.id, to: `/cases/${caseId}` },
+    ];
+
+    // Parse task ID to get hierarchy
+    // e.g., TK-2848.3.1.1 -> [TK-2848.3, TK-2848.3.1, TK-2848.3.1.1]
+    const taskIdParts = task.id.split('.');
+    const caseIdPart = taskIdParts[0]; // e.g., TK-2848
+    
+    // Build parent task IDs
+    for (let i = 1; i < taskIdParts.length; i++) {
+      const parentTaskId = [caseIdPart, ...taskIdParts.slice(1, i + 1)].join('.');
+      
+      // Don't link the current task (last item)
+      if (i === taskIdParts.length - 1) {
+        breadcrumbs.push({ label: parentTaskId });
+      } else {
+        breadcrumbs.push({ 
+          label: parentTaskId, 
+          to: `/cases/${caseId}/tasks/${parentTaskId}` 
+        });
+      }
+    }
+
+    return breadcrumbs;
+  };
+
   return (
     <>
       {/* Main Content - With right margin for sidebar */}
       <div className="mr-96 space-y-8">
         {/* Task Header */}
         <EntityHeader
-          breadcrumbs={[
-            { label: 'Ticketing Hub', to: '/' },
-            { label: caseData.id, to: `/cases/${caseId}` },
-            { label: task.id },
-          ]}
+          breadcrumbs={generateTaskBreadcrumbs()}
           title={task.title}
           status={task.status}
           team={task.team || caseData.team}
