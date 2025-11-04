@@ -75,7 +75,7 @@ export function CaseList() {
           }
         />
       ) : (
-        <div className="bg-white rounded-card overflow-hidden">
+        <div className="bg-white rounded-card p-3">
           <table className="w-full table-fixed">
             <colgroup>
               <col style={{ width: '12%' }} />
@@ -85,16 +85,16 @@ export function CaseList() {
             </colgroup>
             <thead>
               <tr className="border-b border-neutral-100">
-                <th className="text-left pl-6 pr-6 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left pl-3 pr-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Case ID
                 </th>
-                <th className="text-left px-6 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left px-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Title
                 </th>
-                <th className="text-left px-6 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left px-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="text-left pl-6 pr-6 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left pl-3 pr-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Created
                 </th>
               </tr>

@@ -35,7 +35,7 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
 
   return (
     <tr 
-      className="hover:bg-neutral-50 cursor-pointer transition-colors h-14 border-b border-neutral-100 last:border-b-0"
+      className="hover:bg-neutral-50 cursor-pointer transition-colors h-14 border-b border-neutral-100 last:border-b-0 rounded-md"
       onClick={handleClick}
       role="button"
       tabIndex={0}
@@ -47,12 +47,12 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
       }}
     >
       {/* Case ID */}
-      <td className="pl-6 pr-6 py-3 whitespace-nowrap">
+      <td className="pl-3 pr-3 py-3 whitespace-nowrap rounded-l-md">
         <span className="text-sm font-normal text-neutral-400">{caseData.id}</span>
       </td>
 
       {/* Title with Tag */}
-      <td className="px-6 py-3">
+      <td className="px-3 py-3">
         <div>
           <div className="text-sm font-normal text-neutral-900 mb-0.5 line-clamp-1">{caseData.title}</div>
           <span className="inline-block text-[11px] text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded">
@@ -62,12 +62,12 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
       </td>
 
       {/* Status */}
-      <td className="px-6 py-3 whitespace-nowrap">
+      <td className="px-3 py-3 whitespace-nowrap">
         <StatusBadge status={caseData.status} />
       </td>
 
       {/* Created */}
-      <td className="pl-6 pr-6 py-3 whitespace-nowrap">
+      <td className="pl-3 pr-3 py-3 whitespace-nowrap rounded-r-md">
         <span className="text-sm font-normal text-neutral-500">{formatShortDate(caseData.createdAt)}</span>
       </td>
     </tr>
