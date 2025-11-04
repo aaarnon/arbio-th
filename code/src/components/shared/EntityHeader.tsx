@@ -129,37 +129,24 @@ export function EntityHeader({
 
             {/* Team Dropdown */}
             {openDropdown === 'team' && (
-              <div className="absolute top-full left-24 mt-2 w-72 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
-                <div className="px-3 pb-2">
-                  <input 
-                    type="text"
-                    placeholder="Change team..."
-                    className="w-full px-3 py-2 text-sm border border-neutral-200 rounded-md focus:outline-none focus:border-neutral-400"
-                    autoFocus
-                  />
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  {teamOptions.map((option, index) => (
-                    <button
-                      key={option.value}
-                      className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-neutral-50 transition-colors"
-                      onClick={() => {
-                        onDomainChange?.(option.value);
-                        setOpenDropdown(null);
-                      }}
-                    >
-                      <span className="text-neutral-900">{option.label}</span>
-                      <div className="flex items-center gap-3">
-                        {domain === option.value && (
-                          <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                        <span className="text-xs text-neutral-400">{index + 1}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+              <div className="absolute top-full left-24 mt-2 w-64 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                {teamOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                    onClick={() => {
+                      onDomainChange?.(option.value);
+                      setOpenDropdown(null);
+                    }}
+                  >
+                    <span className="text-neutral-900">{option.label}</span>
+                    {domain === option.value && (
+                      <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
               </div>
             )}
 
@@ -173,37 +160,24 @@ export function EntityHeader({
 
             {/* Type Dropdown */}
             {openDropdown === 'type' && (
-              <div className="absolute top-full left-96 mt-2 w-72 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
-                <div className="px-3 pb-2">
-                  <input 
-                    type="text"
-                    placeholder="Change type..."
-                    className="w-full px-3 py-2 text-sm border border-neutral-200 rounded-md focus:outline-none focus:border-neutral-400"
-                    autoFocus
-                  />
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  {typeOptions.map((option, index) => (
-                    <button
-                      key={option.value}
-                      className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-neutral-50 transition-colors"
-                      onClick={() => {
-                        console.log('Change type to:', option.value);
-                        setOpenDropdown(null);
-                      }}
-                    >
-                      <span className="text-neutral-900">{option.label}</span>
-                      <div className="flex items-center gap-3">
-                        {option.value === 'RESERVATION' && (
-                          <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                        <span className="text-xs text-neutral-400">{index + 1}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+              <div className="absolute top-full left-96 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                {typeOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                    onClick={() => {
+                      console.log('Change type to:', option.value);
+                      setOpenDropdown(null);
+                    }}
+                  >
+                    <span className="text-neutral-900">{option.label}</span>
+                    {option.value === 'RESERVATION' && (
+                      <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
               </div>
             )}
           </div>
