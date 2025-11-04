@@ -58,17 +58,6 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
     toast.success('Domain updated');
   };
 
-  const handleAssignedToChange = (newUserId: string) => {
-    dispatch({
-      type: 'UPDATE_CASE',
-      payload: {
-        caseId: caseData.id,
-        updates: { assignedTo: newUserId },
-      },
-    });
-    toast.success('Assignment updated');
-  };
-
   return (
     <EntityHeader
       breadcrumbs={[
@@ -79,12 +68,10 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
       status={caseData.status}
       team={caseData.team}
       domain={caseData.domain}
-      assignedTo={caseData.assignedTo}
       onTitleChange={handleTitleChange}
       onStatusChange={handleStatusChange}
       onTeamChange={handleTeamChange}
       onDomainChange={handleDomainChange}
-      onAssignedToChange={handleAssignedToChange}
     />
   );
 }

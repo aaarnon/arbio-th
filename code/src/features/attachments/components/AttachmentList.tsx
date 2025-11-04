@@ -30,7 +30,7 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
     <Card>
       <CardHeader className="pb-4">
         <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">
-          ATTACHMENTS {localAttachments.length > 0 && `(${localAttachments.length})`}
+          ATTACHMENTS
         </h2>
       </CardHeader>
       <CardContent className="pt-0">

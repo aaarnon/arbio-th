@@ -89,6 +89,9 @@ export function CaseDetail() {
           onAssignedToChange={handleTaskAssignedToChange}
         />
 
+        {/* Attachments Section */}
+        <AttachmentList attachments={caseData.attachments || []} />
+
         {/* Comments Section - Unified */}
         <div className="bg-white rounded-card p-8 space-y-6">
           <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">Comments</h2>
@@ -134,9 +137,6 @@ export function CaseDetail() {
             <AddCommentForm caseId={caseData.id} />
           </div>
         </div>
-
-        {/* Attachments Section */}
-        <AttachmentList attachments={caseData.attachments || []} />
       </div>
 
       {/* Right Sidebar - Fixed, Full-Height, Edge-to-Edge */}

@@ -305,6 +305,9 @@ export function TaskDetail() {
           </CardContent>
         </Card>
 
+        {/* Attachments Section (from parent case) */}
+        <AttachmentList attachments={caseData.attachments || []} />
+
         {/* Comments Section - Unified (from parent case) */}
         <div className="bg-white rounded-card p-8 space-y-6">
           <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">COMMENTS</h2>
@@ -350,9 +353,6 @@ export function TaskDetail() {
             <AddCommentForm caseId={caseData.id} />
           </div>
         </div>
-
-        {/* Attachments Section (from parent case) */}
-        <AttachmentList attachments={caseData.attachments || []} />
       </div>
 
       {/* Fixed Right Sidebar */}
