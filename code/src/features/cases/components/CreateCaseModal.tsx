@@ -211,6 +211,9 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Title *</FormLabel>
+                  <FormDescription>
+                    Title is auto-generated from the description.
+                  </FormDescription>
                   <FormControl>
                     <Input placeholder="Brief description of the issue" {...field} />
                   </FormControl>
