@@ -210,7 +210,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                 name="team"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Team</FormLabel>
+                    <FormLabel>Team *</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>

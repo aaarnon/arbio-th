@@ -15,13 +15,21 @@ export const caseSchema = z.object({
   propertyId: z.string().optional(),
   reservationId: z.string().optional(),
   assignedTo: z.string().optional(),
-}).refine(
-  (data) => data.propertyId || data.reservationId,
-  {
-    message: 'This field is required',
-    path: ['propertyId'],
+}).superRefine((data, ctx) => {
+  // At least one of propertyId or reservationId must be filled
+  if (!data.propertyId && !data.reservationId) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'This field is required',
+      path: ['propertyId'],
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'This field is required',
+      path: ['reservationId'],
+    });
   }
-);
+});
 
 /**
  * Inferred TypeScript type from the schema
