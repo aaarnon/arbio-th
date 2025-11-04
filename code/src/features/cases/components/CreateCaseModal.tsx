@@ -17,6 +17,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -224,6 +225,9 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Team *</FormLabel>
+                  <FormDescription>
+                    Delegate to the team responsible for completing this case.
+                  </FormDescription>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
