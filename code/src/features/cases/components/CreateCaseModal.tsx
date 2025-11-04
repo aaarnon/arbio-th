@@ -278,7 +278,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
               name="assignedTo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Assign To</FormLabel>
+                  <FormLabel>Assign To (optional)</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
