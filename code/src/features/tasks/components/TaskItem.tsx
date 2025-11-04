@@ -2,13 +2,8 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { Task, Status } from '@/types';
 import { StatusBadge } from '@/components/shared/StatusBadge';
+import { StatusDropdown } from '@/components/shared/StatusDropdown';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { useStatusValidation } from '@/features/tasks/hooks/useStatusValidation';
 import { CreateSubtaskForm } from './CreateSubtaskForm';
 import { EditTaskForm } from './EditTaskForm';
@@ -128,36 +123,21 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAddTask }: Tas
         </div>
 
         {/* Status Badge with Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+        <StatusDropdown
+          currentStatus={task.status}
+          onStatusChange={(newStatus) => onStatusChange?.(task.id, newStatus as Status)}
+          disabled={isDoneDisabled}
+          disabledMessage={
+            isDoneDisabled && incompleteSubtasks.length > 0
+              ? `Complete ${incompleteSubtasks.length} subtask${incompleteSubtasks.length > 1 ? 's' : ''} first`
+              : undefined
+          }
+          trigger={
             <button className="focus:outline-none focus:ring-1 focus:ring-neutral-400 rounded">
               <StatusBadge status={task.status} className="text-xs cursor-pointer hover:opacity-80" />
             </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white">
-            <DropdownMenuItem onClick={() => onStatusChange?.(task.id, 'TODO')}>
-              <span className="text-neutral-600">● To Do</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onStatusChange?.(task.id, 'IN_PROGRESS')}>
-              <span className="text-neutral-600">● In Progress</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              onClick={() => !isDoneDisabled && onStatusChange?.(task.id, 'DONE')}
-              disabled={isDoneDisabled}
-              className={isDoneDisabled ? 'opacity-50 cursor-not-allowed' : ''}
-            >
-              <span className="text-neutral-600">● Done</span>
-              {isDoneDisabled && incompleteSubtasks.length > 0 && (
-                <span className="ml-2 text-xs text-neutral-400">
-                  ({incompleteSubtasks.length} subtask{incompleteSubtasks.length > 1 ? 's' : ''})
-                </span>
-              )}
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onStatusChange?.(task.id, 'CANCELLED')}>
-              <span className="text-neutral-500">● Cancelled</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          }
+        />
 
         {/* Assigned User */}
         <div className="flex items-center gap-1 text-xs text-neutral-500">
