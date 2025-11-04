@@ -228,7 +228,7 @@ export function EntityHeader({
                   className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                   onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
                 >
-                  <span className="font-normal text-neutral-600">Team:</span>
+                  <span className="font-normal text-neutral-400">Team:</span>
                   <span className="ml-1">{formatText(team)}</span>
                 </button>
 
@@ -263,7 +263,7 @@ export function EntityHeader({
                   className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                   onClick={() => setOpenDropdown(openDropdown === 'domain' ? null : 'domain')}
                 >
-                  <span className="font-normal text-neutral-600">Domain:</span>
+                  <span className="font-normal text-neutral-400">Domain:</span>
                   <span className="ml-1">{formatText(domain)}</span>
                 </button>
 
@@ -298,7 +298,7 @@ export function EntityHeader({
                   className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                   onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
                 >
-                  <span className="font-normal text-neutral-600">Assigned To:</span>
+                  <span className="font-normal text-neutral-400">Assigned To:</span>
                   <span className="ml-1">{assignedTo ? mockUsers.find(u => u.id === assignedTo)?.name || 'Unknown' : 'Not assigned'}</span>
                 </button>
 
