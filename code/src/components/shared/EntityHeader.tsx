@@ -12,8 +12,10 @@ interface EntityHeaderProps {
   title: string;
   status: string;
   domain?: string;
+  team?: string;
   onStatusChange?: (status: string) => void;
   onDomainChange?: (domain: string) => void;
+  onTeamChange?: (team: string) => void;
 }
 
 type DropdownType = 'team' | 'domain' | null;
@@ -28,14 +30,30 @@ export function EntityHeader({
   title,
   status,
   domain,
+  team,
   onStatusChange,
   onDomainChange,
+  onTeamChange,
 }: EntityHeaderProps) {
   const [openDropdown, setOpenDropdown] = useState<DropdownType>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Format text to title case (first letter uppercase, rest lowercase)
+  // Format text to display format
   const formatText = (text: string) => {
+    // Special mapping for team names to preserve exact formatting
+    const teamMapping: Record<string, string> = {
+      'PROPERTY_MANAGEMENT': 'Property Management',
+      'GUEST_COMM': 'Guest Comm',
+      'GUEST_EXPERIENCE': 'Guest Experience',
+      'FINOPS': 'FinOps',
+    };
+    
+    // Check if it's a team value
+    if (teamMapping[text]) {
+      return teamMapping[text];
+    }
+    
+    // Default formatting for other values (domains, statuses)
     return text
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -56,12 +74,10 @@ export function EntityHeader({
 
   // Dropdown options
   const teamOptions = [
-    { value: 'PROPERTY', label: 'Property Management' },
+    { value: 'PROPERTY_MANAGEMENT', label: 'Property Management' },
+    { value: 'GUEST_COMM', label: 'Guest Comm' },
     { value: 'GUEST_EXPERIENCE', label: 'Guest Experience' },
-    { value: 'MAINTENANCE', label: 'Maintenance' },
-    { value: 'HOUSEKEEPING', label: 'Housekeeping' },
-    { value: 'FINANCE', label: 'Finance' },
-    { value: 'RESERVATION', label: 'Reservation' },
+    { value: 'FINOPS', label: 'FinOps' },
   ];
 
   const domainOptions = [
@@ -113,70 +129,78 @@ export function EntityHeader({
       </div>
 
       {/* Properties Row */}
-      {domain && (
+      {(team || domain) && (
         <div className="flex items-center relative">
           <div className="w-24 text-sm text-neutral-600">Properties</div>
           <div className="flex items-center gap-6">
-            <button 
-              className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-              onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
-            >
-              <span className="font-normal text-neutral-600">Team:</span>
-              <span className="ml-1">{formatText(domain)}</span>
-            </button>
+            {team && (
+              <>
+                <button 
+                  className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                  onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
+                >
+                  <span className="font-normal text-neutral-600">Team:</span>
+                  <span className="ml-1">{formatText(team)}</span>
+                </button>
 
-            {/* Team Dropdown */}
-            {openDropdown === 'team' && (
-              <div className="absolute top-full left-24 mt-2 w-64 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
-                {teamOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
-                    onClick={() => {
-                      onDomainChange?.(option.value);
-                      setOpenDropdown(null);
-                    }}
-                  >
-                    <span className="text-neutral-900">{option.label}</span>
-                    {domain === option.value && (
-                      <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </button>
-                ))}
-              </div>
+                {/* Team Dropdown */}
+                {openDropdown === 'team' && (
+                  <div className="absolute top-full left-24 mt-2 w-64 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                    {teamOptions.map((option) => (
+                      <button
+                        key={option.value}
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                        onClick={() => {
+                          onTeamChange?.(option.value);
+                          setOpenDropdown(null);
+                        }}
+                      >
+                        <span className="text-neutral-900">{option.label}</span>
+                        {team === option.value && (
+                          <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
 
-            <button 
-              className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-              onClick={() => setOpenDropdown(openDropdown === 'domain' ? null : 'domain')}
-            >
-              <span className="font-normal text-neutral-600">Domain:</span>
-              <span className="ml-1">{formatText(domain)}</span>
-            </button>
+            {domain && (
+              <>
+                <button 
+                  className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                  onClick={() => setOpenDropdown(openDropdown === 'domain' ? null : 'domain')}
+                >
+                  <span className="font-normal text-neutral-600">Domain:</span>
+                  <span className="ml-1">{formatText(domain)}</span>
+                </button>
 
-            {/* Domain Dropdown */}
-            {openDropdown === 'domain' && (
-              <div className="absolute top-full left-96 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
-                {domainOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
-                    onClick={() => {
-                      onDomainChange?.(option.value);
-                      setOpenDropdown(null);
-                    }}
-                  >
-                    <span className="text-neutral-900">{option.label}</span>
-                    {domain === option.value && (
-                      <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </button>
-                ))}
-              </div>
+                {/* Domain Dropdown */}
+                {openDropdown === 'domain' && (
+                  <div className="absolute top-full left-96 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                    {domainOptions.map((option) => (
+                      <button
+                        key={option.value}
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                        onClick={() => {
+                          onDomainChange?.(option.value);
+                          setOpenDropdown(null);
+                        }}
+                      >
+                        <span className="text-neutral-900">{option.label}</span>
+                        {domain === option.value && (
+                          <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -25,6 +25,17 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
     toast.success('Status updated');
   };
 
+  const handleTeamChange = (newTeam: string) => {
+    dispatch({
+      type: 'UPDATE_CASE',
+      payload: {
+        caseId: caseData.id,
+        updates: { team: newTeam as any },
+      },
+    });
+    toast.success('Team updated');
+  };
+
   const handleDomainChange = (newDomain: string) => {
     dispatch({
       type: 'UPDATE_CASE',
@@ -44,8 +55,10 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
       ]}
       title={caseData.title}
       status={caseData.status}
+      team={caseData.team}
       domain={caseData.domain}
       onStatusChange={handleStatusChange}
+      onTeamChange={handleTeamChange}
       onDomainChange={handleDomainChange}
     />
   );

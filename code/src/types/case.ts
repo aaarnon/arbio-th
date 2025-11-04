@@ -1,4 +1,4 @@
-import type { Status, DomainType } from './enums';
+import type { Status, DomainType, TeamType } from './enums';
 import type { Task } from './task';
 import type { Comment } from './comment';
 import type { Attachment } from './attachment';
@@ -22,6 +22,9 @@ export interface Case {
   
   /** Business domain this case belongs to */
   domain: DomainType;
+  
+  /** Team responsible for this case */
+  team?: TeamType;
   
   /** Linked property ID (optional) */
   propertyId?: string;

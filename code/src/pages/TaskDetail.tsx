@@ -71,9 +71,21 @@ export function TaskDetail() {
   const hasSubtasks = task.subtasks && task.subtasks.length > 0;
   const [isAddingSubtask, setIsAddingSubtask] = useState(false);
 
-  // Handle status/domain changes
+  // Handle status/team/domain changes
   const handleStatusChange = (newStatus: string) => {
     updateTaskStatus(task.id, newStatus as any);
+  };
+
+  const handleTeamChange = (newTeam: string) => {
+    dispatch({
+      type: 'UPDATE_TASK',
+      payload: {
+        caseId: caseId || '',
+        taskId: task.id,
+        updates: { team: newTeam as any },
+      },
+    });
+    toast.success('Team updated');
   };
 
   const handleDomainChange = (newDomain: string) => {
@@ -101,8 +113,10 @@ export function TaskDetail() {
           ]}
           title={task.title}
           status={task.status}
+          team={task.team || caseData.team}
           domain={task.domain || caseData.domain}
           onStatusChange={handleStatusChange}
+          onTeamChange={handleTeamChange}
           onDomainChange={handleDomainChange}
         />
 

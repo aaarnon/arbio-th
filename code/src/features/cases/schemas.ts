@@ -7,6 +7,7 @@ export const caseSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
   domain: z.enum(['PROPERTY', 'RESERVATION', 'FINANCE']),
+  team: z.enum(['PROPERTY_MANAGEMENT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS']).optional(),
   propertyId: z.string().optional(),
   reservationId: z.string().optional(),
   assignedTo: z.string().optional(),

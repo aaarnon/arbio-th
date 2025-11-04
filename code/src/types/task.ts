@@ -1,4 +1,4 @@
-import type { Status, DomainType } from './enums';
+import type { Status, DomainType, TeamType } from './enums';
 
 /**
  * Task interface with recursive structure for hierarchy
@@ -19,6 +19,9 @@ export interface Task {
   
   /** Domain/category of the task */
   domain?: DomainType;
+  
+  /** Team responsible for this task */
+  team?: TeamType;
   
   /** User assigned to this task */
   assignedTo?: string;
