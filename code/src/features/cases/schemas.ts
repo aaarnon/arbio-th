@@ -11,7 +11,6 @@ export const caseSchema = z.object({
   }),
   propertyId: z.string().optional(),
   reservationId: z.string().optional(),
-  assignedTo: z.string().optional(),
 }).superRefine((data, ctx) => {
   // At least one of propertyId or reservationId must be filled
   if (!data.propertyId && !data.reservationId) {

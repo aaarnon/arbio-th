@@ -7,7 +7,6 @@ import { useNotifications } from '@/features/notifications/hooks/useNotification
 import { caseSchema, type CaseFormData } from '../schemas';
 import { mockProperties } from '@/data/mockProperties';
 import { mockReservations } from '@/data/mockReservations';
-import { mockUsers } from '@/data/mockUsers';
 import {
   Dialog,
   DialogContent,
@@ -57,7 +56,6 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
       team: undefined,
       propertyId: '',
       reservationId: '',
-      assignedTo: '',
     },
   });
 
@@ -102,7 +100,6 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         team: data.team,
         propertyId: data.propertyId || undefined,
         reservationId: data.reservationId || undefined,
-        assignedTo: data.assignedTo || undefined,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         tasks: [],
@@ -143,65 +140,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-6">
-            {/* Title */}
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title *</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Brief description of the issue" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Description */}
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description *</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Detailed description of the issue..."
-                      rows={4}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Team */}
-            <FormField
-              control={form.control}
-              name="team"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Team *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select team" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
-                      <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
-                      <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
-                      <SelectItem value="FINOPS">FinOps</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
+            {/* Property and Reservation - Top */}
             <div className="grid grid-cols-2 gap-4">
               {/* Property */}
               <FormField
@@ -244,25 +183,58 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
               />
             </div>
 
-            {/* Assigned To */}
+            {/* Description */}
             <FormField
               control={form.control}
-              name="assignedTo"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Assign To (optional)</FormLabel>
+                  <FormLabel>Description *</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Detailed description of the issue..."
+                      rows={4}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Title */}
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Brief description of the issue" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Team */}
+            <FormField
+              control={form.control}
+              name="team"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Team *</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select team member" />
+                        <SelectValue placeholder="Select team" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {mockUsers.map((user) => (
-                        <SelectItem key={user.id} value={user.id}>
-                          {user.name} - {user.role}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
+                      <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
+                      <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
+                      <SelectItem value="FINOPS">FinOps</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
