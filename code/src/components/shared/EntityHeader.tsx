@@ -198,7 +198,7 @@ export function EntityHeader({
               {statusOptions.map((option) => (
                 <button
                   key={option.value}
-                  className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                  className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
                   onClick={() => {
                     onStatusChange?.(option.value);
                     setOpenDropdown(null);
@@ -238,7 +238,7 @@ export function EntityHeader({
                     {teamOptions.map((option) => (
                       <button
                         key={option.value}
-                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
                         onClick={() => {
                           onTeamChange?.(option.value);
                           setOpenDropdown(null);
@@ -273,7 +273,7 @@ export function EntityHeader({
                     {domainOptions.map((option) => (
                       <button
                         key={option.value}
-                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
                         onClick={() => {
                           onDomainChange?.(option.value);
                           setOpenDropdown(null);
@@ -306,7 +306,7 @@ export function EntityHeader({
                 {openDropdown === 'assignedTo' && (
                   <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
                     <button
-                      className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                      className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
                       onClick={() => {
                         onAssignedToChange?.('');
                         setOpenDropdown(null);
@@ -322,7 +322,7 @@ export function EntityHeader({
                     {mockUsers.map((user) => (
                       <button
                         key={user.id}
-                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
                         onClick={() => {
                           onAssignedToChange?.(user.id);
                           setOpenDropdown(null);

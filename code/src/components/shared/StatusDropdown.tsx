@@ -64,7 +64,7 @@ export function StatusDropdown({
             }}
             disabled={disabled && option.value === 'DONE'}
             className={`flex items-center justify-between py-2.5 ${
-              disabled && option.value === 'DONE' ? 'opacity-50 cursor-not-allowed' : ''
+              disabled && option.value === 'DONE' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
             }`}
           >
             <span className="text-neutral-900">{option.label}</span>

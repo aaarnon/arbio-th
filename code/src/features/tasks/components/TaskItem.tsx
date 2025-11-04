@@ -161,7 +161,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
           {openDropdown === 'assignee' && (
             <div className="absolute top-full right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
               <button
-                className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-neutral-50 transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
                   onAssignedToChange?.(task.id, '');
@@ -178,7 +178,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
               {mockUsers.map((user) => (
                 <button
                   key={user.id}
-                  className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-neutral-50 transition-colors"
+                  className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     onAssignedToChange?.(task.id, user.id);
