@@ -30,12 +30,12 @@ export function CaseFilters({
   onSearchChange,
 }: CaseFiltersProps) {
   return (
-    <div className="flex flex-wrap items-center gap-4 bg-white rounded-card p-4">
+    <div className="flex flex-wrap items-center gap-3 bg-white rounded-card px-4 py-3">
       {/* Search Input */}
       <div className="flex-1 min-w-[240px]">
         <div className="relative">
           <svg
-            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -52,15 +52,15 @@ export function CaseFilters({
             placeholder="Search cases..."
             value={searchFilter}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10"
+            className="pl-10 h-9"
           />
         </div>
       </div>
 
       {/* Status Filter */}
-      <div className="w-[180px]">
+      <div className="w-[160px]">
         <Select value={statusFilter} onValueChange={onStatusChange}>
-          <SelectTrigger>
+          <SelectTrigger className="h-9">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -74,9 +74,9 @@ export function CaseFilters({
       </div>
 
       {/* Domain Filter */}
-      <div className="w-[180px]">
+      <div className="w-[160px]">
         <Select value={domainFilter} onValueChange={onDomainChange}>
-          <SelectTrigger>
+          <SelectTrigger className="h-9">
             <SelectValue placeholder="Domain" />
           </SelectTrigger>
           <SelectContent>

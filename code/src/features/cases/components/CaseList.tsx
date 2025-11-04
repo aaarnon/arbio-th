@@ -24,8 +24,11 @@ export function CaseList() {
   if (loading) {
     return (
       <div className="max-w-content mx-auto">
-        <div className="flex items-center justify-between section-spacing">
-          <h1 className="text-xl font-medium text-neutral-800">Cases</h1>
+        <div className="mb-4">
+          <h1 className="text-xl font-normal text-neutral-900">Cases</h1>
+          <p className="mt-1 text-sm text-neutral-500">
+            Manage and track all support cases
+          </p>
         </div>
         <LoadingSkeleton />
       </div>
@@ -35,15 +38,15 @@ export function CaseList() {
   return (
     <div className="max-w-content mx-auto">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-xl font-medium text-neutral-800">Cases</h1>
+      <div className="mb-4">
+        <h1 className="text-xl font-normal text-neutral-900">Cases</h1>
         <p className="mt-1 text-sm text-neutral-500">
           Manage and track all support cases
         </p>
       </div>
 
       {/* Filters */}
-      <div className="mb-6">
+      <div className="mb-4">
         <CaseFilters
           statusFilter={filters.status}
           domainFilter={filters.domain}
@@ -56,7 +59,7 @@ export function CaseList() {
 
       {/* Results Count */}
       {filteredCases.length !== cases.length && (
-        <p className="text-sm text-neutral-400 mb-4">
+        <p className="text-xs text-neutral-400 mb-3">
           Showing {filteredCases.length} of {cases.length} cases
         </p>
       )}
@@ -72,7 +75,7 @@ export function CaseList() {
           }
         />
       ) : (
-        <div className="bg-white rounded-card px-6 py-4">
+        <div className="bg-white rounded-card px-6 py-3">
           <table className="w-full table-fixed">
             <colgroup>
               <col style={{ width: '12%' }} />
@@ -81,17 +84,17 @@ export function CaseList() {
               <col style={{ width: '10%' }} />
             </colgroup>
             <thead>
-              <tr>
-                <th className="text-left pr-6 py-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+              <tr className="border-b border-neutral-100">
+                <th className="text-left pr-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Case ID
                 </th>
-                <th className="text-left px-6 py-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left px-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Title
                 </th>
-                <th className="text-left px-6 py-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left px-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="text-left pl-6 py-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="text-left pl-6 pb-3 pt-2 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Created
                 </th>
               </tr>
