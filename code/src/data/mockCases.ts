@@ -15,6 +15,7 @@ export const mockCases: Case[] = [
     propertyId: 'prop-1',
     reservationId: 'res-1',
     assignedTo: 'user-3',
+    createdBy: 'user-1',
     createdAt: '2025-11-02T08:30:00Z',
     updatedAt: '2025-11-02T14:15:00Z',
     tasks: [
@@ -118,6 +119,7 @@ export const mockCases: Case[] = [
     propertyId: 'prop-2',
     reservationId: 'res-2',
     assignedTo: 'user-4',
+    createdBy: 'user-2',
     createdAt: '2025-11-02T13:20:00Z',
     updatedAt: '2025-11-02T13:20:00Z',
     tasks: [

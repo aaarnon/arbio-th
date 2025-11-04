@@ -2,6 +2,7 @@ import type { Case } from '@/types';
 import { formatDate } from '@/utils/date';
 import { mockProperties } from '@/data/mockProperties';
 import { mockReservations } from '@/data/mockReservations';
+import { mockUsers } from '@/data/mockUsers';
 
 interface CaseSidebarProps {
   case: Case;
@@ -15,6 +16,11 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
   // Find related property and reservation (mock data for now)
   const property = mockProperties[0];
   const reservation = mockReservations[0];
+  
+  // Find creator user
+  const creator = caseData.createdBy 
+    ? mockUsers.find(u => u.id === caseData.createdBy)
+    : null;
 
   return (
     <aside className="h-full overflow-y-auto bg-white border-l border-neutral-200">
@@ -27,6 +33,10 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Ticket ID</dt>
             <dd className="text-xs text-neutral-900 font-medium">{caseData.id}</dd>
+          </div>
+          <div className="flex items-center justify-between">
+            <dt className="text-xs text-neutral-500">Creator</dt>
+            <dd className="text-xs text-neutral-900">{creator ? creator.name : 'Unknown'}</dd>
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Date created</dt>

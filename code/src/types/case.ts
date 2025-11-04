@@ -35,6 +35,9 @@ export interface Case {
   /** User assigned to this case */
   assignedTo?: string;
   
+  /** User who created this case */
+  createdBy?: string;
+  
   /** Hierarchical task list */
   tasks: Task[];
   

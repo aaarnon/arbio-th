@@ -101,6 +101,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         team: data.team,
         propertyId: data.propertyId || undefined,
         reservationId: data.reservationId || undefined,
+        createdBy: 'user-1', // Mock logged-in user (Sarah Chen)
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         tasks: [],
