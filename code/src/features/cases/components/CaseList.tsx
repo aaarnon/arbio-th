@@ -17,7 +17,8 @@ export function CaseList() {
     filters,
     filteredCases,
     setStatusFilter,
-    setDomainFilter,
+    setTeamFilter,
+    setDateFilter,
     setSearchFilter,
   } = useCaseFilters(cases);
 
@@ -49,10 +50,12 @@ export function CaseList() {
       <div className="mb-4">
         <CaseFilters
           statusFilter={filters.status}
-          domainFilter={filters.domain}
+          teamFilter={filters.team}
+          dateFilter={filters.date}
           searchFilter={filters.search}
           onStatusChange={setStatusFilter}
-          onDomainChange={setDomainFilter}
+          onTeamChange={setTeamFilter}
+          onDateChange={setDateFilter}
           onSearchChange={setSearchFilter}
         />
       </div>

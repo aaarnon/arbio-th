@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react';
-import type { Case, Status, DomainType } from '@/types';
+import type { Case, Status, TeamType } from '@/types';
 
 interface FilterState {
   status: Status | 'ALL';
-  domain: DomainType | 'ALL';
+  team: TeamType | 'ALL';
+  date: string;
   search: string;
 }
 
@@ -14,7 +15,8 @@ interface FilterState {
 export function useCaseFilters(cases: Case[]) {
   const [filters, setFilters] = useState<FilterState>({
     status: 'ALL',
-    domain: 'ALL',
+    team: 'ALL',
+    date: 'ALL',
     search: '',
   });
 
@@ -26,9 +28,32 @@ export function useCaseFilters(cases: Case[]) {
         return false;
       }
 
-      // Domain filter
-      if (filters.domain !== 'ALL' && c.domain !== filters.domain) {
+      // Team filter
+      if (filters.team !== 'ALL' && c.team !== filters.team) {
         return false;
+      }
+
+      // Date filter
+      if (filters.date !== 'ALL') {
+        const caseDate = new Date(c.createdAt);
+        const now = new Date();
+        const diffTime = now.getTime() - caseDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        switch (filters.date) {
+          case 'TODAY':
+            if (diffDays > 0) return false;
+            break;
+          case 'LAST_7_DAYS':
+            if (diffDays > 7) return false;
+            break;
+          case 'LAST_30_DAYS':
+            if (diffDays > 30) return false;
+            break;
+          case 'LAST_90_DAYS':
+            if (diffDays > 90) return false;
+            break;
+        }
       }
 
       // Search filter (searches in title and description)
@@ -52,8 +77,12 @@ export function useCaseFilters(cases: Case[]) {
     setFilters((prev) => ({ ...prev, status }));
   };
 
-  const setDomainFilter = (domain: DomainType | 'ALL') => {
-    setFilters((prev) => ({ ...prev, domain }));
+  const setTeamFilter = (team: TeamType | 'ALL') => {
+    setFilters((prev) => ({ ...prev, team }));
+  };
+
+  const setDateFilter = (date: string) => {
+    setFilters((prev) => ({ ...prev, date }));
   };
 
   const setSearchFilter = (search: string) => {
@@ -64,7 +93,8 @@ export function useCaseFilters(cases: Case[]) {
   const resetFilters = () => {
     setFilters({
       status: 'ALL',
-      domain: 'ALL',
+      team: 'ALL',
+      date: 'ALL',
       search: '',
     });
   };
@@ -73,7 +103,8 @@ export function useCaseFilters(cases: Case[]) {
     filters,
     filteredCases,
     setStatusFilter,
-    setDomainFilter,
+    setTeamFilter,
+    setDateFilter,
     setSearchFilter,
     resetFilters,
   };

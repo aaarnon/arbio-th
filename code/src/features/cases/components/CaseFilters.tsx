@@ -6,14 +6,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { Status, DomainType } from '@/types';
+import type { Status, TeamType } from '@/types';
 
 interface CaseFiltersProps {
   statusFilter: Status | 'ALL';
-  domainFilter: DomainType | 'ALL';
+  teamFilter: TeamType | 'ALL';
+  dateFilter: string;
   searchFilter: string;
   onStatusChange: (status: Status | 'ALL') => void;
-  onDomainChange: (domain: DomainType | 'ALL') => void;
+  onTeamChange: (team: TeamType | 'ALL') => void;
+  onDateChange: (date: string) => void;
   onSearchChange: (search: string) => void;
 }
 
@@ -23,10 +25,12 @@ interface CaseFiltersProps {
  */
 export function CaseFilters({
   statusFilter,
-  domainFilter,
+  teamFilter,
+  dateFilter,
   searchFilter,
   onStatusChange,
-  onDomainChange,
+  onTeamChange,
+  onDateChange,
   onSearchChange,
 }: CaseFiltersProps) {
   return (
@@ -73,17 +77,34 @@ export function CaseFilters({
         </Select>
       </div>
 
-      {/* Domain Filter */}
-      <div className="w-[160px]">
-        <Select value={domainFilter} onValueChange={onDomainChange}>
+      {/* Team Filter */}
+      <div className="w-[180px]">
+        <Select value={teamFilter} onValueChange={onTeamChange}>
           <SelectTrigger className="h-9">
-            <SelectValue placeholder="Domain" />
+            <SelectValue placeholder="Team" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="ALL">All Domains</SelectItem>
-            <SelectItem value="PROPERTY">Property</SelectItem>
-            <SelectItem value="RESERVATION">Reservation</SelectItem>
-            <SelectItem value="FINANCE">Finance</SelectItem>
+            <SelectItem value="ALL">All Teams</SelectItem>
+            <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
+            <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
+            <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
+            <SelectItem value="FINOPS">FinOps</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Date Filter */}
+      <div className="w-[160px]">
+        <Select value={dateFilter} onValueChange={onDateChange}>
+          <SelectTrigger className="h-9">
+            <SelectValue placeholder="Created" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="ALL">All Time</SelectItem>
+            <SelectItem value="TODAY">Today</SelectItem>
+            <SelectItem value="LAST_7_DAYS">Last 7 Days</SelectItem>
+            <SelectItem value="LAST_30_DAYS">Last 30 Days</SelectItem>
+            <SelectItem value="LAST_90_DAYS">Last 90 Days</SelectItem>
           </SelectContent>
         </Select>
       </div>
