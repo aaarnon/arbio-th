@@ -16,7 +16,7 @@ interface EntityHeaderProps {
   onDomainChange?: (domain: string) => void;
 }
 
-type DropdownType = 'team' | 'type' | null;
+type DropdownType = 'team' | 'domain' | null;
 
 /**
  * Shared Entity Header Component - Linear-inspired flat design
@@ -64,11 +64,9 @@ export function EntityHeader({
     { value: 'RESERVATION', label: 'Reservation' },
   ];
 
-  const typeOptions = [
-    { value: 'RESERVATION', label: 'Reservation' },
+  const domainOptions = [
     { value: 'PROPERTY', label: 'Property' },
-    { value: 'MAINTENANCE', label: 'Maintenance' },
-    { value: 'GUEST_REQUEST', label: 'Guest Request' },
+    { value: 'RESERVATION', label: 'Reservation' },
     { value: 'FINANCE', label: 'Finance' },
   ];
 
@@ -152,26 +150,26 @@ export function EntityHeader({
 
             <button 
               className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-              onClick={() => setOpenDropdown(openDropdown === 'type' ? null : 'type')}
+              onClick={() => setOpenDropdown(openDropdown === 'domain' ? null : 'domain')}
             >
-              <span className="font-normal text-neutral-600">Type:</span>
-              <span className="ml-1">Reservation</span>
+              <span className="font-normal text-neutral-600">Domain:</span>
+              <span className="ml-1">{formatText(domain)}</span>
             </button>
 
-            {/* Type Dropdown */}
-            {openDropdown === 'type' && (
+            {/* Domain Dropdown */}
+            {openDropdown === 'domain' && (
               <div className="absolute top-full left-96 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
-                {typeOptions.map((option) => (
+                {domainOptions.map((option) => (
                   <button
                     key={option.value}
                     className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
                     onClick={() => {
-                      console.log('Change type to:', option.value);
+                      onDomainChange?.(option.value);
                       setOpenDropdown(null);
                     }}
                   >
                     <span className="text-neutral-900">{option.label}</span>
-                    {option.value === 'RESERVATION' && (
+                    {domain === option.value && (
                       <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
