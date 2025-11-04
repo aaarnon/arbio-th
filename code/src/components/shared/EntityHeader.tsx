@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { StatusDropdown } from './StatusDropdown';
 
 interface Breadcrumb {
   label: string;
@@ -15,7 +16,7 @@ interface EntityHeaderProps {
   onDomainChange?: (domain: string) => void;
 }
 
-type DropdownType = 'status' | 'team' | 'type' | null;
+type DropdownType = 'team' | 'type' | null;
 
 /**
  * Shared Entity Header Component - Linear-inspired flat design
@@ -54,16 +55,6 @@ export function EntityHeader({
   }, []);
 
   // Dropdown options
-  const statusOptions = [
-    { value: 'BACKLOG', label: 'Backlog', icon: '⭕', color: 'text-neutral-500' },
-    { value: 'TODO', label: 'To Do', icon: '⭕', color: 'text-orange-500' },
-    { value: 'PLANNED', label: 'Planned', icon: '⭕', color: 'text-neutral-400' },
-    { value: 'IN_PROGRESS', label: 'In Progress', icon: '🔵', color: 'text-blue-500' },
-    { value: 'DONE', label: 'Done', icon: '✓', color: 'text-green-500' },
-    { value: 'COMPLETED', label: 'Completed', icon: '✓', color: 'text-green-500' },
-    { value: 'CANCELLED', label: 'Canceled', icon: '✕', color: 'text-red-500' },
-  ];
-
   const teamOptions = [
     { value: 'PROPERTY', label: 'Property Management' },
     { value: 'GUEST_EXPERIENCE', label: 'Guest Experience' },
@@ -107,56 +98,20 @@ export function EntityHeader({
       <h1 className="mb-6 text-3xl font-normal text-neutral-900">{title}</h1>
 
       {/* Status Row */}
-      <div className="mb-3 flex items-center relative" ref={dropdownRef}>
+      <div className="mb-3 flex items-center">
         <div className="w-24 text-sm text-neutral-600">Status</div>
-        <button 
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-          onClick={() => setOpenDropdown(openDropdown === 'status' ? null : 'status')}
-        >
-          {formatText(status)}
-          <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-
-        {/* Status Dropdown */}
-        {openDropdown === 'status' && (
-          <div className="absolute top-full left-24 mt-2 w-72 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
-            <div className="px-3 pb-2">
-              <input 
-                type="text"
-                placeholder="Change status..."
-                className="w-full px-3 py-2 text-sm border border-neutral-200 rounded-md focus:outline-none focus:border-neutral-400"
-                autoFocus
-              />
-            </div>
-            <div className="max-h-64 overflow-y-auto">
-              {statusOptions.map((option, index) => (
-                <button
-                  key={option.value}
-                  className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-neutral-50 transition-colors"
-                  onClick={() => {
-                    onStatusChange?.(option.value);
-                    setOpenDropdown(null);
-                  }}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className={option.color}>{option.icon}</span>
-                    <span className="text-neutral-900">{option.label}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    {status === option.value && (
-                      <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                    <span className="text-xs text-neutral-400">{index + 1}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        <StatusDropdown
+          currentStatus={status}
+          onStatusChange={(newStatus) => onStatusChange?.(newStatus)}
+          trigger={
+            <button className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900">
+              {formatText(status)}
+              <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          }
+        />
       </div>
 
       {/* Properties Row */}

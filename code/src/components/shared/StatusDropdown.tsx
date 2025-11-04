@@ -9,8 +9,6 @@ import {
 interface StatusOption {
   value: string;
   label: string;
-  icon: string;
-  color: string;
 }
 
 interface StatusDropdownProps {
@@ -22,10 +20,10 @@ interface StatusDropdownProps {
 }
 
 const STATUS_OPTIONS: StatusOption[] = [
-  { value: 'TODO', label: 'To Do', icon: '⭕', color: 'text-neutral-600' },
-  { value: 'IN_PROGRESS', label: 'In Progress', icon: '🔵', color: 'text-blue-500' },
-  { value: 'DONE', label: 'Done', icon: '✓', color: 'text-green-500' },
-  { value: 'CANCELLED', label: 'Canceled', icon: '✕', color: 'text-neutral-500' },
+  { value: 'TODO', label: 'To Do' },
+  { value: 'IN_PROGRESS', label: 'In Progress' },
+  { value: 'DONE', label: 'Done' },
+  { value: 'CANCELLED', label: 'Canceled' },
 ];
 
 /**
@@ -46,8 +44,8 @@ export function StatusDropdown({
       <DropdownMenuTrigger asChild>
         {trigger}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-white w-56">
-        {STATUS_OPTIONS.map((option, index) => (
+      <DropdownMenuContent align="end" className="bg-white w-48">
+        {STATUS_OPTIONS.map((option) => (
           <DropdownMenuItem
             key={option.value}
             onClick={() => {
@@ -61,18 +59,12 @@ export function StatusDropdown({
               disabled && option.value === 'DONE' ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
-            <div className="flex items-center gap-3">
-              <span className={option.color}>{option.icon}</span>
-              <span className="text-neutral-900">{option.label}</span>
-            </div>
-            <div className="flex items-center gap-3">
-              {currentStatus === option.value && (
-                <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              )}
-              <span className="text-neutral-400 text-xs font-medium">{index + 1}</span>
-            </div>
+            <span className="text-neutral-900">{option.label}</span>
+            {currentStatus === option.value && (
+              <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            )}
           </DropdownMenuItem>
         ))}
         {disabled && disabledMessage && (
