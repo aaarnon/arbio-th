@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -33,6 +33,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { SearchableSelect } from '@/components/ui/searchable-select';
 
 interface CreateCaseModalProps {
   open: boolean;
@@ -59,6 +60,23 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
       assignedTo: '',
     },
   });
+
+  // Create searchable options for properties and reservations
+  const propertyOptions = useMemo(() => 
+    mockProperties.map((property) => ({
+      value: property.id,
+      label: `${property.unitId} - ${property.address.split(',')[0]}`,
+    })),
+    []
+  );
+
+  const reservationOptions = useMemo(() =>
+    mockReservations.map((reservation) => ({
+      value: reservation.id,
+      label: `${reservation.guestName} - ${reservation.id}`,
+    })),
+    []
+  );
 
   const onSubmit = async (data: CaseFormData) => {
     setIsSubmitting(true);
@@ -183,20 +201,14 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Property</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select property" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {mockProperties.map((property) => (
-                          <SelectItem key={property.id} value={property.id}>
-                            {property.unitId} - {property.address.split(',')[0]}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchableSelect
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        options={propertyOptions}
+                        placeholder="Search property..."
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -209,20 +221,14 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Reservation</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select reservation" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {mockReservations.map((reservation) => (
-                          <SelectItem key={reservation.id} value={reservation.id}>
-                            {reservation.guestName} - {reservation.id}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <SearchableSelect
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        options={reservationOptions}
+                        placeholder="Search reservation..."
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
