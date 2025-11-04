@@ -239,14 +239,11 @@ export function EntityHeader({
             {assignedTo !== undefined && (
               <div className="relative">
                 <button 
-                  className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                  className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                   onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
                 >
                   <span className="font-normal text-neutral-600">Assigned To:</span>
-                  <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  <span>{assignedTo ? mockUsers.find(u => u.id === assignedTo)?.name || 'Unknown' : 'Not assigned'}</span>
+                  <span className="ml-1">{assignedTo ? mockUsers.find(u => u.id === assignedTo)?.name || 'Unknown' : 'Not assigned'}</span>
                 </button>
 
                 {/* Assigned To Dropdown */}
