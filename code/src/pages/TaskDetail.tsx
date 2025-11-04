@@ -28,7 +28,7 @@ export function TaskDetail() {
   const caseData = state.cases.find((c) => c.id === caseId);
 
   // Get task actions for this case
-  const { updateTaskStatus } = useTaskActions(caseId || '');
+  const { updateTaskStatus, updateTask } = useTaskActions(caseId || '');
 
   if (!caseData) {
     return (
@@ -100,6 +100,23 @@ export function TaskDetail() {
     toast.success('Domain updated');
   };
 
+  const handleAssignedToChange = (newUserId: string) => {
+    dispatch({
+      type: 'UPDATE_TASK',
+      payload: {
+        caseId: caseId || '',
+        taskId: task.id,
+        updates: { assignedTo: newUserId || undefined },
+      },
+    });
+    toast.success('Assignment updated');
+  };
+
+  // Handle subtask assignee change
+  const handleTaskAssignedToChange = (taskId: string, newUserId: string) => {
+    updateTask(taskId, { assignedTo: newUserId || undefined });
+  };
+
   return (
     <>
       {/* Main Content - With right margin for sidebar */}
@@ -115,9 +132,11 @@ export function TaskDetail() {
           status={task.status}
           team={task.team || caseData.team}
           domain={task.domain || caseData.domain}
+          assignedTo={task.assignedTo || caseData.assignedTo}
           onStatusChange={handleStatusChange}
           onTeamChange={handleTeamChange}
           onDomainChange={handleDomainChange}
+          onAssignedToChange={handleAssignedToChange}
         />
 
         {/* Task Description */}
@@ -153,6 +172,7 @@ export function TaskDetail() {
                     depth={0}
                     caseId={caseId || ''}
                     onStatusChange={updateTaskStatus}
+                    onAssignedToChange={handleTaskAssignedToChange}
                   />
                 ))}
               </div>

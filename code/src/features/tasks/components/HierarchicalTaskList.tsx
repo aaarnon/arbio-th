@@ -9,13 +9,14 @@ interface HierarchicalTaskListProps {
   tasks: Task[];
   caseId: string;
   onStatusChange?: (taskId: string, newStatus: Status) => void;
+  onAssignedToChange?: (taskId: string, newUserId: string) => void;
 }
 
 /**
  * Hierarchical Task List Component
  * Displays a tree structure of tasks and subtasks
  */
-export function HierarchicalTaskList({ tasks, caseId, onStatusChange }: HierarchicalTaskListProps) {
+export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssignedToChange }: HierarchicalTaskListProps) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   if (!tasks || tasks.length === 0) {
@@ -98,6 +99,7 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange }: Hierarch
               depth={0}
               caseId={caseId}
               onStatusChange={onStatusChange}
+              onAssignedToChange={onAssignedToChange}
               onAddTask={() => setIsCreateModalOpen(true)}
             />
           ))}

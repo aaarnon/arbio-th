@@ -23,7 +23,12 @@ export function CaseDetail() {
   const caseData = state.cases.find((c) => c.id === caseId);
   
   // Get task actions for this case
-  const { updateTaskStatus } = useTaskActions(caseId || '');
+  const { updateTaskStatus, updateTask } = useTaskActions(caseId || '');
+
+  // Handle task assignee change
+  const handleTaskAssignedToChange = (taskId: string, newUserId: string) => {
+    updateTask(taskId, { assignedTo: newUserId || undefined });
+  };
 
   // Handle case not found
   if (!caseData) {
@@ -81,6 +86,7 @@ export function CaseDetail() {
           tasks={caseData.tasks || []}
           caseId={caseData.id}
           onStatusChange={updateTaskStatus}
+          onAssignedToChange={handleTaskAssignedToChange}
         />
 
         {/* Comments Section - Unified */}

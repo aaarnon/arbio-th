@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { mockUsers } from '@/data/mockUsers';
 
 interface Breadcrumb {
   label: string;
@@ -12,12 +13,14 @@ interface EntityHeaderProps {
   status: string;
   domain?: string;
   team?: string;
+  assignedTo?: string;
   onStatusChange?: (status: string) => void;
   onDomainChange?: (domain: string) => void;
   onTeamChange?: (team: string) => void;
+  onAssignedToChange?: (userId: string) => void;
 }
 
-type DropdownType = 'status' | 'team' | 'domain' | null;
+type DropdownType = 'status' | 'team' | 'domain' | 'assignedTo' | null;
 
 /**
  * Shared Entity Header Component - Linear-inspired flat design
@@ -30,9 +33,11 @@ export function EntityHeader({
   status,
   domain,
   team,
+  assignedTo,
   onStatusChange,
   onDomainChange,
   onTeamChange,
+  onAssignedToChange,
 }: EntityHeaderProps) {
   const [openDropdown, setOpenDropdown] = useState<DropdownType>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -228,6 +233,61 @@ export function EntityHeader({
                     ))}
                   </div>
                 )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Assigned To Row */}
+      {assignedTo !== undefined && (
+        <div className="flex items-center">
+          <div className="w-24 text-sm text-neutral-600">Assigned To</div>
+          <div className="relative">
+            <button 
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+              onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
+            >
+              <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              {assignedTo ? mockUsers.find(u => u.id === assignedTo)?.name || 'Unknown' : 'Not assigned'}
+            </button>
+
+            {/* Assigned To Dropdown */}
+            {openDropdown === 'assignedTo' && (
+              <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                <button
+                  className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                  onClick={() => {
+                    onAssignedToChange?.('');
+                    setOpenDropdown(null);
+                  }}
+                >
+                  <span className="text-neutral-500">Not assigned</span>
+                  {!assignedTo && (
+                    <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </button>
+                {mockUsers.map((user) => (
+                  <button
+                    key={user.id}
+                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors"
+                    onClick={() => {
+                      onAssignedToChange?.(user.id);
+                      setOpenDropdown(null);
+                    }}
+                  >
+                    <span className="text-neutral-900">{user.name}</span>
+                    {assignedTo === user.id && (
+                      <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
+                ))}
               </div>
             )}
           </div>
