@@ -35,7 +35,7 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
 
   return (
     <tr 
-      className="hover:bg-neutral-50 cursor-pointer transition-colors h-14 border-b border-neutral-100 last:border-b-0 rounded-md"
+      className="hover:bg-neutral-100 cursor-pointer transition-colors h-14 border-b border-neutral-100 last:border-b-0 rounded-md"
       onClick={handleClick}
       role="button"
       tabIndex={0}
