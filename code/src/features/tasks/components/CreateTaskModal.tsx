@@ -15,6 +15,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -120,21 +121,6 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-6">
-            {/* Title */}
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title *</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Brief description of the task" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             {/* Description */}
             <FormField
               control={form.control}
@@ -154,6 +140,24 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
               )}
             />
 
+            {/* Title */}
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title *</FormLabel>
+                  <FormDescription>
+                    Title is auto-generated from the description.
+                  </FormDescription>
+                  <FormControl>
+                    <Input placeholder="Brief description of the task" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             {/* Team */}
             <FormField
               control={form.control}
@@ -161,6 +165,9 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Team</FormLabel>
+                  <FormDescription>
+                    Delegate to the team responsible for completing this case.
+                  </FormDescription>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -185,7 +192,7 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
               name="assignedTo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Assign To</FormLabel>
+                  <FormLabel>Assign To (optional)</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>

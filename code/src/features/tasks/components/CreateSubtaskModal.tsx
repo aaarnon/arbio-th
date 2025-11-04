@@ -16,6 +16,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -129,6 +130,25 @@ export function CreateSubtaskModal({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-6">
+            {/* Description */}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description *</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Detailed description of the subtask..."
+                      rows={4}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             {/* Title */}
             <FormField
               control={form.control}
@@ -136,27 +156,11 @@ export function CreateSubtaskModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Title *</FormLabel>
+                  <FormDescription>
+                    Title is auto-generated from the description.
+                  </FormDescription>
                   <FormControl>
                     <Input placeholder="Brief description of the subtask" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Description */}
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Detailed description of the subtask..."
-                      rows={4}
-                      {...field}
-                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -170,6 +174,9 @@ export function CreateSubtaskModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Team</FormLabel>
+                  <FormDescription>
+                    Delegate to the team responsible for completing this case.
+                  </FormDescription>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
