@@ -61,8 +61,8 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAddTask }: Tas
   };
 
   const handleTaskClick = () => {
-    // Only navigate if task has subtasks and is a top-level task (not already on task detail page)
-    if (hasSubtasks && isTopLevelTask && !currentTaskId) {
+    // Navigate to task detail page if it's a top-level task (not already on task detail page)
+    if (isTopLevelTask && !currentTaskId) {
       navigate(`/cases/${caseId}/tasks/${task.id}`);
     }
   };
@@ -111,7 +111,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAddTask }: Tas
 
         {/* Task Title */}
         <div className="flex-1 min-w-0">
-          {hasSubtasks && isTopLevelTask && !currentTaskId ? (
+          {isTopLevelTask && !currentTaskId ? (
             <button
               onClick={handleTaskClick}
               className="text-sm font-normal text-neutral-800 truncate hover:text-neutral-900 hover:underline text-left w-full"
