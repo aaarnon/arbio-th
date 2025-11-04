@@ -134,7 +134,7 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAddTask }: Tas
               <StatusBadge status={task.status} className="text-xs cursor-pointer hover:opacity-80" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="bg-white">
             <DropdownMenuItem onClick={() => onStatusChange?.(task.id, 'TODO')}>
               <span className="text-neutral-600">● To Do</span>
             </DropdownMenuItem>
