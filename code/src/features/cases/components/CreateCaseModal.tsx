@@ -109,14 +109,14 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Create New Case</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-xl font-normal text-neutral-900">CREATE NEW CASE</DialogTitle>
+          <DialogDescription className="text-sm text-neutral-600">
             Create a new support case to track and manage customer issues
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-6">
             {/* Title */}
             <FormField
               control={form.control}
@@ -256,10 +256,10 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
             />
 
             {/* Actions */}
-            <div className="flex justify-end gap-3">
+            <div className="flex justify-end gap-3 pt-2">
               <Button
                 type="button"
-                className="border border-gray-300"
+                variant="secondary"
                 onClick={() => onOpenChange(false)}
                 disabled={isSubmitting}
               >
