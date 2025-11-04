@@ -1,5 +1,7 @@
 import type { Case } from '@/types';
 import { EntityHeader } from '@/components/shared/EntityHeader';
+import { useCaseContext } from '@/store/CaseContext';
+import { toast } from 'sonner';
 
 interface CaseHeaderProps {
   case: Case;
@@ -10,14 +12,28 @@ interface CaseHeaderProps {
  * Displays breadcrumb, title, and editable properties
  */
 export function CaseHeader({ case: caseData }: CaseHeaderProps) {
+  const { dispatch } = useCaseContext();
+
   const handleStatusChange = (newStatus: string) => {
-    console.log('Change case status to:', newStatus);
-    // TODO: Implement actual status change logic
+    dispatch({
+      type: 'UPDATE_CASE',
+      payload: {
+        caseId: caseData.id,
+        updates: { status: newStatus as any },
+      },
+    });
+    toast.success('Status updated');
   };
 
   const handleDomainChange = (newDomain: string) => {
-    console.log('Change case domain to:', newDomain);
-    // TODO: Implement actual domain change logic
+    dispatch({
+      type: 'UPDATE_CASE',
+      payload: {
+        caseId: caseData.id,
+        updates: { domain: newDomain as any },
+      },
+    });
+    toast.success('Domain updated');
   };
 
   return (

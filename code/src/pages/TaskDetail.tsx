@@ -11,6 +11,7 @@ import { EntityHeader } from '@/components/shared/EntityHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { mockUsers } from '@/data/mockUsers';
+import { toast } from 'sonner';
 import type { Task } from '@/types';
 
 /**
@@ -20,7 +21,7 @@ import type { Task } from '@/types';
  */
 export function TaskDetail() {
   const { caseId, taskId } = useParams<{ caseId: string; taskId: string }>();
-  const { state } = useCaseContext();
+  const { state, dispatch } = useCaseContext();
   const navigate = useNavigate();
 
   // Find the case
@@ -76,8 +77,15 @@ export function TaskDetail() {
   };
 
   const handleDomainChange = (newDomain: string) => {
-    console.log('Change task domain to:', newDomain);
-    // TODO: Implement actual domain change logic
+    dispatch({
+      type: 'UPDATE_TASK',
+      payload: {
+        caseId: caseId || '',
+        taskId: task.id,
+        updates: { domain: newDomain as any },
+      },
+    });
+    toast.success('Domain updated');
   };
 
   return (
