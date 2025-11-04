@@ -21,6 +21,13 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
   const creator = caseData.createdBy 
     ? mockUsers.find(u => u.id === caseData.createdBy)
     : null;
+  
+  // Format property status for display
+  const formatPropertyStatus = (status: string) => {
+    if (status === 'ACTIVE') return 'Occupied';
+    if (status === 'MAINTENANCE') return 'Maintenance';
+    return status;
+  };
 
   return (
     <aside className="h-full overflow-y-auto bg-white border-l border-neutral-200">
@@ -73,7 +80,7 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Status</dt>
-            <dd className="text-xs text-neutral-900">{property.status}</dd>
+            <dd className="text-xs text-neutral-900">{formatPropertyStatus(property.status)}</dd>
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Last Maintenance</dt>
