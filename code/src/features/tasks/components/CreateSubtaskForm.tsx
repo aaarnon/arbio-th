@@ -108,17 +108,17 @@ export function CreateSubtaskForm({
   };
 
   return (
-    <div className="ml-8 mb-4 rounded-lg border-2 border-indigo-200 bg-indigo-50 p-4">
-      <h4 className="mb-3 text-sm font-semibold text-gray-900">Add Subtask</h4>
+    <div className="ml-8 mb-4 rounded-md border border-neutral-200 bg-neutral-50 p-4">
+      <h4 className="mb-4 text-xs font-medium text-neutral-900 uppercase tracking-wider">Add Subtask</h4>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           {/* Title */}
           <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs">Title *</FormLabel>
+                <FormLabel>Title *</FormLabel>
                 <FormControl>
                   <Input placeholder="Subtask title" {...field} />
                 </FormControl>
@@ -133,11 +133,11 @@ export function CreateSubtaskForm({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs">Description (Optional)</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Subtask description..."
-                    rows={2}
+                    rows={3}
                     {...field}
                   />
                 </FormControl>
@@ -152,7 +152,7 @@ export function CreateSubtaskForm({
             name="assignedTo"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs">Assign To (Optional)</FormLabel>
+                <FormLabel>Assign To</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
@@ -174,21 +174,21 @@ export function CreateSubtaskForm({
           />
 
           {/* Actions */}
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-3 pt-2">
             <Button
               type="button"
+              variant="secondary"
               onClick={() => {
                 form.reset();
                 onCancel?.();
               }}
               disabled={isSubmitting}
               size="sm"
-              className="border border-gray-300"
             >
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting} size="sm">
-              {isSubmitting ? 'Creating...' : 'Create Subtask'}
+              {isSubmitting ? 'Creating...' : 'Add Subtask'}
             </Button>
           </div>
         </form>

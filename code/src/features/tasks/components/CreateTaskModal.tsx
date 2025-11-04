@@ -112,23 +112,21 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Create New Task</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-xl font-normal text-neutral-900">CREATE NEW TASK</DialogTitle>
+          <DialogDescription className="text-sm text-neutral-600">
             Add a new task to track work for this case
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-6">
             {/* Title */}
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Title <span className="text-red-500">*</span>
-                  </FormLabel>
+                  <FormLabel>Title *</FormLabel>
                   <FormControl>
                     <Input placeholder="Brief description of the task" {...field} />
                   </FormControl>
@@ -143,9 +141,7 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Description <span className="text-red-500">*</span>
-                  </FormLabel>
+                  <FormLabel>Description *</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Detailed description of the task..."
@@ -211,7 +207,7 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
             />
 
             {/* Actions */}
-            <div className="flex justify-end gap-3 pt-4">
+            <div className="flex justify-end gap-3 pt-2">
               <Button
                 type="button"
                 variant="secondary"
