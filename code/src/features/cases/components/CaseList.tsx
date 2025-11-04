@@ -79,9 +79,9 @@ export function CaseList() {
           <table className="w-full table-fixed">
             <colgroup>
               <col style={{ width: '12%' }} />
-              <col style={{ width: '60%' }} />
+              <col style={{ width: '58%' }} />
               <col style={{ width: '18%' }} />
-              <col style={{ width: '10%' }} />
+              <col style={{ width: '12%' }} />
             </colgroup>
             <thead>
               <tr className="border-b border-neutral-100">

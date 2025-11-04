@@ -60,3 +60,18 @@ export function formatRelativeDate(dateString: string): string {
   }
 }
 
+/**
+ * Format a date string to a short numeric date format
+ * @param dateString - ISO date string
+ * @returns Formatted date string (e.g., "11/02/2025")
+ * @example formatShortDate("2025-11-02T10:30:00Z") // "11/02/2025"
+ */
+export function formatShortDate(dateString: string): string {
+  try {
+    const date = parseISO(dateString);
+    return format(date, 'MM/dd/yyyy');
+  } catch (error) {
+    return dateString;
+  }
+}
+

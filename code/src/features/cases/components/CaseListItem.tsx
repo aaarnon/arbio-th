@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import type { Case } from '@/types';
 import { StatusBadge } from '@/components/shared/StatusBadge';
-import { formatRelativeDate } from '@/utils/date';
+import { formatShortDate } from '@/utils/date';
 
 interface CaseListItemProps {
   case: Case;
@@ -61,7 +61,7 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
 
       {/* Created */}
       <td className="pl-6 pr-6 py-3 whitespace-nowrap">
-        <span className="text-sm font-normal text-neutral-500">{formatRelativeDate(caseData.createdAt)}</span>
+        <span className="text-sm font-normal text-neutral-500">{formatShortDate(caseData.createdAt)}</span>
       </td>
     </tr>
   );
