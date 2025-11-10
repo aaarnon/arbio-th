@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { useCaseContext } from '@/store/CaseContext';
 import { useCaseFilters } from '../hooks/useCaseFilters';
 import { CaseListItem } from './CaseListItem';
@@ -7,7 +8,7 @@ import { LoadingSkeleton } from '@/components/shared/LoadingSkeleton';
 
 /**
  * Case List Component
- * Displays all cases in a list with filters
+ * Displays all cases in a list with filters and infinite scroll
  */
 export function CaseList() {
   const { state } = useCaseContext();
@@ -21,6 +22,47 @@ export function CaseList() {
     setDateFilter,
     setSearchFilter,
   } = useCaseFilters(cases);
+
+  // Infinite scroll state
+  const [displayCount, setDisplayCount] = useState(20);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  // Reset display count when filters change
+  useEffect(() => {
+    setDisplayCount(20);
+  }, [filters]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && !isLoadingMore && displayCount < filteredCases.length) {
+          setIsLoadingMore(true);
+          // Simulate loading delay
+          setTimeout(() => {
+            setDisplayCount((prev) => Math.min(prev + 20, filteredCases.length));
+            setIsLoadingMore(false);
+          }, 500);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [displayCount, filteredCases.length, isLoadingMore]);
+
+  const displayedCases = filteredCases.slice(0, displayCount);
 
   if (loading) {
     return (
@@ -61,9 +103,10 @@ export function CaseList() {
       </div>
 
       {/* Results Count */}
-      {filteredCases.length !== cases.length && (
+      {filteredCases.length > 0 && (
         <p className="text-xs text-neutral-400 mb-3">
-          Showing {filteredCases.length} of {cases.length} cases
+          Showing {displayedCases.length} of {filteredCases.length} cases
+          {filteredCases.length !== cases.length && ` (filtered from ${cases.length} total)`}
         </p>
       )}
 
@@ -103,11 +146,25 @@ export function CaseList() {
               </tr>
             </thead>
             <tbody>
-              {filteredCases.map((caseData) => (
+              {displayedCases.map((caseData) => (
                 <CaseListItem key={caseData.id} case={caseData} />
               ))}
             </tbody>
           </table>
+          
+          {/* Load More Trigger */}
+          {displayCount < filteredCases.length && (
+            <div ref={loadMoreRef} className="py-8 text-center">
+              {isLoadingMore ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-neutral-300 border-t-neutral-600 rounded-full animate-spin" />
+                  <span className="text-sm text-neutral-500">Loading more cases...</span>
+                </div>
+              ) : (
+                <span className="text-sm text-neutral-400">Scroll for more</span>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

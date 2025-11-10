@@ -140,17 +140,17 @@ export function CreateCase() {
   return (
     <div className="mx-auto max-w-3xl">
       {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-normal text-neutral-900 mb-2">CREATE NEW CASE</h1>
+      <div className="mb-5">
+        <h1 className="text-2xl font-normal text-neutral-900 mb-1">CREATE NEW CASE</h1>
         <p className="text-sm text-neutral-600">
           Create a new support case to track and manage customer issues
         </p>
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-card p-8">
+      <div className="bg-white rounded-card p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Search Field */}
             <FormField
               control={form.control}
@@ -181,7 +181,7 @@ export function CreateCase() {
                   <FormControl>
                     <Textarea
                       placeholder="Detailed description of the issue..."
-                      rows={4}
+                      rows={3}
                       {...field}
                     />
                   </FormControl>

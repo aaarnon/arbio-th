@@ -120,7 +120,7 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 mt-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
             {/* Description */}
             <FormField
               control={form.control}
@@ -131,7 +131,7 @@ export function CreateTaskModal({ open, onOpenChange, caseId }: CreateTaskModalP
                   <FormControl>
                     <Textarea
                       placeholder="Detailed description of the task..."
-                      rows={4}
+                      rows={3}
                       {...field}
                     />
                   </FormControl>

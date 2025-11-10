@@ -197,21 +197,21 @@ export function CreateTask() {
   return (
     <div className="mx-auto max-w-3xl">
       {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-normal text-neutral-900 mb-2">
+      <div className="mb-5">
+        <h1 className="text-2xl font-normal text-neutral-900 mb-1">
           {isSubtask ? 'CREATE NEW SUBTASK' : 'CREATE NEW TASK'}
         </h1>
         <p className="text-sm text-neutral-600">
           {isSubtask
-            ? `Add a new subtask under ${parentTask?.id}`
-            : `Add a new task to case ${caseId}`}
+            ? `Add a new subtask under ${parentTask?.id} - ${parentTask?.title}`
+            : `Add a new task to case ${caseId} - ${caseData?.title}`}
         </p>
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-card p-8">
+      <div className="bg-white rounded-card p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Description */}
             <FormField
               control={form.control}
@@ -222,7 +222,7 @@ export function CreateTask() {
                   <FormControl>
                     <Textarea
                       placeholder="Detailed description of the task..."
-                      rows={4}
+                      rows={3}
                       {...field}
                     />
                   </FormControl>
