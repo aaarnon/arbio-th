@@ -24,7 +24,6 @@ export function TaskDetail() {
   const { state, dispatch } = useCaseContext();
   const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState<'status' | 'team' | 'domain' | 'assignedTo' | null>(null);
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   // Find the case
   const caseData = state.cases.find((c) => c.id === caseId);
@@ -117,58 +116,11 @@ export function TaskDetail() {
   }, [isEditingDescription]);
 
   // Handle title change
-  const handleTitleChange = (newTitle: string) => {
-    dispatch({
-      type: 'UPDATE_TASK',
-      payload: {
-        caseId: caseId || '',
-        taskId: task.id,
-        updates: { title: newTitle },
-      },
-    });
-    toast.success('Title updated');
-  };
-
   // Handle status/team/domain changes
   const handleStatusChange = (newStatus: string) => {
     updateTaskStatus(task.id, newStatus as any);
   };
 
-  const handleTeamChange = (newTeam: string) => {
-    dispatch({
-      type: 'UPDATE_TASK',
-      payload: {
-        caseId: caseId || '',
-        taskId: task.id,
-        updates: { team: newTeam as any },
-      },
-    });
-    toast.success('Team updated');
-  };
-
-  const handleDomainChange = (newDomain: string) => {
-    dispatch({
-      type: 'UPDATE_TASK',
-      payload: {
-        caseId: caseId || '',
-        taskId: task.id,
-        updates: { domain: newDomain as any },
-      },
-    });
-    toast.success('Domain updated');
-  };
-
-  const handleAssignedToChange = (newUserId: string) => {
-    dispatch({
-      type: 'UPDATE_TASK',
-      payload: {
-        caseId: caseId || '',
-        taskId: task.id,
-        updates: { assignedTo: newUserId },
-      },
-    });
-    toast.success('Assignment updated');
-  };
 
   // Handle subtask assignee change
   const handleTaskAssignedToChange = (taskId: string, newUserId: string) => {
@@ -296,10 +248,7 @@ export function TaskDetail() {
           </div>
 
           {/* Title - Inline Editable */}
-          <h1
-            onClick={() => handleTitleChange && setIsEditingTitle(true)}
-            className="mb-2 text-3xl font-normal text-neutral-900 cursor-text hover:bg-neutral-50 rounded px-2 -mx-2 transition-colors"
-          >
+          <h1 className="mb-2 text-3xl font-normal text-neutral-900">
             {task.title}
           </h1>
 
@@ -357,7 +306,7 @@ export function TaskDetail() {
                     onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
                   >
                     <span className="font-normal text-neutral-400">Team:</span>
-                    <span className="ml-1">{formatText(task.team || caseData.team)}</span>
+                    <span className="ml-1">{formatText(task.team || caseData.team || '')}</span>
                   </button>
                 </div>
               )}
@@ -370,7 +319,7 @@ export function TaskDetail() {
                     onClick={() => setOpenDropdown(openDropdown === 'domain' ? null : 'domain')}
                   >
                     <span className="font-normal text-neutral-400">Domain:</span>
-                    <span className="ml-1">{formatText(task.domain || caseData.domain)}</span>
+                    <span className="ml-1">{formatText(task.domain || caseData.domain || '')}</span>
                   </button>
                 </div>
               )}
@@ -383,7 +332,7 @@ export function TaskDetail() {
                     onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
                   >
                     <span className="font-normal text-neutral-400">Assigned To:</span>
-                    <span className="ml-1">{getAssignedUserName(task.assignedTo || caseData.assignedTo)}</span>
+                    <span className="ml-1">{getAssignedUserName(task.assignedTo || caseData.assignedTo || undefined)}</span>
                   </button>
                 </div>
               )}
