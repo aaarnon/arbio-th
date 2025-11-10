@@ -15,13 +15,16 @@ export interface Property {
   /** Property status */
   status: 'ACTIVE' | 'MAINTENANCE' | 'INACTIVE';
   
-  /** Last maintenance date */
-  lastMaintenance?: string;
-  
   /** Number of bedrooms */
   bedrooms?: number;
   
   /** Number of bathrooms */
   bathrooms?: number;
+  
+  /** Whether this is a multi-unit property */
+  multiUnit?: boolean;
+  
+  /** URL to property handbook */
+  handbookUrl?: string;
 }
 

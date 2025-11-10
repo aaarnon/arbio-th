@@ -17,7 +17,7 @@ export const editTaskSchema = z.object({
   title: z.string().min(1, 'This field is required'),
   description: z.string().optional(),
   assignedTo: z.string().optional(),
-  status: z.enum(['TODO', 'IN_PROGRESS', 'DONE', 'CANCELLED']),
+  status: z.enum(['TODO', 'IN_PROGRESS', 'BLOCKED', 'IN_REVIEW', 'DONE', 'FAILED', 'DUPLICATE', 'REJECTED', 'CANCELLED']),
 });
 
 /**

@@ -83,11 +83,24 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
             <dd className="text-xs text-neutral-900">{formatPropertyStatus(property.status)}</dd>
           </div>
           <div className="flex items-center justify-between">
-            <dt className="text-xs text-neutral-500">Last Maintenance</dt>
-            <dd className="text-xs text-neutral-900">
-              {property.lastMaintenance ? formatDate(property.lastMaintenance) : 'N/A'}
-            </dd>
+            <dt className="text-xs text-neutral-500">Property Type</dt>
+            <dd className="text-xs text-neutral-900">{property.multiUnit ? 'Multi-Unit' : 'Single-Unit'}</dd>
           </div>
+          {property.handbookUrl && (
+            <div className="flex items-center justify-between">
+              <dt className="text-xs text-neutral-500">Property Handbook</dt>
+              <dd>
+                <a 
+                  href={property.handbookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-neutral-900 underline hover:text-neutral-600 transition-colors"
+                >
+                  View Handbook
+                </a>
+              </dd>
+            </div>
+          )}
         </div>
       </section>
 

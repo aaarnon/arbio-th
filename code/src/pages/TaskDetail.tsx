@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { useCaseContext } from '@/store/CaseContext';
 import { CaseSidebar } from '@/features/case-detail/components/CaseSidebar';
@@ -7,7 +7,7 @@ import { CreateSubtaskModal } from '@/features/tasks/components/CreateSubtaskMod
 import { useTaskActions } from '@/features/tasks/hooks/useTaskActions';
 import { AddCommentForm } from '@/features/comments/components/AddCommentForm';
 import { AttachmentList } from '@/features/attachments/components/AttachmentList';
-import { EntityHeader } from '@/components/shared/EntityHeader';
+import { StatusDropdown } from '@/components/shared/StatusDropdown';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { mockUsers } from '@/data/mockUsers';
@@ -23,12 +23,40 @@ export function TaskDetail() {
   const { caseId, taskId } = useParams<{ caseId: string; taskId: string }>();
   const { state, dispatch } = useCaseContext();
   const navigate = useNavigate();
+  const [openDropdown, setOpenDropdown] = useState<'status' | 'team' | 'domain' | 'assignedTo' | null>(null);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
 
   // Find the case
   const caseData = state.cases.find((c) => c.id === caseId);
 
   // Get task actions for this case
   const { updateTaskStatus, updateTask } = useTaskActions(caseId || '');
+
+  // Helper function to format text
+  const formatText = (text: string) => {
+    const teamMapping: Record<string, string> = {
+      'PROPERTY_MANAGEMENT': 'Property Management',
+      'GUEST_COMM': 'Guest Comm',
+      'GUEST_EXPERIENCE': 'Guest Experience',
+      'FINOPS': 'FinOps',
+    };
+    
+    if (teamMapping[text]) {
+      return teamMapping[text];
+    }
+    
+    return text
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
+  // Helper function to get assigned user name
+  const getAssignedUserName = (userId?: string) => {
+    if (!userId) return 'Unassigned';
+    const user = mockUsers.find(u => u.id === userId);
+    return user ? user.name : 'Unknown';
+  };
 
   if (!caseData) {
     return (
@@ -209,24 +237,159 @@ export function TaskDetail() {
     return breadcrumbs;
   };
 
+  // Determine parent (case or parent task)
+  const getParentInfo = (): { name: string; link: string; id: string } | null => {
+    const taskIdParts = task.id.split('.');
+    
+    // If task is TK-2847.1, parent is case TK-2847
+    if (taskIdParts.length === 2) {
+      return {
+        id: caseData.id,
+        name: caseData.title,
+        link: `/cases/${caseId}`,
+      };
+    }
+    
+    // If task is TK-2847.1.1 or deeper, parent is the task one level up
+    if (taskIdParts.length > 2) {
+      const parentTaskId = taskIdParts.slice(0, -1).join('.');
+      const parentTask = findTask(caseData.tasks || [], parentTaskId);
+      
+      if (parentTask) {
+        return {
+          id: parentTask.id,
+          name: parentTask.title,
+          link: `/cases/${caseId}/tasks/${parentTaskId}`,
+        };
+      }
+    }
+    
+    return null;
+  };
+
+  const parentInfo = getParentInfo();
+
   return (
     <>
       {/* Main Content - With right margin for sidebar */}
       <div className="mr-96 space-y-8">
         {/* Task Header */}
-        <EntityHeader
-          breadcrumbs={generateTaskBreadcrumbs()}
-          title={task.title}
-          status={task.status}
-          team={task.team || caseData.team}
-          domain={task.domain || caseData.domain}
-          assignedTo={task.assignedTo || caseData.assignedTo}
-          onTitleChange={handleTitleChange}
-          onStatusChange={handleStatusChange}
-          onTeamChange={handleTeamChange}
-          onDomainChange={handleDomainChange}
-          onAssignedToChange={handleAssignedToChange}
-        />
+        <div>
+          {/* Breadcrumb */}
+          <div className="mb-6 flex items-center gap-2 text-sm text-neutral-600">
+            {generateTaskBreadcrumbs().map((crumb, index) => (
+              <div key={index} className="flex items-center gap-2">
+                {index > 0 && (
+                  <svg className="h-4 w-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                )}
+                {crumb.to ? (
+                  <Link to={crumb.to} className="hover:text-neutral-900 transition-colors">
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span className="text-neutral-900 font-medium">{crumb.label}</span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Title - Inline Editable */}
+          <h1
+            onClick={() => handleTitleChange && setIsEditingTitle(true)}
+            className="mb-2 text-3xl font-normal text-neutral-900 cursor-text hover:bg-neutral-50 rounded px-2 -mx-2 transition-colors"
+          >
+            {task.title}
+          </h1>
+
+          {/* Parent Link - positioned after title, before status */}
+          {parentInfo && (
+            <div className="flex items-center gap-2 mb-6">
+              <svg
+                className="w-4 h-4 text-neutral-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="12" cy="12" r="9" strokeWidth="2" />
+              </svg>
+              <button
+                onClick={() => navigate(parentInfo.link)}
+                className="text-sm text-neutral-500 hover:text-neutral-700 transition-colors"
+              >
+                Linked to{' '}
+                <span className="text-neutral-900 font-medium">{parentInfo.id}</span>
+                {' '}
+                {parentInfo.name}
+              </button>
+            </div>
+          )}
+
+          {/* Status Row */}
+          <div className="mb-3 flex items-center">
+            <div className="w-24 text-sm text-neutral-600">Status</div>
+            <StatusDropdown
+              currentStatus={task.status}
+              onStatusChange={(newStatus) => handleStatusChange(newStatus)}
+              open={openDropdown === 'status'}
+              onOpenChange={(isOpen) => setOpenDropdown(isOpen ? 'status' : null)}
+              trigger={
+                <button className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900">
+                  {formatText(task.status)}
+                  <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              }
+            />
+          </div>
+
+          {/* Properties Row */}
+          <div className="flex items-center">
+            <div className="w-24 text-sm text-neutral-600">Properties</div>
+            <div className="flex items-center gap-6">
+              {/* Team */}
+              {(task.team || caseData.team) && (
+                <div className="relative">
+                  <button 
+                    className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                    onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
+                  >
+                    <span className="font-normal text-neutral-400">Team:</span>
+                    <span className="ml-1">{formatText(task.team || caseData.team)}</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Domain */}
+              {(task.domain || caseData.domain) && (
+                <div className="relative">
+                  <button 
+                    className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                    onClick={() => setOpenDropdown(openDropdown === 'domain' ? null : 'domain')}
+                  >
+                    <span className="font-normal text-neutral-400">Domain:</span>
+                    <span className="ml-1">{formatText(task.domain || caseData.domain)}</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Assigned To */}
+              {(task.assignedTo || caseData.assignedTo) && (
+                <div className="relative">
+                  <button 
+                    className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                    onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
+                  >
+                    <span className="font-normal text-neutral-400">Assigned To:</span>
+                    <span className="ml-1">{getAssignedUserName(task.assignedTo || caseData.assignedTo)}</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
         {/* Task Description - Inline Editable */}
         <Card>

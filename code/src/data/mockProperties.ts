@@ -12,7 +12,8 @@ export const mockProperties: Property[] = [
     status: 'ACTIVE',
     bedrooms: 2,
     bathrooms: 2,
-    lastMaintenance: '2025-09-28T14:30:00Z',
+    multiUnit: true,
+    handbookUrl: 'https://example.com/handbooks/property-a001',
   },
   {
     id: 'FR_PAR_012_Darius_02_145_03_02_B204',
@@ -21,7 +22,8 @@ export const mockProperties: Property[] = [
     status: 'ACTIVE',
     bedrooms: 3,
     bathrooms: 2.5,
-    lastMaintenance: '2025-10-28T09:15:00Z',
+    multiUnit: false,
+    handbookUrl: 'https://example.com/handbooks/property-b204',
   },
   {
     id: 'US_NYC_087_Darius_04_312_01_05_C302',
@@ -30,7 +32,8 @@ export const mockProperties: Property[] = [
     status: 'MAINTENANCE',
     bedrooms: 1,
     bathrooms: 1,
-    lastMaintenance: '2025-11-01T11:00:00Z',
+    multiUnit: true,
+    handbookUrl: 'https://example.com/handbooks/property-c302',
   },
   {
     id: 'ES_MAD_054_Darius_01_089_02_03_D105',
@@ -39,7 +42,7 @@ export const mockProperties: Property[] = [
     status: 'ACTIVE',
     bedrooms: 2,
     bathrooms: 2,
-    lastMaintenance: '2025-10-15T08:30:00Z',
+    multiUnit: false,
   },
   {
     id: 'IT_ROM_023_Darius_03_267_04_01_E401',
@@ -48,7 +51,8 @@ export const mockProperties: Property[] = [
     status: 'ACTIVE',
     bedrooms: 4,
     bathrooms: 3,
-    lastMaintenance: '2025-10-20T14:00:00Z',
+    multiUnit: true,
+    handbookUrl: 'https://example.com/handbooks/property-e401',
   },
   {
     id: 'UK_LON_098_Darius_05_521_02_04_F208',
@@ -57,7 +61,7 @@ export const mockProperties: Property[] = [
     status: 'ACTIVE',
     bedrooms: 3,
     bathrooms: 2.5,
-    lastMaintenance: '2025-10-22T10:45:00Z',
+    multiUnit: false,
   },
   {
     id: 'PT_LIS_041_Darius_02_178_01_02_G110',
@@ -66,7 +70,7 @@ export const mockProperties: Property[] = [
     status: 'MAINTENANCE',
     bedrooms: 2,
     bathrooms: 1.5,
-    lastMaintenance: '2025-11-02T09:00:00Z',
+    multiUnit: true,
   },
   {
     id: 'NL_AMS_065_Darius_04_394_03_06_H305',
@@ -75,7 +79,8 @@ export const mockProperties: Property[] = [
     status: 'ACTIVE',
     bedrooms: 3,
     bathrooms: 2,
-    lastMaintenance: '2025-10-18T13:20:00Z',
+    multiUnit: false,
+    handbookUrl: 'https://example.com/handbooks/property-h305',
   },
   {
     id: 'BE_BRU_019_Darius_01_156_02_01_J102',
@@ -84,7 +89,8 @@ export const mockProperties: Property[] = [
     status: 'ACTIVE',
     bedrooms: 2,
     bathrooms: 2,
-    lastMaintenance: '2025-10-25T11:30:00Z',
+    multiUnit: true,
+    handbookUrl: 'https://example.com/handbooks/property-j102',
   },
 ];
 

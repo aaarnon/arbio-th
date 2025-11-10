@@ -24,8 +24,13 @@ interface StatusDropdownProps {
 const STATUS_OPTIONS: StatusOption[] = [
   { value: 'TODO', label: 'To Do' },
   { value: 'IN_PROGRESS', label: 'In Progress' },
+  { value: 'BLOCKED', label: 'Blocked' },
+  { value: 'IN_REVIEW', label: 'In Review' },
   { value: 'DONE', label: 'Done' },
-  { value: 'CANCELLED', label: 'Canceled' },
+  { value: 'FAILED', label: 'Failed' },
+  { value: 'DUPLICATE', label: 'Duplicate' },
+  { value: 'REJECTED', label: 'Rejected' },
+  { value: 'CANCELLED', label: 'Cancelled' },
 ];
 
 /**

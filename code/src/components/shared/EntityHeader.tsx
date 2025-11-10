@@ -15,6 +15,7 @@ interface EntityHeaderProps {
   domain?: string;
   team?: string;
   assignedTo?: string;
+  reduceTitleMargin?: boolean;
   onTitleChange?: (title: string) => void;
   onStatusChange?: (status: string) => void;
   onDomainChange?: (domain: string) => void;
@@ -36,6 +37,7 @@ export function EntityHeader({
   domain,
   team,
   assignedTo,
+  reduceTitleMargin,
   onTitleChange,
   onStatusChange,
   onDomainChange,
@@ -160,13 +162,13 @@ export function EntityHeader({
           onChange={(e) => setTitleValue(e.target.value)}
           onBlur={handleTitleBlur}
           onKeyDown={handleTitleKeyDown}
-          className="mb-6 text-3xl font-normal text-neutral-900 bg-transparent border-none outline-none focus:outline-none w-full"
+          className={`${reduceTitleMargin ? 'mb-2' : 'mb-6'} text-3xl font-normal text-neutral-900 bg-transparent border-none outline-none focus:outline-none w-full`}
           placeholder="Enter title..."
         />
       ) : (
         <h1
           onClick={() => onTitleChange && setIsEditingTitle(true)}
-          className={`mb-6 text-3xl font-normal text-neutral-900 ${onTitleChange ? 'cursor-text hover:bg-neutral-50 rounded px-2 -mx-2 transition-colors' : ''}`}
+          className={`${reduceTitleMargin ? 'mb-2' : 'mb-6'} text-3xl font-normal text-neutral-900 ${onTitleChange ? 'cursor-text hover:bg-neutral-50 rounded px-2 -mx-2 transition-colors' : ''}`}
         >
           {title}
         </h1>

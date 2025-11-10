@@ -26,27 +26,53 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
           <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">Tasks</h2>
         </CardHeader>
         <CardContent>
-          {/* Add Task Button */}
-          <Button
-            variant="ghost"
-            onClick={() => setIsCreateModalOpen(true)}
-            className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
-          >
-            <svg
-              className="mr-2 h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => setIsCreateModalOpen(true)}
+              className="flex-1 justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Add task
-          </Button>
+              <svg
+                className="mr-2 h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Add task
+            </Button>
+            
+            <Button
+              variant="secondary"
+              onClick={() => {
+                // TODO: Implement Breezeway integration
+                console.log('Send to Breezeway clicked');
+              }}
+              className="flex-1 justify-center"
+            >
+              <svg
+                className="mr-2 h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+              Send to Breezeway
+            </Button>
+          </div>
         </CardContent>
 
         {/* Create Task Modal */}
@@ -105,12 +131,12 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
           ))}
         </div>
         
-        {/* Add Task Button */}
-        <div className="mt-6">
+        {/* Action Buttons */}
+        <div className="mt-6 flex gap-2">
           <Button
             variant="ghost"
             onClick={() => setIsCreateModalOpen(true)}
-            className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
+            className="flex-1 justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
           >
             <svg
               className="mr-2 h-4 w-4"
@@ -126,6 +152,30 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
               />
             </svg>
             Add task
+          </Button>
+          
+          <Button
+            variant="secondary"
+            onClick={() => {
+              // TODO: Implement Breezeway integration
+              console.log('Send to Breezeway clicked');
+            }}
+            className="flex-1 justify-center"
+          >
+            <svg
+              className="mr-2 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+            Send to Breezeway
           </Button>
         </div>
       </CardContent>
