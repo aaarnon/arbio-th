@@ -36,7 +36,7 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
         <h3 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">
           Ticket Information
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-1">
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Ticket ID</dt>
             <dd className="text-xs text-neutral-900 font-medium">{caseData.id}</dd>
@@ -61,7 +61,7 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
         <h3 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">
           Property Context
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-1">
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Unit</dt>
             <dd>
@@ -109,7 +109,7 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
         <h3 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">
           Reservation Context
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-1">
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Reservation ID</dt>
             <dd>

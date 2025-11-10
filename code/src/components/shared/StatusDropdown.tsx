@@ -9,6 +9,7 @@ import {
 interface StatusOption {
   value: string;
   label: string;
+  isSeparator?: boolean;
 }
 
 interface StatusDropdownProps {
@@ -24,9 +25,10 @@ interface StatusDropdownProps {
 const STATUS_OPTIONS: StatusOption[] = [
   { value: 'TODO', label: 'To Do' },
   { value: 'IN_PROGRESS', label: 'In Progress' },
-  { value: 'BLOCKED', label: 'Blocked' },
   { value: 'IN_REVIEW', label: 'In Review' },
   { value: 'DONE', label: 'Done' },
+  { value: 'separator-1', label: '', isSeparator: true },
+  { value: 'BLOCKED', label: 'Blocked' },
   { value: 'FAILED', label: 'Failed' },
   { value: 'DUPLICATE', label: 'Duplicate' },
   { value: 'REJECTED', label: 'Rejected' },
@@ -58,28 +60,34 @@ export function StatusDropdown({
         {trigger}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-white rounded-lg shadow-lg border border-neutral-200 py-2 w-48">
-        {STATUS_OPTIONS.map((option) => (
-          <DropdownMenuItem
-            key={option.value}
-            onClick={() => {
-              if (!disabled || option.value !== 'DONE') {
-                onStatusChange(option.value);
-                setIsOpen(false);
-              }
-            }}
-            disabled={disabled && option.value === 'DONE'}
-            className={`flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors focus:bg-neutral-50 rounded-none ${
-              disabled && option.value === 'DONE' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-            }`}
-          >
-            <span className="text-neutral-900">{option.label}</span>
-            {currentStatus === option.value && (
-              <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            )}
-          </DropdownMenuItem>
-        ))}
+        {STATUS_OPTIONS.map((option) => {
+          if (option.isSeparator) {
+            return <div key={option.value} className="my-1 h-px bg-neutral-200" />;
+          }
+          
+          return (
+            <DropdownMenuItem
+              key={option.value}
+              onClick={() => {
+                if (!disabled || option.value !== 'DONE') {
+                  onStatusChange(option.value);
+                  setIsOpen(false);
+                }
+              }}
+              disabled={disabled && option.value === 'DONE'}
+              className={`flex items-center justify-between px-3 py-1.5 text-sm hover:bg-neutral-50 transition-colors focus:bg-neutral-50 rounded-none ${
+                disabled && option.value === 'DONE' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
+            >
+              <span className="text-neutral-900">{option.label}</span>
+              {currentStatus === option.value && (
+                <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </DropdownMenuItem>
+          );
+        })}
         {disabled && disabledMessage && (
           <div className="px-3 py-2 text-xs text-neutral-500 border-t border-neutral-100 mt-1">
             {disabledMessage}

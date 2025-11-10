@@ -71,9 +71,9 @@ export function CaseFilters({
             <SelectItem value="ALL">All Statuses</SelectItem>
             <SelectItem value="TODO">To Do</SelectItem>
             <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-            <SelectItem value="BLOCKED">Blocked</SelectItem>
             <SelectItem value="IN_REVIEW">In Review</SelectItem>
             <SelectItem value="DONE">Done</SelectItem>
+            <SelectItem value="BLOCKED">Blocked</SelectItem>
             <SelectItem value="FAILED">Failed</SelectItem>
             <SelectItem value="DUPLICATE">Duplicate</SelectItem>
             <SelectItem value="REJECTED">Rejected</SelectItem>
