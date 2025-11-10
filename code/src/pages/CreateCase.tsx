@@ -163,7 +163,7 @@ export function CreateCase() {
                       value={field.value}
                       onValueChange={field.onChange}
                       options={searchOptions}
-                      placeholder="Search by reservation ID, guest name or Arbio SKU"
+                      placeholder="Search by Property (SKU, Address) or Reservation (ID, Guest Name)"
                     />
                   </FormControl>
                   <FormMessage />
