@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from 'react';
 import { useCaseContext } from '@/store/CaseContext';
 import { CaseSidebar } from '@/features/case-detail/components/CaseSidebar';
 import { TaskItem } from '@/features/tasks/components/TaskItem';
-import { CreateSubtaskModal } from '@/features/tasks/components/CreateSubtaskModal';
 import { useTaskActions } from '@/features/tasks/hooks/useTaskActions';
 import { AddCommentForm } from '@/features/comments/components/AddCommentForm';
 import { AttachmentList } from '@/features/attachments/components/AttachmentList';
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { mockUsers } from '@/data/mockUsers';
 import { toast } from 'sonner';
+import { formatTeam } from '@/utils/constants';
 import type { Task } from '@/types';
 
 /**
@@ -31,19 +31,8 @@ export function TaskDetail() {
   // Get task actions for this case
   const { updateTaskStatus, updateTask } = useTaskActions(caseId || '');
 
-  // Helper function to format text
-  const formatText = (text: string) => {
-    const teamMapping: Record<string, string> = {
-      'PROPERTY_MANAGEMENT': 'Property Management',
-      'GUEST_COMM': 'Guest Comm',
-      'GUEST_EXPERIENCE': 'Guest Experience',
-      'FINOPS': 'FinOps',
-    };
-    
-    if (teamMapping[text]) {
-      return teamMapping[text];
-    }
-    
+  // Helper function to format text (for status)
+  const formatStatusText = (text: string) => {
     return text
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -96,7 +85,6 @@ export function TaskDetail() {
   }
 
   const hasSubtasks = task.subtasks && task.subtasks.length > 0;
-  const [isCreateSubtaskModalOpen, setIsCreateSubtaskModalOpen] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [descriptionValue, setDescriptionValue] = useState(task.description || '');
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
@@ -285,7 +273,7 @@ export function TaskDetail() {
               onOpenChange={(isOpen) => setOpenDropdown(isOpen ? 'status' : null)}
               trigger={
                 <button className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900">
-                  {formatText(task.status)}
+                  {formatStatusText(task.status)}
                   <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
@@ -306,20 +294,7 @@ export function TaskDetail() {
                     onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
                   >
                     <span className="font-normal text-neutral-400">Team:</span>
-                    <span className="ml-1">{formatText(task.team || caseData.team || '')}</span>
-                  </button>
-                </div>
-              )}
-
-              {/* Domain */}
-              {(task.domain || caseData.domain) && (
-                <div className="relative">
-                  <button 
-                    className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-                    onClick={() => setOpenDropdown(openDropdown === 'domain' ? null : 'domain')}
-                  >
-                    <span className="font-normal text-neutral-400">Domain:</span>
-                    <span className="ml-1">{formatText(task.domain || caseData.domain || '')}</span>
+                    <span className="ml-1">{formatTeam(task.team || caseData.team || '')}</span>
                   </button>
                 </div>
               )}
@@ -396,7 +371,7 @@ export function TaskDetail() {
             {/* Add Subtask Button */}
             <Button
               variant="ghost"
-              onClick={() => setIsCreateSubtaskModalOpen(true)}
+              onClick={() => navigate(`/cases/${caseId}/tasks/${taskId}/subtasks/new`)}
               className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
             >
               <svg
@@ -462,7 +437,7 @@ export function TaskDetail() {
           
           {/* Add Comment Form */}
           <div className="pt-4">
-            <AddCommentForm caseId={caseData.id} />
+            <AddCommentForm caseId={caseData.id} showMainCaseCheckbox={true} />
           </div>
         </div>
       </div>
@@ -471,14 +446,6 @@ export function TaskDetail() {
       <div className="fixed top-16 right-0 bottom-0 w-96">
         <CaseSidebar case={caseData} />
       </div>
-
-      {/* Create Subtask Modal */}
-      <CreateSubtaskModal
-        open={isCreateSubtaskModalOpen}
-        onOpenChange={setIsCreateSubtaskModalOpen}
-        caseId={caseId || ''}
-        parentTask={task}
-      />
     </>
   );
 }

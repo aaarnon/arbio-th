@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Task, Status } from '@/types';
 import { TaskItem } from './TaskItem';
-import { CreateTaskModal } from './CreateTaskModal';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -17,7 +16,7 @@ interface HierarchicalTaskListProps {
  * Displays a tree structure of tasks and subtasks
  */
 export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssignedToChange }: HierarchicalTaskListProps) {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   if (!tasks || tasks.length === 0) {
     return (
@@ -27,60 +26,27 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
         </CardHeader>
         <CardContent>
           {/* Action Buttons */}
-          <div className="flex gap-2">
-            <Button
-              variant="ghost"
-              onClick={() => setIsCreateModalOpen(true)}
-              className="flex-1 justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
+          <Button
+            variant="ghost"
+            onClick={() => navigate(`/cases/${caseId}/tasks/new`)}
+            className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
+          >
+            <svg
+              className="mr-2 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <svg
-                className="mr-2 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              Add task
-            </Button>
-            
-            <Button
-              variant="secondary"
-              onClick={() => {
-                // TODO: Implement Breezeway integration
-                console.log('Send to Breezeway clicked');
-              }}
-              className="flex-1 justify-center"
-            >
-              <svg
-                className="mr-2 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
-              </svg>
-              Send to Breezeway
-            </Button>
-          </div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add task
+          </Button>
         </CardContent>
-
-        {/* Create Task Modal */}
-        <CreateTaskModal
-          open={isCreateModalOpen}
-          onOpenChange={setIsCreateModalOpen}
-          caseId={caseId}
-        />
       </Card>
     );
   }
@@ -126,17 +92,17 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
               caseId={caseId}
               onStatusChange={onStatusChange}
               onAssignedToChange={onAssignedToChange}
-              onAddTask={() => setIsCreateModalOpen(true)}
+              onAddTask={() => navigate(`/cases/${caseId}/tasks/new`)}
             />
           ))}
         </div>
         
         {/* Action Buttons */}
-        <div className="mt-6 flex gap-2">
+        <div className="mt-6">
           <Button
             variant="ghost"
-            onClick={() => setIsCreateModalOpen(true)}
-            className="flex-1 justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
+            onClick={() => navigate(`/cases/${caseId}/tasks/new`)}
+            className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
           >
             <svg
               className="mr-2 h-4 w-4"
@@ -153,39 +119,8 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
             </svg>
             Add task
           </Button>
-          
-          <Button
-            variant="secondary"
-            onClick={() => {
-              // TODO: Implement Breezeway integration
-              console.log('Send to Breezeway clicked');
-            }}
-            className="flex-1 justify-center"
-          >
-            <svg
-              className="mr-2 h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              />
-            </svg>
-            Send to Breezeway
-          </Button>
         </div>
       </CardContent>
-
-      {/* Create Task Modal */}
-      <CreateTaskModal
-        open={isCreateModalOpen}
-        onOpenChange={setIsCreateModalOpen}
-        caseId={caseId}
-      />
     </Card>
   );
 }

@@ -5,7 +5,7 @@ import { StatusBadge } from '@/components/shared/StatusBadge';
 import { StatusDropdown } from '@/components/shared/StatusDropdown';
 import { useStatusValidation } from '@/features/tasks/hooks/useStatusValidation';
 import { mockUsers } from '@/data/mockUsers';
-import { MAX_NESTING_DEPTH } from '@/utils/constants';
+import { MAX_NESTING_DEPTH, formatTeam } from '@/utils/constants';
 
 interface TaskItemProps {
   task: Task;
@@ -100,19 +100,33 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
           {task.id}
         </span>
 
-        {/* Task Title */}
+        {/* Task Title with Team Tag */}
         <div className="flex-1 min-w-0">
           {currentTaskId !== task.id ? (
-            <button
-              onClick={handleTaskClick}
-              className="text-sm font-normal text-neutral-800 truncate hover:text-neutral-900 hover:underline text-left w-full"
-            >
-              {task.title}
-            </button>
+            <div>
+              <button
+                onClick={handleTaskClick}
+                className="text-sm font-normal text-neutral-800 hover:text-neutral-900 hover:underline text-left w-full block truncate"
+              >
+                {task.title}
+              </button>
+              {task.team && (
+                <span className="inline-block text-[11px] text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded mt-0.5">
+                  {formatTeam(task.team)}
+                </span>
+              )}
+            </div>
           ) : (
-            <p className="text-sm font-normal text-neutral-800 truncate">
-              {task.title}
-            </p>
+            <div>
+              <p className="text-sm font-normal text-neutral-800 truncate">
+                {task.title}
+              </p>
+              {task.team && (
+                <span className="inline-block text-[11px] text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded mt-0.5">
+                  {formatTeam(task.team)}
+                </span>
+              )}
+            </div>
           )}
         </div>
 

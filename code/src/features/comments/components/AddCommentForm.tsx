@@ -15,16 +15,18 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface AddCommentFormProps {
   caseId: string;
+  showMainCaseCheckbox?: boolean;
 }
 
 /**
  * Add Comment Form Component
  * Form to add a new comment to a case
  */
-export function AddCommentForm({ caseId }: AddCommentFormProps) {
+export function AddCommentForm({ caseId, showMainCaseCheckbox = false }: AddCommentFormProps) {
   const { dispatch } = useCaseContext();
   const { notifyCommentAdded } = useNotifications();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,6 +35,7 @@ export function AddCommentForm({ caseId }: AddCommentFormProps) {
     resolver: zodResolver(commentSchema),
     defaultValues: {
       text: '',
+      alsoSendToMainCase: false,
     },
   });
 
@@ -97,6 +100,31 @@ export function AddCommentForm({ caseId }: AddCommentFormProps) {
             </FormItem>
           )}
         />
+
+        {showMainCaseCheckbox && (
+          <FormField
+            control={form.control}
+            name="alsoSendToMainCase"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0 -mt-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className="border-neutral-300"
+                  />
+                </FormControl>
+                <label
+                  htmlFor={field.name}
+                  className="text-xs text-neutral-600 cursor-pointer select-none"
+                  onClick={() => field.onChange(!field.value)}
+                >
+                  Also send comment to the main case
+                </label>
+              </FormItem>
+            )}
+          />
+        )}
 
         <div className="flex justify-end">
           <Button

@@ -23,12 +23,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectSeparator,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { SearchableSelect } from '@/components/ui/searchable-select';
 import { FileUpload } from '@/components/ui/file-upload';
+import { Switch } from '@/components/ui/switch';
 
 /**
  * Create Case Page Component
@@ -50,6 +52,7 @@ export function CreateCase() {
       propertyId: '',
       reservationId: '',
       attachments: [],
+      sendToBreezeway: false,
     },
   });
 
@@ -222,9 +225,14 @@ export function CreateCase() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
-                      <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
+                      <SelectItem value="PROPERTY_MANAGEMENT_DE">Property Management - DE</SelectItem>
+                      <SelectItem value="PROPERTY_MANAGEMENT_AT">Property Management - AT</SelectItem>
+                      <SelectSeparator />
+                      <SelectItem value="GUEST_COMM_DE">Guest Comm - DE</SelectItem>
+                      <SelectItem value="GUEST_COMM_AT">Guest Comm - AT</SelectItem>
+                      <SelectSeparator />
                       <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
+                      <SelectSeparator />
                       <SelectItem value="FINOPS">FinOps</SelectItem>
                     </SelectContent>
                   </Select>
@@ -252,15 +260,27 @@ export function CreateCase() {
             />
 
             {/* Actions */}
-            <div className="flex justify-end gap-3 pt-4 border-t border-neutral-100">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => navigate('/')}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-100">
+              {/* Breezeway Toggle */}
+              <FormField
+                control={form.control}
+                name="sendToBreezeway"
+                render={({ field }) => (
+                  <div className="flex items-center gap-2">
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <span className="text-sm text-neutral-700">
+                      {field.value ? 'Send to Breezeway' : 'Do not send to Breezeway'}
+                    </span>
+                  </div>
+                )}
+              />
+
+              {/* Create Button */}
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? 'Creating...' : 'Create Case'}
               </Button>

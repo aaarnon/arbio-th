@@ -71,22 +71,29 @@ export function CaseFilters({
             <SelectItem value="ALL">All Statuses</SelectItem>
             <SelectItem value="TODO">To Do</SelectItem>
             <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+            <SelectItem value="BLOCKED">Blocked</SelectItem>
+            <SelectItem value="IN_REVIEW">In Review</SelectItem>
             <SelectItem value="DONE">Done</SelectItem>
+            <SelectItem value="FAILED">Failed</SelectItem>
+            <SelectItem value="DUPLICATE">Duplicate</SelectItem>
+            <SelectItem value="REJECTED">Rejected</SelectItem>
             <SelectItem value="CANCELLED">Cancelled</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {/* Team Filter */}
-      <div className="w-[180px]">
+      <div className="w-[240px]">
         <Select value={teamFilter} onValueChange={onTeamChange}>
           <SelectTrigger className="h-9">
             <SelectValue placeholder="Team" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="ALL">All Teams</SelectItem>
-            <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
-            <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
+            <SelectItem value="PROPERTY_MANAGEMENT_DE">Property Management - DE</SelectItem>
+            <SelectItem value="PROPERTY_MANAGEMENT_AT">Property Management - AT</SelectItem>
+            <SelectItem value="GUEST_COMM_DE">Guest Comm - DE</SelectItem>
+            <SelectItem value="GUEST_COMM_AT">Guest Comm - AT</SelectItem>
             <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
             <SelectItem value="FINOPS">FinOps</SelectItem>
           </SelectContent>

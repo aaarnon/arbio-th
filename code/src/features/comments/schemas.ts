@@ -5,6 +5,7 @@ import { z } from 'zod';
  */
 export const commentSchema = z.object({
   text: z.string().min(1, 'Comment cannot be empty').max(2000, 'Comment too long'),
+  alsoSendToMainCase: z.boolean().optional(),
 });
 
 export type CommentFormData = z.infer<typeof commentSchema>;

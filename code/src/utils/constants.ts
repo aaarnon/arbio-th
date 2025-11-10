@@ -32,3 +32,22 @@ export const DOMAIN_STYLES: Record<DomainType, string> = {
  */
 export const MAX_NESTING_DEPTH = 10;
 
+/**
+ * Format team type to display name
+ */
+export const formatTeam = (team?: string) => {
+  if (!team) return 'No Team';
+  
+  // Special mapping for team names to preserve exact formatting
+  const teamMapping: Record<string, string> = {
+    'PROPERTY_MANAGEMENT_DE': 'Property Management - DE',
+    'PROPERTY_MANAGEMENT_AT': 'Property Management - AT',
+    'GUEST_COMM_DE': 'Guest Comm - DE',
+    'GUEST_COMM_AT': 'Guest Comm - AT',
+    'GUEST_EXPERIENCE': 'Guest Experience',
+    'FINOPS': 'FinOps',
+  };
+  
+  return teamMapping[team] || team;
+};
+

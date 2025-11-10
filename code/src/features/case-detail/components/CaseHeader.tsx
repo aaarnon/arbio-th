@@ -36,28 +36,6 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
     toast.success('Status updated');
   };
 
-  const handleTeamChange = (newTeam: string) => {
-    dispatch({
-      type: 'UPDATE_CASE',
-      payload: {
-        caseId: caseData.id,
-        updates: { team: newTeam as any },
-      },
-    });
-    toast.success('Team updated');
-  };
-
-  const handleDomainChange = (newDomain: string) => {
-    dispatch({
-      type: 'UPDATE_CASE',
-      payload: {
-        caseId: caseData.id,
-        updates: { domain: newDomain as any },
-      },
-    });
-    toast.success('Domain updated');
-  };
-
   return (
     <EntityHeader
       breadcrumbs={[
@@ -67,11 +45,8 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
       title={caseData.title}
       status={caseData.status}
       team={caseData.team}
-      domain={caseData.domain}
       onTitleChange={handleTitleChange}
       onStatusChange={handleStatusChange}
-      onTeamChange={handleTeamChange}
-      onDomainChange={handleDomainChange}
     />
   );
 }

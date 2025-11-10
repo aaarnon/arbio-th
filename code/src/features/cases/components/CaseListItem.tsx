@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Case } from '@/types';
 import { StatusBadge } from '@/components/shared/StatusBadge';
 import { formatShortDate } from '@/utils/date';
+import { formatTeam } from '@/utils/constants';
 
 interface CaseListItemProps {
   case: Case;
@@ -16,21 +17,6 @@ export function CaseListItem({ case: caseData }: CaseListItemProps) {
 
   const handleClick = () => {
     navigate(`/cases/${caseData.id}`);
-  };
-
-  // Format team text with proper display names
-  const formatTeam = (team?: string) => {
-    if (!team) return 'No Team';
-    
-    // Special mapping for team names to preserve exact formatting
-    const teamMapping: Record<string, string> = {
-      'PROPERTY_MANAGEMENT': 'Property Management',
-      'GUEST_COMM': 'Guest Comm',
-      'GUEST_EXPERIENCE': 'Guest Experience',
-      'FINOPS': 'FinOps',
-    };
-    
-    return teamMapping[team] || team;
   };
 
   return (
