@@ -115,6 +115,20 @@ export function TaskDetail() {
     updateTask(taskId, { assignedTo: newUserId });
   };
 
+  // Handle main task assignedTo change
+  const handleAssignedToChange = (newUserId: string) => {
+    dispatch({
+      type: 'UPDATE_TASK',
+      payload: {
+        caseId: caseId || '',
+        taskId: task.id,
+        updates: { assignedTo: newUserId || undefined },
+      },
+    });
+    toast.success('Assigned to updated');
+    setOpenDropdown(null);
+  };
+
   // Handle description save
   const handleDescriptionBlur = () => {
     setIsEditingDescription(false);
@@ -209,6 +223,24 @@ export function TaskDetail() {
 
   const parentInfo = getParentInfo();
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.relative')) {
+        setOpenDropdown(null);
+      }
+    };
+
+    if (openDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openDropdown]);
+
   return (
     <>
       {/* Main Content - With right margin for sidebar */}
@@ -300,17 +332,46 @@ export function TaskDetail() {
               )}
 
               {/* Assigned To */}
-              {(task.assignedTo || caseData.assignedTo) && (
-                <div className="relative">
-                  <button 
-                    className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-                    onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
-                  >
-                    <span className="font-normal text-neutral-400">Assigned To:</span>
-                    <span className="ml-1">{getAssignedUserName(task.assignedTo || caseData.assignedTo || undefined)}</span>
-                  </button>
-                </div>
-              )}
+              <div className="relative">
+                <button 
+                  className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                  onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
+                >
+                  <span className="font-normal text-neutral-400">Assigned To:</span>
+                  <span className="ml-1">{getAssignedUserName(task.assignedTo)}</span>
+                </button>
+
+                {/* Assignee Dropdown */}
+                {openDropdown === 'assignedTo' && (
+                  <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                    <button
+                      className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                      onClick={() => handleAssignedToChange('')}
+                    >
+                      <span className="text-neutral-500">Unassigned</span>
+                      {!task.assignedTo && (
+                        <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </button>
+                    {mockUsers.map((user) => (
+                      <button
+                        key={user.id}
+                        className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                        onClick={() => handleAssignedToChange(user.id)}
+                      >
+                        <span className="text-neutral-900">{user.name}</span>
+                        {task.assignedTo === user.id && (
+                          <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
