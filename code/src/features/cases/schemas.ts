@@ -11,7 +11,7 @@ export const caseSchema = z.object({
   propertyId: z.string().optional(),
   reservationId: z.string().optional(),
   attachments: z.array(z.any()).optional(),
-  sendToBreezeway: z.boolean().default(false),
+  sendToBreezeway: z.boolean(),
 });
 
 /**

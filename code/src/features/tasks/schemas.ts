@@ -9,7 +9,7 @@ export const taskSchema = z.object({
   team: z.enum(['PROPERTY_MANAGEMENT_DE', 'PROPERTY_MANAGEMENT_AT', 'GUEST_COMM_DE', 'GUEST_COMM_AT', 'GUEST_EXPERIENCE', 'FINOPS'], { message: 'This field is required' }),
   assignedTo: z.string().optional(),
   attachments: z.array(z.any()).optional(),
-  sendToBreezeway: z.boolean().default(false),
+  sendToBreezeway: z.boolean(),
 });
 
 /**
