@@ -8,7 +8,7 @@ export const STATUS_STYLES: Record<Status, string> = {
   TODO: 'bg-white text-neutral-400 border border-neutral-200 font-normal',
   IN_PROGRESS: 'bg-neutral-100 text-neutral-500 border-0 font-normal',
   BLOCKED: 'bg-red-50 text-red-600 border border-red-200 font-normal',
-  IN_REVIEW: 'bg-blue-50 text-blue-600 border border-blue-200 font-normal',
+  IN_REVIEW: 'bg-neutral-100 text-neutral-600 border border-neutral-200 font-normal',
   DONE: 'bg-neutral-50 text-neutral-600 border-0 font-normal',
   FAILED: 'bg-red-100 text-red-700 border-0 font-normal',
   DUPLICATE: 'bg-neutral-100 text-neutral-400 border-0 font-normal',
