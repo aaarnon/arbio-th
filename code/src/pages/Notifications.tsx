@@ -123,7 +123,7 @@ export function Notifications() {
                 key={notification.id}
                 to={notification.link}
                 className={`flex items-start gap-4 px-8 py-4 hover:bg-neutral-50 transition-colors ${
-                  !notification.read ? 'bg-blue-50/30' : ''
+                  !notification.read ? 'bg-blue-50/60' : ''
                 }`}
               >
                 {/* Icon */}
