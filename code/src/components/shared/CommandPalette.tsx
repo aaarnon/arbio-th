@@ -35,7 +35,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   // Filter cases based on search
   const filteredCases = state.cases.filter((c) =>
     c.title.toLowerCase().includes(search.toLowerCase()) ||
-    c.ticketCode.toLowerCase().includes(search.toLowerCase())
+    c.id.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleItemClick = (action: () => void) => {
@@ -96,7 +96,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                   </svg>
                   <div className="flex-1 text-left">
                     <div className="text-sm text-neutral-900">{caseItem.title}</div>
-                    <div className="text-xs text-neutral-500">{caseItem.ticketCode}</div>
+                    <div className="text-xs text-neutral-500">{caseItem.id}</div>
                   </div>
                 </button>
               ))}
