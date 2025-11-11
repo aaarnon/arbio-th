@@ -128,12 +128,12 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
     <div className="fixed left-0 top-0 bottom-0 w-52 bg-white border-r border-neutral-200 flex flex-col">
       {/* Logo */}
       <div className="flex items-center justify-between px-4 h-16">
-        <div className="flex items-center gap-2.5">
+        <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity cursor-pointer">
           <div className="flex h-9 w-9 items-center justify-center rounded bg-neutral-900">
             <span className="text-base font-bold text-white">A</span>
           </div>
           <span className="text-sm font-medium text-neutral-900">Arbio</span>
-        </div>
+        </Link>
         <button 
           onClick={onSearchClick}
           className="p-2 hover:bg-neutral-50 rounded-md transition-colors"
