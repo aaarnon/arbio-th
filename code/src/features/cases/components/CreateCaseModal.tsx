@@ -63,7 +63,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
   // Create searchable options for properties and reservations
   const propertyOptions = useMemo(() => 
     mockProperties.map((property) => ({
-      value: property.id,
+        value: property.id,
       label: property.id,
     })),
     []

@@ -9,6 +9,7 @@ import { Notifications } from '@/pages/Notifications';
 import { Tasks } from '@/pages/Tasks';
 import { Teams } from '@/pages/Teams';
 import { Reports } from '@/pages/Reports';
+import { AIAgents } from '@/pages/AIAgents';
 import { Settings } from '@/pages/Settings';
 import { StatusComparison } from '@/pages/StatusComparison';
 import { NotFound } from '@/pages/NotFound';
@@ -22,6 +23,7 @@ function App() {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/teams" element={<Teams />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/ai-agents" element={<AIAgents />} />
         <Route path="/settings" element={<Settings />} />
         {/* Status comparison demo page */}
         <Route path="/status-comparison" element={<StatusComparison />} />

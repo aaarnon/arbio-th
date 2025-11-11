@@ -30,11 +30,11 @@ export function Layout({ children }: LayoutProps) {
     <div className="min-h-screen bg-neutral-50 flex">
       <Sidebar onSearchClick={() => setCommandPaletteOpen(true)} />
       
-      <div className="flex-1 ml-60">
+      <div className="flex-1 ml-52">
         {/* Main content */}
         <main className="min-h-screen overflow-y-auto">
-          {children}
-        </main>
+        {children}
+      </main>
       </div>
 
       {/* Command Palette */}
