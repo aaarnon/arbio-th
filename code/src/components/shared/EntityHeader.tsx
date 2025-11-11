@@ -16,6 +16,8 @@ interface EntityHeaderProps {
   team?: string;
   assignedTo?: string;
   reduceTitleMargin?: boolean;
+  statusDisabled?: boolean;
+  statusDisabledMessage?: string;
   onTitleChange?: (title: string) => void;
   onStatusChange?: (status: string) => void;
   onTeamChange?: (team: string) => void;
@@ -36,6 +38,8 @@ export function EntityHeader({
   team,
   assignedTo,
   reduceTitleMargin,
+  statusDisabled = false,
+  statusDisabledMessage,
   onTitleChange,
   onStatusChange,
   onTeamChange,
@@ -165,6 +169,8 @@ export function EntityHeader({
         <StatusDropdown
           currentStatus={status}
           onStatusChange={(newStatus) => onStatusChange?.(newStatus)}
+          disabled={statusDisabled}
+          disabledMessage={statusDisabledMessage}
           open={openDropdown === 'status'}
           onOpenChange={(isOpen) => setOpenDropdown(isOpen ? 'status' : null)}
           trigger={

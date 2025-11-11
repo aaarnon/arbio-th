@@ -1,4 +1,4 @@
-import type { Case } from '@/types';
+import type { Case, Task } from '@/types';
 import { EntityHeader } from '@/components/shared/EntityHeader';
 import { useCaseContext } from '@/store/CaseContext';
 import { toast } from 'sonner';
@@ -42,6 +42,27 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
     return text.substring(0, maxLength) + '...';
   };
 
+  // Helper function to count incomplete tasks recursively
+  const countIncompleteTasks = (tasks: Task[]): number => {
+    let count = 0;
+    for (const task of tasks) {
+      if (task.status !== 'DONE') {
+        count++;
+      }
+      if (task.subtasks && task.subtasks.length > 0) {
+        count += countIncompleteTasks(task.subtasks);
+      }
+    }
+    return count;
+  };
+
+  // Check if Done status should be disabled (when there are incomplete tasks)
+  const incompleteTasks = countIncompleteTasks(caseData.tasks || []);
+  const isDoneDisabled = incompleteTasks > 0;
+  const doneDisabledMessage = isDoneDisabled
+    ? `Complete ${incompleteTasks} task${incompleteTasks > 1 ? 's' : ''} first`
+    : undefined;
+
   return (
     <EntityHeader
       breadcrumbs={[
@@ -51,6 +72,8 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
       title={caseData.title}
       status={caseData.status}
       team={caseData.team}
+      statusDisabled={isDoneDisabled}
+      statusDisabledMessage={doneDisabledMessage}
       onTitleChange={handleTitleChange}
       onStatusChange={handleStatusChange}
     />
