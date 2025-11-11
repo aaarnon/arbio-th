@@ -87,7 +87,7 @@ export function StatusDropdown({
                 )}
               </DropdownMenuItem>
               {option.value === 'DONE' && disabled && disabledMessage && (
-                <div className="px-3 pt-0 pb-1 text-[11px] text-neutral-500 italic">
+                <div className="px-3 -mt-1 pb-1 text-[9px] text-neutral-500 italic">
                   {disabledMessage}
                 </div>
               )}
