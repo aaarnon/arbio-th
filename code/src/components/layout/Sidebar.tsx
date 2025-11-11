@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { mockUsers } from '@/data/mockUsers';
+import { useState, useRef, useEffect } from 'react';
 
 interface SidebarProps {
   onSearchClick?: () => void;
@@ -12,6 +13,31 @@ interface SidebarProps {
 export function Sidebar({ onSearchClick }: SidebarProps) {
   const location = useLocation();
   const currentUser = mockUsers[0]; // For demo purposes
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    if (isUserMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserMenuOpen]);
+
+  const handleLogout = () => {
+    // Add logout logic here
+    console.log('Logging out...');
+    setIsUserMenuOpen(false);
+  };
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -91,16 +117,13 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
   return (
     <div className="fixed left-0 top-0 bottom-0 w-60 bg-white border-r border-neutral-200 flex flex-col">
       {/* Logo */}
-      <div className="flex items-center justify-between px-4 h-16 border-b border-neutral-200">
-        <button className="flex items-center gap-2.5 flex-1 hover:bg-neutral-50 rounded-md px-2 py-1.5 transition-colors">
+      <div className="flex items-center justify-between px-4 h-16">
+        <div className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded bg-neutral-900">
             <span className="text-base font-bold text-white">A</span>
           </div>
-          <span className="text-base font-medium text-neutral-900">Arbio Group</span>
-          <svg className="h-4 w-4 text-neutral-500 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+          <span className="text-base font-medium text-neutral-900">Arbio</span>
+        </div>
         <button 
           onClick={onSearchClick}
           className="p-2 hover:bg-neutral-50 rounded-md transition-colors"
@@ -113,7 +136,7 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
       </div>
 
       {/* Create New Case Button */}
-      <div className="px-4 pt-4 pb-3">
+      <div className="px-4 pt-2 pb-6">
         <Link
           to="/cases/new"
           className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 text-white text-sm font-medium rounded-md transition-colors"
@@ -121,7 +144,7 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          Add New Case
+          New Case
         </Link>
       </div>
 
@@ -152,7 +175,7 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
         </div>
 
         {/* Separator */}
-        <div className="my-3" />
+        <div className="my-6" />
 
         {/* Secondary Navigation */}
         <div className="space-y-0.5">
@@ -176,13 +199,16 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
       </nav>
 
       {/* User Profile */}
-      <div className="border-t border-neutral-200 p-3">
-        <button className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-neutral-50 transition-colors">
-          <img
-            src={currentUser.avatar}
-            alt={currentUser.name}
-            className="h-8 w-8 rounded-full"
-          />
+      <div className="p-3 relative" ref={userMenuRef}>
+        <button 
+          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+          className="flex items-center gap-3 w-full px-3 py-2 rounded-md hover:bg-neutral-50 transition-colors"
+        >
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-200">
+            <svg className="h-5 w-5 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
           <div className="flex-1 text-left">
             <div className="text-sm font-medium text-neutral-900">{currentUser.name}</div>
             <div className="text-xs text-neutral-500">{currentUser.role}</div>
@@ -191,6 +217,21 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
+
+        {/* Dropdown Menu */}
+        {isUserMenuOpen && (
+          <div className="absolute bottom-full left-3 right-3 mb-2 bg-white rounded-md shadow-lg border border-neutral-200 py-1">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Log out
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

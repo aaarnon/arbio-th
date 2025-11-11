@@ -32,23 +32,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
 
   if (!open) return null;
 
-  const navigationItems = [
-    { label: 'Home', icon: '🏠', action: () => navigate('/') },
-    { label: 'Notifications', icon: '📬', action: () => navigate('/notifications') },
-    { label: 'Tasks', icon: '✓', action: () => navigate('/tasks') },
-    { label: 'Teams', icon: '👥', action: () => navigate('/teams') },
-    { label: 'Reports', icon: '📊', action: () => navigate('/reports') },
-    { label: 'Settings', icon: '⚙️', action: () => navigate('/settings') },
-  ];
-
   // Filter cases based on search
   const filteredCases = state.cases.filter((c) =>
     c.title.toLowerCase().includes(search.toLowerCase()) ||
     c.ticketCode.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const filteredNavigation = navigationItems.filter((item) =>
-    item.label.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleItemClick = (action: () => void) => {
@@ -88,43 +75,13 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         {/* Results */}
         <div className="max-h-[60vh] overflow-y-auto">
           {!search && (
-            <div className="p-2">
-              <div className="px-3 py-2 text-xs font-semibold text-neutral-500 uppercase">
-                Navigation
-              </div>
-              {navigationItems.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => handleItemClick(item.action)}
-                  className="flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-sm text-neutral-900 hover:bg-neutral-100 transition-colors"
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  <span>{item.label}</span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {search && filteredNavigation.length > 0 && (
-            <div className="p-2">
-              <div className="px-3 py-2 text-xs font-semibold text-neutral-500 uppercase">
-                Navigation
-              </div>
-              {filteredNavigation.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => handleItemClick(item.action)}
-                  className="flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-sm text-neutral-900 hover:bg-neutral-100 transition-colors"
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  <span>{item.label}</span>
-                </button>
-              ))}
+            <div className="p-8 text-center text-sm text-neutral-500">
+              Start typing to search cases...
             </div>
           )}
 
           {search && filteredCases.length > 0 && (
-            <div className="p-2 border-t border-neutral-100">
+            <div className="p-2">
               <div className="px-3 py-2 text-xs font-semibold text-neutral-500 uppercase">
                 Cases
               </div>
@@ -146,7 +103,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             </div>
           )}
 
-          {search && filteredNavigation.length === 0 && filteredCases.length === 0 && (
+          {search && filteredCases.length === 0 && (
             <div className="p-8 text-center text-sm text-neutral-500">
               No results found for "{search}"
             </div>

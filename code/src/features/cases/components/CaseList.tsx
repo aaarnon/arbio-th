@@ -66,7 +66,7 @@ export function CaseList() {
 
   if (loading) {
     return (
-      <div className="max-w-[1600px] mx-auto px-12 py-8">
+      <div className="max-w-6xl mx-auto px-12 py-8">
         <div className="mb-4">
           <h1 className="text-xl font-normal text-neutral-900">Cases</h1>
           <p className="mt-1 text-sm text-neutral-500">
@@ -79,7 +79,7 @@ export function CaseList() {
   }
 
   return (
-    <div className="max-w-[1600px] mx-auto px-12 py-8">
+    <div className="max-w-6xl mx-auto px-12 py-8">
       {/* Header */}
       <div className="mb-4">
         <h1 className="text-xl font-normal text-neutral-900">Cases</h1>
