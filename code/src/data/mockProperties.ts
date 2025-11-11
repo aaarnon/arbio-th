@@ -16,17 +16,17 @@ export const mockProperties: Property[] = [
     handbookUrl: 'https://example.com/handbooks/property-a001',
   },
   {
-    id: 'FR_PAR_012_Darius_02_145_03_02_B204',
+    id: 'DE_BER_012_Darius_02_145_03_02_B205',
     unitId: 'B-205',
     address: '456 Sunset Boulevard, Los Angeles, CA 90028',
     status: 'ACTIVE',
     bedrooms: 3,
     bathrooms: 2.5,
     multiUnit: false,
-    handbookUrl: 'https://example.com/handbooks/property-b204',
+    handbookUrl: 'https://example.com/handbooks/property-b205',
   },
   {
-    id: 'US_NYC_087_Darius_04_312_01_05_C302',
+    id: 'DE_BER_087_Darius_04_312_01_05_C302',
     unitId: 'C-302',
     address: '789 Park Avenue, New York, NY 10021',
     status: 'MAINTENANCE',
@@ -36,7 +36,7 @@ export const mockProperties: Property[] = [
     handbookUrl: 'https://example.com/handbooks/property-c302',
   },
   {
-    id: 'ES_MAD_054_Darius_01_089_02_03_D105',
+    id: 'DE_BER_054_Darius_01_089_02_03_D105',
     unitId: 'D-105',
     address: '321 Beachfront Road, San Diego, CA 92101',
     status: 'ACTIVE',
@@ -45,7 +45,7 @@ export const mockProperties: Property[] = [
     multiUnit: false,
   },
   {
-    id: 'IT_ROM_023_Darius_03_267_04_01_E401',
+    id: 'DE_BER_023_Darius_03_267_04_01_E401',
     unitId: 'E-401',
     address: '654 Mountain View Circle, Denver, CO 80202',
     status: 'ACTIVE',
@@ -55,7 +55,7 @@ export const mockProperties: Property[] = [
     handbookUrl: 'https://example.com/handbooks/property-e401',
   },
   {
-    id: 'UK_LON_098_Darius_05_521_02_04_F208',
+    id: 'DE_BER_098_Darius_05_521_02_04_F208',
     unitId: 'F-208',
     address: '987 Lakeside Drive, Seattle, WA 98101',
     status: 'ACTIVE',
@@ -64,7 +64,7 @@ export const mockProperties: Property[] = [
     multiUnit: false,
   },
   {
-    id: 'PT_LIS_041_Darius_02_178_01_02_G110',
+    id: 'DE_BER_041_Darius_02_178_01_02_G110',
     unitId: 'G-110',
     address: '159 Downtown Plaza, Austin, TX 78701',
     status: 'MAINTENANCE',
@@ -73,7 +73,7 @@ export const mockProperties: Property[] = [
     multiUnit: true,
   },
   {
-    id: 'NL_AMS_065_Darius_04_394_03_06_H305',
+    id: 'DE_BER_065_Darius_04_394_03_06_H305',
     unitId: 'H-305',
     address: '753 Harbor Street, Boston, MA 02101',
     status: 'ACTIVE',
@@ -83,7 +83,7 @@ export const mockProperties: Property[] = [
     handbookUrl: 'https://example.com/handbooks/property-h305',
   },
   {
-    id: 'BE_BRU_019_Darius_01_156_02_01_J102',
+    id: 'DE_BER_019_Darius_01_156_02_01_J102',
     unitId: 'J-102',
     address: '246 Garden Boulevard, Portland, OR 97201',
     status: 'ACTIVE',

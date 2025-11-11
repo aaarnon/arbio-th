@@ -33,6 +33,9 @@ export function TaskDetail() {
 
   // Helper function to format text (for status)
   const formatStatusText = (text: string) => {
+    // Handle special case for TODO -> To Do
+    if (text === 'TODO') return 'To Do';
+    
     return text
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -160,12 +163,18 @@ export function TaskDetail() {
     e.target.style.height = e.target.scrollHeight + 'px';
   };
 
+  // Helper function to truncate text to 20 characters
+  const truncateText = (text: string, maxLength: number = 20): string => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
   // Generate breadcrumbs for task hierarchy
-  // For TK-2848.3.1 -> [TK-2848, TK-2848.3, TK-2848.3.1]
+  // Shows truncated titles instead of task IDs
   const generateTaskBreadcrumbs = (): Array<{ label: string; to?: string }> => {
     const breadcrumbs: Array<{ label: string; to?: string }> = [
       { label: 'Ticketing Hub', to: '/' },
-      { label: caseData.id, to: `/cases/${caseId}` },
+      { label: truncateText(caseData.title), to: `/cases/${caseId}` },
     ];
 
     // Parse task ID to get hierarchy
@@ -173,16 +182,18 @@ export function TaskDetail() {
     const taskIdParts = task.id.split('.');
     const caseIdPart = taskIdParts[0]; // e.g., TK-2848
     
-    // Build parent task IDs
+    // Build parent task IDs and find their titles
     for (let i = 1; i < taskIdParts.length; i++) {
       const parentTaskId = [caseIdPart, ...taskIdParts.slice(1, i + 1)].join('.');
+      const parentTask = findTask(caseData.tasks || [], parentTaskId);
+      const taskTitle = parentTask ? truncateText(parentTask.title) : parentTaskId;
       
       // Don't link the current task (last item)
       if (i === taskIdParts.length - 1) {
-        breadcrumbs.push({ label: parentTaskId });
+        breadcrumbs.push({ label: taskTitle });
       } else {
         breadcrumbs.push({ 
-          label: parentTaskId, 
+          label: taskTitle, 
           to: `/cases/${caseId}/tasks/${parentTaskId}` 
         });
       }
@@ -244,261 +255,263 @@ export function TaskDetail() {
   return (
     <>
       {/* Main Content - With right margin for sidebar */}
-      <div className="mr-96 space-y-8">
-        {/* Task Header */}
-        <div>
-          {/* Breadcrumb */}
-          <div className="mb-6 flex items-center gap-2 text-sm text-neutral-600">
-            {generateTaskBreadcrumbs().map((crumb, index) => (
-              <div key={index} className="flex items-center gap-2">
-                {index > 0 && (
-                  <svg className="h-4 w-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                )}
-                {crumb.to ? (
-                  <Link to={crumb.to} className="hover:text-neutral-900 transition-colors">
-                    {crumb.label}
-                  </Link>
-                ) : (
-                  <span className="text-neutral-900 font-medium">{crumb.label}</span>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Title - Inline Editable */}
-          <h1 className="mb-2 text-3xl font-normal text-neutral-900">
-            {task.title}
-          </h1>
-
-          {/* Parent Link - positioned after title, before status */}
-          {parentInfo && (
-            <div className="flex items-center gap-2 mb-6">
-              <svg
-                className="w-4 h-4 text-neutral-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="12" cy="12" r="9" strokeWidth="2" />
-              </svg>
-              <button
-                onClick={() => navigate(parentInfo.link)}
-                className="text-sm text-neutral-500 hover:text-neutral-700 transition-colors"
-              >
-                Linked to{' '}
-                <span className="text-neutral-900 font-medium">{parentInfo.id}</span>
-                {' '}
-                {parentInfo.name}
-              </button>
+      <div className="mr-96 flex justify-center">
+        <div className="w-full max-w-3xl space-y-8">
+          {/* Task Header */}
+          <div>
+            {/* Breadcrumb */}
+            <div className="mb-6 flex items-center gap-2 text-sm text-neutral-600">
+              {generateTaskBreadcrumbs().map((crumb, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  {index > 0 && (
+                    <svg className="h-4 w-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  )}
+                  {crumb.to ? (
+                    <Link to={crumb.to} className="hover:text-neutral-900 transition-colors">
+                      {crumb.label}
+                    </Link>
+                  ) : (
+                    <span className="text-neutral-900 font-medium">{crumb.label}</span>
+                  )}
+                </div>
+              ))}
             </div>
-          )}
 
-          {/* Status Row */}
-          <div className="mb-3 flex items-center">
-            <div className="w-24 text-sm text-neutral-600">Status</div>
-            <StatusDropdown
-              currentStatus={task.status}
-              onStatusChange={(newStatus) => handleStatusChange(newStatus)}
-              open={openDropdown === 'status'}
-              onOpenChange={(isOpen) => setOpenDropdown(isOpen ? 'status' : null)}
-              trigger={
-                <button className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900">
-                  {formatStatusText(task.status)}
-                  <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+            {/* Title - Inline Editable */}
+            <h1 className="mb-2 text-3xl font-normal text-neutral-900">
+              {task.title}
+            </h1>
+
+            {/* Parent Link - positioned after title, before status */}
+            {parentInfo && (
+              <div className="flex items-center gap-2 mb-6">
+                <svg
+                  className="w-4 h-4 text-neutral-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="12" cy="12" r="9" strokeWidth="2" />
+                </svg>
+                <button
+                  onClick={() => navigate(parentInfo.link)}
+                  className="text-sm text-neutral-500 hover:text-neutral-700 transition-colors"
+                >
+                  Linked to{' '}
+                  <span className="text-neutral-900 font-medium">{parentInfo.id}</span>
+                  {' '}
+                  {parentInfo.name}
                 </button>
-              }
-            />
-          </div>
+              </div>
+            )}
 
-          {/* Properties Row */}
-          <div className="flex items-center">
-            <div className="w-24 text-sm text-neutral-600">Properties</div>
-            <div className="flex items-center gap-6">
-              {/* Team */}
-              {(task.team || caseData.team) && (
+            {/* Status Row */}
+            <div className="mb-3 flex items-center">
+              <div className="w-24 text-sm text-neutral-600">Status</div>
+              <StatusDropdown
+                currentStatus={task.status}
+                onStatusChange={(newStatus) => handleStatusChange(newStatus)}
+                open={openDropdown === 'status'}
+                onOpenChange={(isOpen) => setOpenDropdown(isOpen ? 'status' : null)}
+                trigger={
+                  <button className="inline-flex items-center gap-2 px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900">
+                    {formatStatusText(task.status)}
+                    <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                }
+              />
+            </div>
+
+            {/* Properties Row */}
+            <div className="flex items-center">
+              <div className="w-24 text-sm text-neutral-600">Properties</div>
+              <div className="flex items-center gap-6">
+                {/* Team */}
+                {(task.team || caseData.team) && (
+                  <div className="relative">
+                    <button 
+                      className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
+                      onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
+                    >
+                      <span className="font-normal text-neutral-400">Team:</span>
+                      <span className="ml-1">{formatTeam(task.team || caseData.team || '')}</span>
+                    </button>
+                  </div>
+                )}
+
+                {/* Assigned To */}
                 <div className="relative">
                   <button 
                     className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-                    onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
+                    onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
                   >
-                    <span className="font-normal text-neutral-400">Team:</span>
-                    <span className="ml-1">{formatTeam(task.team || caseData.team || '')}</span>
+                    <span className="font-normal text-neutral-400">Assigned To:</span>
+                    <span className="ml-1">{getAssignedUserName(task.assignedTo)}</span>
                   </button>
-                </div>
-              )}
 
-              {/* Assigned To */}
-              <div className="relative">
-                <button 
-                  className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
-                  onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
-                >
-                  <span className="font-normal text-neutral-400">Assigned To:</span>
-                  <span className="ml-1">{getAssignedUserName(task.assignedTo)}</span>
-                </button>
-
-                {/* Assignee Dropdown */}
-                {openDropdown === 'assignedTo' && (
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
-                    <button
-                      className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
-                      onClick={() => handleAssignedToChange('')}
-                    >
-                      <span className="text-neutral-500">Unassigned</span>
-                      {!task.assignedTo && (
-                        <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                    </button>
-                    {mockUsers.map((user) => (
+                  {/* Assignee Dropdown */}
+                  {openDropdown === 'assignedTo' && (
+                    <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
                       <button
-                        key={user.id}
                         className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
-                        onClick={() => handleAssignedToChange(user.id)}
+                        onClick={() => handleAssignedToChange('')}
                       >
-                        <span className="text-neutral-900">{user.name}</span>
-                        {task.assignedTo === user.id && (
+                        <span className="text-neutral-500">Unassigned</span>
+                        {!task.assignedTo && (
                           <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         )}
                       </button>
-                    ))}
-                  </div>
-                )}
+                      {mockUsers.map((user) => (
+                        <button
+                          key={user.id}
+                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                          onClick={() => handleAssignedToChange(user.id)}
+                        >
+                          <span className="text-neutral-900">{user.name}</span>
+                          {task.assignedTo === user.id && (
+                            <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Task Description - Inline Editable */}
-        <Card>
-          <CardHeader className="pb-6">
-            <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">
-              DESCRIPTION
-            </h2>
-          </CardHeader>
-          <CardContent className="pt-0">
-            {isEditingDescription ? (
-              <textarea
-                ref={descriptionRef}
-                value={descriptionValue}
-                onChange={handleDescriptionChange}
-                onBlur={handleDescriptionBlur}
-                onKeyDown={handleDescriptionKeyDown}
-                className="w-full text-sm text-neutral-700 font-normal leading-relaxed bg-transparent border-none outline-none focus:outline-none resize-none"
-                placeholder="Enter description..."
-                rows={3}
-              />
-            ) : (
-              <p
-                onClick={() => setIsEditingDescription(true)}
-                className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed cursor-text hover:bg-neutral-50 rounded p-2 -m-2 transition-colors"
+          {/* Task Description - Inline Editable */}
+          <Card>
+            <CardHeader className="pb-6">
+              <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">
+                DESCRIPTION
+              </h2>
+            </CardHeader>
+            <CardContent className="pt-0">
+              {isEditingDescription ? (
+                <textarea
+                  ref={descriptionRef}
+                  value={descriptionValue}
+                  onChange={handleDescriptionChange}
+                  onBlur={handleDescriptionBlur}
+                  onKeyDown={handleDescriptionKeyDown}
+                  className="w-full text-sm text-neutral-700 font-normal leading-relaxed bg-transparent border-none outline-none focus:outline-none resize-none"
+                  placeholder="Enter description..."
+                  rows={3}
+                />
+              ) : (
+                <p
+                  onClick={() => setIsEditingDescription(true)}
+                  className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed cursor-text hover:bg-neutral-50 rounded p-2 -m-2 transition-colors"
+                >
+                  {task.description || 'Click to add description...'}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Subtasks Section */}
+          <Card>
+            <CardHeader className="pb-4">
+              <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">
+                SUBTASKS
+              </h2>
+            </CardHeader>
+            <CardContent className="pt-0">
+              {hasSubtasks && (
+                <div className="space-y-2 mb-6">
+                  {task.subtasks!.map((subtask) => (
+                    <TaskItem
+                      key={subtask.id}
+                      task={subtask}
+                      depth={0}
+                      caseId={caseId || ''}
+                      onStatusChange={updateTaskStatus}
+                      onAssignedToChange={handleTaskAssignedToChange}
+                    />
+                  ))}
+                </div>
+              )}
+              
+              {/* Add Subtask Button */}
+              <Button
+                variant="ghost"
+                onClick={() => navigate(`/cases/${caseId}/tasks/${taskId}/subtasks/new`)}
+                className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
               >
-                {task.description || 'Click to add description...'}
-              </p>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Subtasks Section */}
-        <Card>
-          <CardHeader className="pb-4">
-            <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider">
-              SUBTASKS
-            </h2>
-          </CardHeader>
-          <CardContent className="pt-0">
-            {hasSubtasks && (
-              <div className="space-y-2 mb-6">
-                {task.subtasks!.map((subtask) => (
-                  <TaskItem
-                    key={subtask.id}
-                    task={subtask}
-                    depth={0}
-                    caseId={caseId || ''}
-                    onStatusChange={updateTaskStatus}
-                    onAssignedToChange={handleTaskAssignedToChange}
+                <svg
+                  className="mr-2 h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
                   />
-                ))}
+                </svg>
+                Add subtask
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Attachments Section (from parent case) */}
+          <AttachmentList attachments={caseData.attachments || []} />
+
+          {/* Comments Section - Unified (from parent case) */}
+          <div className="bg-white rounded-card p-8 space-y-6">
+            <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">COMMENTS</h2>
+            
+            {/* Existing Comments */}
+            {caseData.comments && caseData.comments.length > 0 && (
+              <div className="divide-y divide-neutral-100">
+                {caseData.comments.map((comment) => {
+                  const author = mockUsers.find((u) => u.id === comment.author);
+                  const timeAgo = comment.createdAt;
+                  
+                  return (
+                    <div key={comment.id} className="py-6 first:pt-0">
+                      <div className="flex gap-3">
+                        <div className="flex-shrink-0">
+                          <div className="h-10 w-10 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-600 font-medium text-sm">
+                            {author?.name.split(' ').map(n => n[0]).join('').toUpperCase() || '?'}
+                          </div>
+                        </div>
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline gap-2 mb-2">
+                            <span className="text-sm font-medium text-neutral-900">
+                              {author?.name || 'Unknown User'}
+                            </span>
+                            <span className="text-xs text-neutral-400">
+                              {new Date(timeAgo).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <p className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed">
+                            {comment.text}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
             
-            {/* Add Subtask Button */}
-            <Button
-              variant="ghost"
-              onClick={() => navigate(`/cases/${caseId}/tasks/${taskId}/subtasks/new`)}
-              className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
-            >
-              <svg
-                className="mr-2 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              Add subtask
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Attachments Section (from parent case) */}
-        <AttachmentList attachments={caseData.attachments || []} />
-
-        {/* Comments Section - Unified (from parent case) */}
-        <div className="bg-white rounded-card p-8 space-y-6">
-          <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">COMMENTS</h2>
-          
-          {/* Existing Comments */}
-          {caseData.comments && caseData.comments.length > 0 && (
-            <div className="divide-y divide-neutral-100">
-              {caseData.comments.map((comment) => {
-                const author = mockUsers.find((u) => u.id === comment.author);
-                const timeAgo = comment.createdAt;
-                
-                return (
-                  <div key={comment.id} className="py-6 first:pt-0">
-                    <div className="flex gap-3">
-                      <div className="flex-shrink-0">
-                        <div className="h-10 w-10 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-600 font-medium text-sm">
-                          {author?.name.split(' ').map(n => n[0]).join('').toUpperCase() || '?'}
-                        </div>
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-baseline gap-2 mb-2">
-                          <span className="text-sm font-medium text-neutral-900">
-                            {author?.name || 'Unknown User'}
-                          </span>
-                          <span className="text-xs text-neutral-400">
-                            {new Date(timeAgo).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <p className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed">
-                          {comment.text}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            {/* Add Comment Form */}
+            <div className="pt-4">
+              <AddCommentForm caseId={caseData.id} showMainCaseCheckbox={true} />
             </div>
-          )}
-          
-          {/* Add Comment Form */}
-          <div className="pt-4">
-            <AddCommentForm caseId={caseData.id} showMainCaseCheckbox={true} />
           </div>
         </div>
       </div>

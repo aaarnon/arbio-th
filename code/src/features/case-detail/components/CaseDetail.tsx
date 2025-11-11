@@ -74,67 +74,69 @@ export function CaseDetail() {
   return (
     <>
       {/* Main Content - With right margin for sidebar */}
-      <div className="mr-96 space-y-8">
-        {/* Case Header */}
-        <CaseHeader case={caseData} />
+      <div className="mr-96 flex justify-center">
+        <div className="w-full max-w-3xl space-y-8">
+          {/* Case Header */}
+          <CaseHeader case={caseData} />
 
-        {/* Case Description */}
-        <CaseDescription case={caseData} />
+          {/* Case Description */}
+          <CaseDescription case={caseData} />
 
-        {/* Hierarchical Task List */}
-        <HierarchicalTaskList 
-          tasks={caseData.tasks || []}
-          caseId={caseData.id}
-          onStatusChange={updateTaskStatus}
-          onAssignedToChange={handleTaskAssignedToChange}
-        />
+          {/* Hierarchical Task List */}
+          <HierarchicalTaskList 
+            tasks={caseData.tasks || []}
+            caseId={caseData.id}
+            onStatusChange={updateTaskStatus}
+            onAssignedToChange={handleTaskAssignedToChange}
+          />
 
-        {/* Attachments Section */}
-        <AttachmentList attachments={caseData.attachments || []} />
+          {/* Attachments Section */}
+          <AttachmentList attachments={caseData.attachments || []} />
 
-        {/* Comments Section - Unified */}
-        <div className="bg-white rounded-card p-8 space-y-6">
-          <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">Comments</h2>
-          
-          {/* Existing Comments */}
-          {caseData.comments && caseData.comments.length > 0 && (
-            <div className="divide-y divide-neutral-100">
-              {caseData.comments.map((comment) => {
-                const author = mockUsers.find((u) => u.id === comment.author);
-                const timeAgo = comment.createdAt;
-                
-                return (
-                  <div key={comment.id} className="py-6 first:pt-0">
-                    <div className="flex gap-3">
-                      <div className="flex-shrink-0">
-                        <div className="h-10 w-10 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-600 font-medium text-sm">
-                          {author?.name.split(' ').map(n => n[0]).join('').toUpperCase() || '?'}
+          {/* Comments Section - Unified */}
+          <div className="bg-white rounded-card p-8 space-y-6">
+            <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">Comments</h2>
+            
+            {/* Existing Comments */}
+            {caseData.comments && caseData.comments.length > 0 && (
+              <div className="divide-y divide-neutral-100">
+                {caseData.comments.map((comment) => {
+                  const author = mockUsers.find((u) => u.id === comment.author);
+                  const timeAgo = comment.createdAt;
+                  
+                  return (
+                    <div key={comment.id} className="py-6 first:pt-0">
+                      <div className="flex gap-3">
+                        <div className="flex-shrink-0">
+                          <div className="h-10 w-10 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-600 font-medium text-sm">
+                            {author?.name.split(' ').map(n => n[0]).join('').toUpperCase() || '?'}
+                          </div>
                         </div>
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-baseline gap-2 mb-2">
-                          <span className="text-sm font-medium text-neutral-900">
-                            {author?.name || 'Unknown User'}
-                          </span>
-                          <span className="text-xs text-neutral-400">
-                            {new Date(timeAgo).toLocaleDateString()}
-                          </span>
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline gap-2 mb-2">
+                            <span className="text-sm font-medium text-neutral-900">
+                              {author?.name || 'Unknown User'}
+                            </span>
+                            <span className="text-xs text-neutral-400">
+                              {new Date(timeAgo).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <p className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed">
+                            {comment.text}
+                          </p>
                         </div>
-                        <p className="text-sm text-neutral-700 whitespace-pre-wrap font-normal leading-relaxed">
-                          {comment.text}
-                        </p>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            )}
+            
+            {/* Add Comment Form */}
+            <div className="pt-4">
+              <AddCommentForm caseId={caseData.id} />
             </div>
-          )}
-          
-          {/* Add Comment Form */}
-          <div className="pt-4">
-            <AddCommentForm caseId={caseData.id} />
           </div>
         </div>
       </div>

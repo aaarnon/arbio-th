@@ -36,11 +36,17 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
     toast.success('Status updated');
   };
 
+  // Helper function to truncate text to 20 characters
+  const truncateText = (text: string, maxLength: number = 20): string => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
   return (
     <EntityHeader
       breadcrumbs={[
         { label: 'Ticketing Hub', to: '/' },
-        { label: caseData.id },
+        { label: truncateText(caseData.title) },
       ]}
       title={caseData.title}
       status={caseData.status}

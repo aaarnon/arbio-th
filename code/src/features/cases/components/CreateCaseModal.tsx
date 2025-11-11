@@ -62,18 +62,10 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
 
   // Create searchable options for properties and reservations
   const propertyOptions = useMemo(() => 
-    mockProperties.map((property) => {
-      // Extract owner name from property ID (e.g., "Darius" or "Constantin")
-      const ownerMatch = property.id.match(/_(Darius|Constantin)_/);
-      const ownerName = ownerMatch ? ownerMatch[1] : '';
-      
-      return {
-        value: property.id,
-        label: ownerName 
-          ? `${property.unitId} (${ownerName}) - ${property.address.split(',')[0]}`
-          : `${property.unitId} - ${property.address.split(',')[0]}`,
-      };
-    }),
+    mockProperties.map((property) => ({
+      value: property.id,
+      label: property.id,
+    })),
     []
   );
 

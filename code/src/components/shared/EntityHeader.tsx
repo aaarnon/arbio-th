@@ -49,6 +49,9 @@ export function EntityHeader({
 
   // Format text to display format (for status)
   const formatStatusText = (text: string) => {
+    // Handle special case for TODO -> To Do
+    if (text === 'TODO') return 'To Do';
+    
     return text
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())

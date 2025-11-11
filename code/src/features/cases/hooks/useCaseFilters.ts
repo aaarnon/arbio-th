@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Case, Status, TeamType } from '@/types';
 
 interface FilterState {
@@ -8,17 +8,51 @@ interface FilterState {
   search: string;
 }
 
+const FILTER_STORAGE_KEY = 'ticketing-hub-case-filters';
+
 /**
- * Custom hook for filtering cases
- * Provides filter state and filtered results
+ * Load filters from localStorage
  */
-export function useCaseFilters(cases: Case[]) {
-  const [filters, setFilters] = useState<FilterState>({
+function loadFiltersFromStorage(): FilterState {
+  try {
+    const saved = localStorage.getItem(FILTER_STORAGE_KEY);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (error) {
+    console.error('Failed to load filters from localStorage:', error);
+  }
+  
+  return {
     status: 'ALL',
     team: 'ALL',
     date: 'ALL',
     search: '',
-  });
+  };
+}
+
+/**
+ * Save filters to localStorage
+ */
+function saveFiltersToStorage(filters: FilterState): void {
+  try {
+    localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(filters));
+  } catch (error) {
+    console.error('Failed to save filters to localStorage:', error);
+  }
+}
+
+/**
+ * Custom hook for filtering cases
+ * Provides filter state and filtered results with persistence
+ */
+export function useCaseFilters(cases: Case[]) {
+  const [filters, setFilters] = useState<FilterState>(loadFiltersFromStorage);
+
+  // Save filters to localStorage whenever they change
+  useEffect(() => {
+    saveFiltersToStorage(filters);
+  }, [filters]);
 
   // Filter cases based on current filters
   const filteredCases = useMemo(() => {

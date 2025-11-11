@@ -59,15 +59,9 @@ export function CreateCase() {
   // Create combined searchable options for properties and reservations
   const searchOptions = useMemo(() => {
     const propertyOpts = mockProperties.map((property) => {
-      // Extract owner name from property ID (e.g., "Darius" or "Constantin")
-      const ownerMatch = property.id.match(/_(Darius|Constantin)_/);
-      const ownerName = ownerMatch ? ownerMatch[1] : '';
-      
       return {
         value: `property:${property.id}`,
-        label: ownerName 
-          ? `${property.unitId} (${ownerName}) - ${property.address.split(',')[0]}`
-          : `${property.unitId} - ${property.address.split(',')[0]}`,
+        label: property.id,
         type: 'property' as const,
         id: property.id,
       };
