@@ -1,8 +1,4 @@
 {
-  "buildCommand": "cd code && npm install && npm run build",
-  "outputDirectory": "code/dist",
-  "devCommand": "cd code && npm run dev",
-  "installCommand": "cd code && npm install",
   "rewrites": [
     {
       "source": "/(.*)",
