@@ -253,9 +253,9 @@ export function TaskDetail() {
   }, [openDropdown]);
 
   return (
-    <>
+    <div className="py-8">
       {/* Main Content - With right margin for sidebar */}
-      <div className="mr-96 flex justify-center">
+      <div className="mr-96 flex justify-center px-12">
         <div className="w-full max-w-3xl space-y-8">
           {/* Task Header */}
           <div>
@@ -517,10 +517,10 @@ export function TaskDetail() {
       </div>
 
       {/* Fixed Right Sidebar */}
-      <div className="fixed top-16 right-0 bottom-0 w-96">
+      <div className="fixed top-0 right-0 bottom-0 w-96">
         <CaseSidebar case={caseData} />
       </div>
-    </>
+    </div>
   );
 }
 

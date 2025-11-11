@@ -195,7 +195,7 @@ export function CreateTask() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="mx-auto max-w-3xl px-12 py-8">
       {/* Page Header */}
       <div className="mb-5">
         <h1 className="text-2xl font-normal text-neutral-900 mb-1">

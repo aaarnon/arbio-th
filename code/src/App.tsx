@@ -5,6 +5,11 @@ import { CaseDetail } from '@/features/case-detail/components/CaseDetail';
 import { CreateCase } from '@/pages/CreateCase';
 import { CreateTask } from '@/pages/CreateTask';
 import { TaskDetail } from '@/pages/TaskDetail';
+import { Notifications } from '@/pages/Notifications';
+import { Tasks } from '@/pages/Tasks';
+import { Teams } from '@/pages/Teams';
+import { Reports } from '@/pages/Reports';
+import { Settings } from '@/pages/Settings';
 import { StatusComparison } from '@/pages/StatusComparison';
 import { NotFound } from '@/pages/NotFound';
 
@@ -13,6 +18,11 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<CaseList />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/tasks" element={<Tasks />} />
+        <Route path="/teams" element={<Teams />} />
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/settings" element={<Settings />} />
         {/* Status comparison demo page */}
         <Route path="/status-comparison" element={<StatusComparison />} />
         {/* Create new case page - must be before :caseId route */}
