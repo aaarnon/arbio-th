@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useCaseContext } from '@/store/CaseContext';
 import { CaseHeader } from './CaseHeader';
 import { CaseDescription } from './CaseDescription';
@@ -9,6 +10,7 @@ import { AddCommentForm } from '@/features/comments/components/AddCommentForm';
 import { AttachmentList } from '@/features/attachments/components/AttachmentList';
 import { Button } from '@/components/ui/button';
 import { mockUsers } from '@/data/mockUsers';
+import { CreateTaskModal } from '@/features/tasks/components/CreateTaskModal';
 
 /**
  * Case Detail Component
@@ -18,6 +20,7 @@ export function CaseDetail() {
   const { caseId } = useParams<{ caseId: string }>();
   const navigate = useNavigate();
   const { state } = useCaseContext();
+  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
 
   // Find the case by ID
   const caseData = state.cases.find((c) => c.id === caseId);
@@ -72,9 +75,9 @@ export function CaseDetail() {
   }
 
   return (
-    <div className="py-8">
+    <div>
       {/* Main Content - With right margin for sidebar */}
-      <div className="mr-96 flex justify-center px-12">
+      <div className="mr-[380px] flex justify-center px-12 py-8">
         <div className="w-full max-w-3xl space-y-8">
           {/* Case Header */}
           <CaseHeader case={caseData} />
@@ -88,6 +91,7 @@ export function CaseDetail() {
             caseId={caseData.id}
             onStatusChange={updateTaskStatus}
             onAssignedToChange={handleTaskAssignedToChange}
+            onAddTask={() => setIsCreateTaskModalOpen(true)}
           />
 
           {/* Attachments Section */}
@@ -142,9 +146,16 @@ export function CaseDetail() {
       </div>
 
       {/* Right Sidebar - Fixed, Full-Height, Edge-to-Edge */}
-      <div className="fixed top-0 right-0 bottom-0 w-96">
+      <div className="fixed top-0 right-0 bottom-0 w-[380px] z-30">
         <CaseSidebar case={caseData} />
       </div>
+
+      {/* Create Task Modal */}
+      <CreateTaskModal
+        open={isCreateTaskModalOpen}
+        onOpenChange={setIsCreateTaskModalOpen}
+        caseId={caseData.id}
+      />
     </div>
   );
 }

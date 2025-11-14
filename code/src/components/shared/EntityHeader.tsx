@@ -122,25 +122,29 @@ export function EntityHeader({
 
   return (
     <div className="mb-8">
-      {/* Breadcrumb */}
-      <div className="mb-6 flex items-center gap-2 text-sm text-neutral-600">
-        {breadcrumbs.map((crumb, index) => (
-          <div key={index} className="flex items-center gap-2">
-            {index > 0 && (
-              <svg className="h-4 w-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            )}
-            {crumb.to ? (
-              <Link to={crumb.to} className="hover:text-neutral-900 transition-colors">
-                {crumb.label}
-              </Link>
-            ) : (
-              <span className="text-neutral-900 font-medium">{crumb.label}</span>
-            )}
-          </div>
-        ))}
+      {/* Breadcrumb - Sticky */}
+      <div className="fixed top-0 left-52 right-0 z-20 bg-neutral-50 py-4 mb-6 flex items-center gap-2 text-sm text-neutral-600" style={{ paddingLeft: '3rem', paddingRight: 'calc(3rem + 380px)' }}>
+        <div className="max-w-3xl mx-auto w-full flex items-center gap-2">
+          {breadcrumbs.map((crumb, index) => (
+            <div key={index} className="flex items-center gap-2">
+              {index > 0 && (
+                <svg className="h-4 w-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              )}
+              {crumb.to ? (
+                <Link to={crumb.to} className="hover:text-neutral-900 transition-colors">
+                  {crumb.label}
+                </Link>
+              ) : (
+                <span className="text-neutral-900 font-medium">{crumb.label}</span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
+      {/* Spacer to prevent content from going under fixed breadcrumb */}
+      <div className="h-12"></div>
 
       {/* Title - Inline Editable */}
       {isEditingTitle ? (

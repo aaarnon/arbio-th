@@ -1,0 +1,91 @@
+# Frontend Boilerplate Architecture Document
+
+## Core Technology Stack
+
+### Frontend Framework
+
+- **Next.js ^16.0.0** – App Router
+- **React ^19.2.0** – With support for React Compiler (experimental)
+- **TypeScript^5.9.3** – Strict mode enabled for type safety
+
+### Styling
+
+- **Tailwind CSS ^4.1.16** – Utility-first CSS framework
+- **clsx** – Conditional class name utility
+- **CVA (class-variance-authority)** – Variant-based component styling
+- **Storybook**.
+
+### UI Components
+
+- **shadcn/ui** – High-quality, customizable component library
+- **Lucide React** – Beautiful, consistent icons
+- **Sonner** – Beautiful toast notifications
+- **Framer Motion** – Production-ready animation library
+
+### State Management & Data Fetching
+
+- **TanStack Query v5** – Server state management with caching, revalidation, and optimistic updates
+- **Zustand** – Lightweight client state management
+- **Zod** – Runtime type validation and schema declaration
+- **React Hook Form** – Performant forms with built-in validation
+- **Axios** – Modern browser fetch with async/await
+
+### API Integration
+
+- **OpenAPI TypeScript Codegen** – Auto-generate TypeScript types from API specs
+
+### Environment Management
+
+- **@t3-oss/env-nextjs** – Type-safe environment variable validation and management
+
+### Internationalization
+
+- **next-intl ^4.4.0** – Type-safe internationalization
+- **@lingual/i18n-check** – Automated validation of translation keys and localization files
+
+### Monitoring & Analytics
+
+- Posthog – Metrics
+- Sentry - For logging and error tracking
+- **Checkly** – API and site uptime monitoring
+- **@spotlightjs/spotlight** – Development debugging toolbar for observability
+- LogTape – Structured logging for production
+
+---
+
+## Development Tools & DX
+
+### Code Quality
+
+- **ESLint ^9.38.0** – Using **@antfu/eslint-config** for modern, consistent linting rules
+- **Prettier ^3+** – Code formatting with Tailwind plugin
+- **Lefthook** – Git hooks for pre-commit and pre-push checks (replaces Husky)
+- **Commitlint** – Enforce conventional commits
+- **lint-staged** – Run linters on staged files
+- **knip** – Detect unused files, exports, and dependencies
+
+### Versioning & Automation
+
+- **semantic-release** – Automated versioning, changelog, and release process
+
+### Testing
+
+- **Vitest ^4.0.3** – Unit testing framework
+- **React Testing Library** – Component testing
+- **Playwright** – E2E testing
+
+### Build & Development
+
+- **pnpm** – Fast, disk-efficient package manager
+- **Turborepo** – Monorepo build system (if scaling)
+- **@next/bundle-analyzer** – Analyze and visualize bundle size
+- **TypeScript** – Type checking and IntelliSense
+
+---
+
+## Deployment
+
+### AWS Deployment:
+
+- **S3** if server side rendering is not needed.
+- **ECS** if the above is needed.

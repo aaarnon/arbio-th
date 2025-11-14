@@ -63,11 +63,11 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
         </h3>
         <div className="space-y-1">
           <div className="flex items-center justify-between">
-            <dt className="text-xs text-neutral-500">Unit</dt>
-            <dd>
+            <dt className="text-xs text-neutral-500 flex-shrink-0">Unit</dt>
+            <dd className="min-w-0 flex-1 text-right">
               <a 
                 href="#" 
-                className="text-xs text-neutral-900 underline hover:text-neutral-600 transition-colors"
+                className="text-xs text-neutral-900 underline hover:text-neutral-600 transition-colors whitespace-nowrap inline-block ml-auto"
                 onClick={(e) => {
                   e.preventDefault();
                   // TODO: Navigate to property management system

@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import type { Task, Status } from '@/types';
 import { TaskItem } from './TaskItem';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -9,14 +8,14 @@ interface HierarchicalTaskListProps {
   caseId: string;
   onStatusChange?: (taskId: string, newStatus: Status) => void;
   onAssignedToChange?: (taskId: string, newUserId: string) => void;
+  onAddTask?: () => void;
 }
 
 /**
  * Hierarchical Task List Component
  * Displays a tree structure of tasks and subtasks
  */
-export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssignedToChange }: HierarchicalTaskListProps) {
-  const navigate = useNavigate();
+export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssignedToChange, onAddTask }: HierarchicalTaskListProps) {
 
   if (!tasks || tasks.length === 0) {
     return (
@@ -28,7 +27,7 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
           {/* Action Buttons */}
           <Button
             variant="ghost"
-            onClick={() => navigate(`/cases/${caseId}/tasks/new`)}
+            onClick={onAddTask}
             className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
           >
             <svg
@@ -92,7 +91,7 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
               caseId={caseId}
               onStatusChange={onStatusChange}
               onAssignedToChange={onAssignedToChange}
-              onAddTask={() => navigate(`/cases/${caseId}/tasks/new`)}
+              onAddTask={onAddTask}
             />
           ))}
         </div>
@@ -101,7 +100,7 @@ export function HierarchicalTaskList({ tasks, caseId, onStatusChange, onAssigned
         <div className="mt-6">
           <Button
             variant="ghost"
-            onClick={() => navigate(`/cases/${caseId}/tasks/new`)}
+            onClick={onAddTask}
             className="w-full justify-center text-neutral-500 hover:text-neutral-800 hover:bg-neutral-200"
           >
             <svg

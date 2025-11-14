@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { mockUsers } from '@/data/mockUsers';
 import { useState, useRef, useEffect } from 'react';
+import { CreateCaseModal } from '@/features/cases/components/CreateCaseModal';
 
 interface SidebarProps {
   onSearchClick?: () => void;
@@ -14,6 +15,7 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
   const location = useLocation();
   const currentUser = mockUsers[0]; // For demo purposes
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isCreateCaseModalOpen, setIsCreateCaseModalOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
@@ -68,29 +70,9 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
       path: '/notifications',
       badge: 6,
     },
-    {
-      id: 'tasks',
-      label: 'Tasks',
-      icon: (
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-        </svg>
-      ),
-      path: '/tasks',
-    },
   ];
 
   const secondaryMenuItems = [
-    {
-      id: 'teams',
-      label: 'Teams',
-      icon: (
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      ),
-      path: '/teams',
-    },
     {
       id: 'reports',
       label: 'Reports',
@@ -132,7 +114,7 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
           <div className="flex h-9 w-9 items-center justify-center rounded bg-neutral-900">
             <span className="text-base font-bold text-white">A</span>
           </div>
-          <span className="text-sm font-medium text-neutral-900">Arbio</span>
+          <span className="text-sm font-semibold text-neutral-900">Arbio</span>
         </Link>
         <button 
           onClick={onSearchClick}
@@ -147,15 +129,15 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
 
       {/* Create New Case Button */}
       <div className="px-4 pt-2 pb-6">
-        <Link
-          to="/cases/new"
-          className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 text-white text-sm font-medium rounded-md transition-colors"
+        <button
+          onClick={() => setIsCreateCaseModalOpen(true)}
+          className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-neutral-900 hover:bg-neutral-800 text-white text-sm rounded-md transition-colors"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           New Case
-        </Link>
+        </button>
       </div>
 
       {/* Primary Navigation */}
@@ -165,7 +147,7 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
             <Link
               key={item.id}
               to={item.path}
-              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
                 isActive(item.path)
                   ? 'bg-neutral-100 text-neutral-900'
                   : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
@@ -193,7 +175,7 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
             <Link
               key={item.id}
               to={item.path}
-              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
                 isActive(item.path)
                   ? 'bg-neutral-100 text-neutral-900'
                   : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
@@ -243,6 +225,12 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
           </div>
         )}
       </div>
+
+      {/* Create Case Modal */}
+      <CreateCaseModal
+        open={isCreateCaseModalOpen}
+        onOpenChange={setIsCreateCaseModalOpen}
+      />
     </div>
   );
 }

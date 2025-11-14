@@ -1,12 +1,14 @@
 /**
- * AI Agents Page
- * Placeholder for AI agent management functionality
+ * AI Agents Page - Placeholder
+ * Will show AI agent management functionality
  */
 export function AIAgents() {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-12">
-      <h1 className="text-3xl font-normal text-neutral-900 mb-4">AI Agents</h1>
-      <p className="text-neutral-600">This page will manage AI agents and automation.</p>
+    <div className="flex items-center justify-center h-screen">
+      <div className="text-center">
+        <h1 className="text-2xl font-semibold text-neutral-900 mb-2">AI Agents</h1>
+        <p className="text-neutral-600">Coming soon</p>
+      </div>
     </div>
   );
 }
