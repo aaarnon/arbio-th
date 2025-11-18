@@ -40,7 +40,7 @@ import { FileUpload } from '@/components/ui/file-upload';
 import { TaskReviewStep } from './TaskReviewStep';
 import { aiTaskGenerator, convertToTasks, type GeneratedTask } from '@/services/aiTaskGenerator';
 import { ThinkingLoader } from '@/components/ui/thinking-loader';
-import { Sparkles, ArrowLeft, Check, X } from 'lucide-react';
+import { Sparkles, ArrowLeft } from 'lucide-react';
 
 interface CreateCaseModalProps {
   open: boolean;
@@ -133,12 +133,16 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         const index = taskPath[i];
         if (i === taskPath.length - 1) {
           // Last index - this is the task to modify
-          task = current[index];
-          task.accepted = accepted;
+          if (current) {
+            task = current[index];
+            task.accepted = accepted;
+          }
         } else {
           // Navigate deeper
-          task = current[index];
-          current = task.subtasks;
+          if (current) {
+            task = current[index];
+            current = task.subtasks;
+          }
         }
       }
       
@@ -159,19 +163,6 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         }));
       };
       return toggleAcceptAll(prevTasks);
-    });
-  };
-
-  const handleResetAll = () => {
-    setGeneratedTasks(prevTasks => {
-      const resetAllTasks = (tasks: GeneratedTask[]): GeneratedTask[] => {
-        return tasks.map(task => ({
-          ...task,
-          accepted: undefined,
-          subtasks: task.subtasks ? resetAllTasks(task.subtasks) : undefined
-        }));
-      };
-      return resetAllTasks(prevTasks);
     });
   };
 
@@ -270,8 +261,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
       // Convert explicitly accepted tasks to actual Task objects with IDs
       const tasks = convertToTasks(
         generatedTasks.filter(t => t.accepted === true), 
-        caseId, 
-        false
+        caseId
       );
 
       // Create case object
@@ -508,7 +498,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         ) : !isGenerating ? (
           <div className="flex items-center justify-between gap-3 pt-3 mt-2 border-t border-neutral-100">
             <Button 
-              variant="outline" 
+              variant="ghost" 
               onClick={handleBack}
               disabled={isSubmitting}
             >

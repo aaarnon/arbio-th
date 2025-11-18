@@ -70,7 +70,7 @@ export function useCaseFilters(cases: Case[]) {
       }
 
       // Team filter - show all if empty array, otherwise check if team is in the array
-      if (filters.team.length > 0 && !filters.team.includes(c.team)) {
+      if (filters.team.length > 0 && c.team && !filters.team.includes(c.team)) {
         return false;
       }
 

@@ -23,7 +23,7 @@ export const aiTaskGenerator = {
    */
   async generateTasks(
     description: string,
-    title: string,
+    _title: string,
     team?: TeamType
   ): Promise<GeneratedTask[]> {
     // Simulate AI processing delay (20 seconds)
@@ -64,7 +64,7 @@ export const aiTaskGenerator = {
 /**
  * Template: WiFi/Internet issues
  */
-function generateWiFiTasks(team?: TeamType): GeneratedTask[] {
+function generateWiFiTasks(_team?: TeamType): GeneratedTask[] {
   return [
     {
       title: 'Validate issue',
@@ -420,59 +420,6 @@ function generateGuestCommTasks(team?: TeamType): GeneratedTask[] {
   ];
 }
 
-/**
- * Template: Generic tasks (fallback)
- */
-function generateGenericTasks(title: string, team?: TeamType): GeneratedTask[] {
-  return [
-    {
-      title: 'Initial assessment',
-      description: `Complete evaluation and documentation of the reported issue`,
-      team,
-      accepted: undefined,
-      subtasks: [
-        {
-          title: 'Gather all relevant information',
-          team,
-          accepted: undefined,
-        },
-        {
-          title: 'Document current situation with photos',
-          team,
-          accepted: undefined,
-        },
-        {
-          title: 'Identify stakeholders',
-          team,
-          accepted: undefined,
-        }
-      ]
-    },
-    {
-      title: 'Resolution and follow-up',
-      description: 'Execute resolution plan and verify successful completion',
-      team,
-      accepted: undefined,
-      subtasks: [
-        {
-          title: 'Implement solution',
-          team,
-          accepted: undefined,
-        },
-        {
-          title: 'Monitor progress and adjust as needed',
-          team,
-          accepted: undefined,
-        },
-        {
-          title: 'Final verification and approval',
-          team,
-          accepted: undefined,
-        }
-      ]
-    }
-  ];
-}
 
 /**
  * Convert generated tasks to actual Task objects with IDs
@@ -480,8 +427,7 @@ function generateGenericTasks(title: string, team?: TeamType): GeneratedTask[] {
  */
 export function convertToTasks(
   generatedTasks: GeneratedTask[],
-  caseId: string,
-  filterAccepted: boolean = false
+  caseId: string
 ): Task[] {
   let taskCounter = 1;
   

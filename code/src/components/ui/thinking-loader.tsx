@@ -22,9 +22,7 @@ const thinkingMessages = [
 // The AI will type the wrong part, realize the mistake, delete back to the prefix, then continue with the correct part
 const commonPrefix = "Identifying ";
 const mistakePart = "whether humans like pineapple pizza";
-const correctedPart = "issue type and severity level";
 const mistakeMessage = commonPrefix + mistakePart + "...";
-const correctedMessage = commonPrefix + correctedPart + "...";
 
 /**
  * ThinkingLoader Component

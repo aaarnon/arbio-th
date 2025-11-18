@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { CaseList } from '@/features/cases/components/CaseList';
 import { CaseDetail } from '@/features/case-detail/components/CaseDetail';

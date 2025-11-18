@@ -88,7 +88,7 @@ export function CaseFilters({
         <MultiSelect
           options={statusOptions}
           selected={statusFilter}
-          onChange={onStatusChange}
+          onChange={(selected) => onStatusChange(selected as Status[])}
           placeholder="All Statuses"
           className="w-full"
         />
@@ -99,7 +99,7 @@ export function CaseFilters({
         <MultiSelect
           options={teamOptions}
           selected={teamFilter}
-          onChange={onTeamChange}
+          onChange={(selected) => onTeamChange(selected as TeamType[])}
           placeholder="All Teams"
           className="w-full"
         />
