@@ -6,6 +6,7 @@ import { CaseProvider } from '@/store/CaseContext'
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary'
 import './index.css'
 import App from './App.tsx'
+// Force recompile
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

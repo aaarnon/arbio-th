@@ -70,9 +70,12 @@ export function SearchableSelect({
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value)
-    // Close dropdown when typing (search must be triggered explicitly)
-    if (open) {
+    const newValue = e.target.value
+    setSearchQuery(newValue)
+    // Automatically open dropdown after typing 5 or more characters
+    if (newValue.length >= 5) {
+      setOpen(true)
+    } else if (newValue.length < 5 && open) {
       setOpen(false)
     }
   }

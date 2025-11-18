@@ -132,6 +132,20 @@ export function TaskDetail() {
     setOpenDropdown(null);
   };
 
+  // Handle main task team change
+  const handleTeamChange = (newTeam: string) => {
+    dispatch({
+      type: 'UPDATE_TASK',
+      payload: {
+        caseId: caseId || '',
+        taskId: task.id,
+        updates: { team: newTeam as any },
+      },
+    });
+    toast.success('Team updated');
+    setOpenDropdown(null);
+  };
+
   // Handle description save
   const handleDescriptionBlur = () => {
     setIsEditingDescription(false);
@@ -344,6 +358,78 @@ export function TaskDetail() {
                       <span className="font-normal text-neutral-400">Team:</span>
                       <span className="ml-1">{formatTeam(task.team || caseData.team || '')}</span>
                     </button>
+
+                    {/* Team Dropdown */}
+                    {openDropdown === 'team' && (
+                      <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-50">
+                        <button
+                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                          onClick={() => handleTeamChange('PROPERTY_MANAGEMENT_DE')}
+                        >
+                          <span className="text-neutral-900">Property Management - DE</span>
+                          {task.team === 'PROPERTY_MANAGEMENT_DE' && (
+                            <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                        <button
+                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                          onClick={() => handleTeamChange('PROPERTY_MANAGEMENT_AT')}
+                        >
+                          <span className="text-neutral-900">Property Management - AT</span>
+                          {task.team === 'PROPERTY_MANAGEMENT_AT' && (
+                            <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                        <button
+                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                          onClick={() => handleTeamChange('GUEST_COMM_DE')}
+                        >
+                          <span className="text-neutral-900">Guest Comm - DE</span>
+                          {task.team === 'GUEST_COMM_DE' && (
+                            <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                        <button
+                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                          onClick={() => handleTeamChange('GUEST_COMM_AT')}
+                        >
+                          <span className="text-neutral-900">Guest Comm - AT</span>
+                          {task.team === 'GUEST_COMM_AT' && (
+                            <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                        <button
+                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                          onClick={() => handleTeamChange('GUEST_EXPERIENCE')}
+                        >
+                          <span className="text-neutral-900">Guest Experience</span>
+                          {task.team === 'GUEST_EXPERIENCE' && (
+                            <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                        <button
+                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
+                          onClick={() => handleTeamChange('FINOPS')}
+                        >
+                          <span className="text-neutral-900">FinOps</span>
+                          {task.team === 'FINOPS' && (
+                            <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
 

@@ -1,9 +1,10 @@
 import { type ReactNode, useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { CommandPalette } from '@/components/shared/CommandPalette';
 
 interface LayoutProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 /**
@@ -33,8 +34,9 @@ export function Layout({ children }: LayoutProps) {
       <div className="flex-1 ml-52">
         {/* Main content */}
         <main className="min-h-screen overflow-y-auto">
-        {children}
-      </main>
+          {/* Use Outlet for nested routes, fallback to children for direct usage */}
+          {children || <Outlet />}
+        </main>
       </div>
 
       {/* Command Palette */}

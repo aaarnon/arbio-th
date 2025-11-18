@@ -6,15 +6,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { MultiSelect } from '@/components/ui/multi-select';
 import type { Status, TeamType } from '@/types';
 
 interface CaseFiltersProps {
-  statusFilter: Status | 'ALL';
-  teamFilter: TeamType | 'ALL';
+  statusFilter: Status[];
+  teamFilter: TeamType[];
   dateFilter: string;
   searchFilter: string;
-  onStatusChange: (status: Status | 'ALL') => void;
-  onTeamChange: (team: TeamType | 'ALL') => void;
+  onStatusChange: (status: Status[]) => void;
+  onTeamChange: (team: TeamType[]) => void;
   onDateChange: (date: string) => void;
   onSearchChange: (search: string) => void;
 }
@@ -33,6 +34,27 @@ export function CaseFilters({
   onDateChange,
   onSearchChange,
 }: CaseFiltersProps) {
+  const statusOptions = [
+    { label: 'To Do', value: 'TODO' },
+    { label: 'In Progress', value: 'IN_PROGRESS' },
+    { label: 'In Review', value: 'IN_REVIEW' },
+    { label: 'Done', value: 'DONE' },
+    { label: 'Blocked', value: 'BLOCKED' },
+    { label: 'Failed', value: 'FAILED' },
+    { label: 'Duplicate', value: 'DUPLICATE' },
+    { label: 'Rejected', value: 'REJECTED' },
+    { label: 'Cancelled', value: 'CANCELLED' },
+  ];
+
+  const teamOptions = [
+    { label: 'Property Management - DE', value: 'PROPERTY_MANAGEMENT_DE' },
+    { label: 'Property Management - AT', value: 'PROPERTY_MANAGEMENT_AT' },
+    { label: 'Guest Comm - DE', value: 'GUEST_COMM_DE' },
+    { label: 'Guest Comm - AT', value: 'GUEST_COMM_AT' },
+    { label: 'Guest Experience', value: 'GUEST_EXPERIENCE' },
+    { label: 'FinOps', value: 'FINOPS' },
+  ];
+
   return (
     <div className="flex flex-wrap items-center gap-3 bg-white rounded-card px-4 py-3">
       {/* Search Input */}
@@ -63,41 +85,24 @@ export function CaseFilters({
 
       {/* Status Filter */}
       <div className="w-[160px]">
-        <Select value={statusFilter} onValueChange={onStatusChange}>
-          <SelectTrigger className="h-9">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ALL">All Statuses</SelectItem>
-            <SelectItem value="TODO">To Do</SelectItem>
-            <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-            <SelectItem value="IN_REVIEW">In Review</SelectItem>
-            <SelectItem value="DONE">Done</SelectItem>
-            <SelectItem value="BLOCKED">Blocked</SelectItem>
-            <SelectItem value="FAILED">Failed</SelectItem>
-            <SelectItem value="DUPLICATE">Duplicate</SelectItem>
-            <SelectItem value="REJECTED">Rejected</SelectItem>
-            <SelectItem value="CANCELLED">Cancelled</SelectItem>
-          </SelectContent>
-        </Select>
+        <MultiSelect
+          options={statusOptions}
+          selected={statusFilter}
+          onChange={onStatusChange}
+          placeholder="All Statuses"
+          className="w-full"
+        />
       </div>
 
       {/* Team Filter */}
       <div className="w-[240px]">
-        <Select value={teamFilter} onValueChange={onTeamChange}>
-          <SelectTrigger className="h-9">
-            <SelectValue placeholder="Team" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ALL">All Teams</SelectItem>
-            <SelectItem value="PROPERTY_MANAGEMENT_DE">Property Management - DE</SelectItem>
-            <SelectItem value="PROPERTY_MANAGEMENT_AT">Property Management - AT</SelectItem>
-            <SelectItem value="GUEST_COMM_DE">Guest Comm - DE</SelectItem>
-            <SelectItem value="GUEST_COMM_AT">Guest Comm - AT</SelectItem>
-            <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
-            <SelectItem value="FINOPS">FinOps</SelectItem>
-          </SelectContent>
-        </Select>
+        <MultiSelect
+          options={teamOptions}
+          selected={teamFilter}
+          onChange={onTeamChange}
+          placeholder="All Teams"
+          className="w-full"
+        />
       </div>
 
       {/* Date Filter */}

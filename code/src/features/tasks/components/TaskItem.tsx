@@ -95,11 +95,6 @@ export function TaskItem({ task, depth, caseId, onStatusChange, onAssignedToChan
           </div>
         )}
 
-        {/* Task ID */}
-        <span className="text-xs font-mono text-neutral-400 min-w-[60px]">
-          {task.id}
-        </span>
-
         {/* Task Title with Team Tag */}
         <div className="flex-1 min-w-0">
           {currentTaskId !== task.id ? (

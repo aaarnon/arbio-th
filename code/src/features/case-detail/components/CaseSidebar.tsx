@@ -152,6 +152,22 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
               ${reservation.totalValue.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
             </dd>
           </div>
+          <div className="flex items-center justify-between">
+            <dt className="text-xs text-neutral-500">Upcoming Check-in</dt>
+            <dd>
+              <a 
+                href="#" 
+                className="text-xs text-neutral-900 underline hover:text-neutral-600 transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  // TODO: Navigate to check-in details
+                  console.log('Navigate to upcoming check-in');
+                }}
+              >
+                01 Nov
+              </a>
+            </dd>
+          </div>
         </div>
       </section>
 
@@ -161,6 +177,15 @@ export function CaseSidebar({ case: caseData }: CaseSidebarProps) {
           External Tools
         </h3>
         <div className="space-y-0">
+          <div className="flex items-center justify-between py-1 hover:bg-neutral-50 -mx-2 px-2 rounded-md transition-colors cursor-pointer">
+            <div>
+              <div className="text-xs text-neutral-900 font-medium">Hostaway</div>
+              <div className="text-xs text-neutral-500">Synced at Today at 6:41 AM</div>
+            </div>
+            <svg className="h-4 w-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </div>
           <div className="flex items-center justify-between py-1 hover:bg-neutral-50 -mx-2 px-2 rounded-md transition-colors cursor-pointer">
           <div>
               <div className="text-xs text-neutral-900 font-medium">Conduit</div>

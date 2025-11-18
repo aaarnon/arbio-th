@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect } from 'react';
 import type { Case, Status, TeamType } from '@/types';
 
 interface FilterState {
-  status: Status | 'ALL';
-  team: TeamType | 'ALL';
+  status: Status[];
+  team: TeamType[];
   date: string;
   search: string;
 }
@@ -17,15 +17,22 @@ function loadFiltersFromStorage(): FilterState {
   try {
     const saved = localStorage.getItem(FILTER_STORAGE_KEY);
     if (saved) {
-      return JSON.parse(saved);
+      const parsed = JSON.parse(saved);
+      // Handle migration from old single-value format
+      return {
+        status: Array.isArray(parsed.status) ? parsed.status : [],
+        team: Array.isArray(parsed.team) ? parsed.team : [],
+        date: parsed.date || 'ALL',
+        search: parsed.search || '',
+      };
     }
   } catch (error) {
     console.error('Failed to load filters from localStorage:', error);
   }
   
   return {
-    status: 'ALL',
-    team: 'ALL',
+    status: [],
+    team: [],
     date: 'ALL',
     search: '',
   };
@@ -57,13 +64,13 @@ export function useCaseFilters(cases: Case[]) {
   // Filter cases based on current filters
   const filteredCases = useMemo(() => {
     return cases.filter((c) => {
-      // Status filter
-      if (filters.status !== 'ALL' && c.status !== filters.status) {
+      // Status filter - show all if empty array, otherwise check if status is in the array
+      if (filters.status.length > 0 && !filters.status.includes(c.status)) {
         return false;
       }
 
-      // Team filter
-      if (filters.team !== 'ALL' && c.team !== filters.team) {
+      // Team filter - show all if empty array, otherwise check if team is in the array
+      if (filters.team.length > 0 && !filters.team.includes(c.team)) {
         return false;
       }
 
@@ -107,11 +114,11 @@ export function useCaseFilters(cases: Case[]) {
   }, [cases, filters]);
 
   // Update individual filters
-  const setStatusFilter = (status: Status | 'ALL') => {
+  const setStatusFilter = (status: Status[]) => {
     setFilters((prev) => ({ ...prev, status }));
   };
 
-  const setTeamFilter = (team: TeamType | 'ALL') => {
+  const setTeamFilter = (team: TeamType[]) => {
     setFilters((prev) => ({ ...prev, team }));
   };
 
@@ -126,8 +133,8 @@ export function useCaseFilters(cases: Case[]) {
   // Reset all filters
   const resetFilters = () => {
     setFilters({
-      status: 'ALL',
-      team: 'ALL',
+      status: [],
+      team: [],
       date: 'ALL',
       search: '',
     });

@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Creation Flow - UX Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .mockup-container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .mockup-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .mockup-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .mockup-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px 24px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .modal-content {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #111827;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-primary:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 1px solid #667eea30;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-icon {
+            font-size: 24px;
+        }
+
+        .ai-text {
+            flex: 1;
+        }
+
+        .ai-text h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .ai-text p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .task-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .task-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .task-item.rejected {
+            opacity: 0.5;
+            background: #f9fafb;
+        }
+
+        .task-header {
+            padding: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: white;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .task-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .task-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .subtask-list {
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .subtask-item {
+            padding: 12px 16px 12px 48px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .subtask-item:last-child {
+            border-bottom: none;
+        }
+
+        .subtask-title {
+            font-size: 14px;
+            color: #374151;
+            flex: 1;
+        }
+
+        .task-count {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .demo-controls {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .demo-controls h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #111827;
+        }
+
+        .demo-controls .btn {
+            margin: 0 8px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 640px) {
+            .modal {
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .modal-content {
+                padding: 16px;
+            }
+
+            .task-meta {
+                flex-direction: column;
+                gap: 4px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-container">
+        <div class="mockup-header">
+            <h1>🎨 Case Creation Flow - Interactive Mockup</h1>
+            <p>Two-step modal with AI-generated task review</p>
+        </div>
+
+        <!-- Modal 1: Create Case -->
+        <div class="overlay" id="modal1">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Create New Case</h2>
+                    <button class="close-btn" onclick="resetDemo()">&times;</button>
+                </div>
+                
+                <div class="modal-content">
+                    <form id="caseForm">
+                        <div class="form-group">
+                            <label for="title">Case Title <span class="required">*</span></label>
+                            <input type="text" id="title" value="Water leak from unit above" placeholder="Enter case title">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description <span class="required">*</span></label>
+                            <textarea id="description" placeholder="Describe the issue in detail">Guest reported water leaking from ceiling in unit A-101. Appears to be coming from unit A-201 above. Needs immediate inspection and repair.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="priority">Priority <span class="required">*</span></label>
+                            <select id="priority">
+                                <option value="">Select priority</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high" selected>High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category <span class="required">*</span></label>
+                            <select id="category">
+                                <option value="">Select category</option>
+                                <option value="maintenance" selected>Property Management</option>
+                                <option value="housekeeping">Housekeeping</option>
+                                <option value="guest">Guest Services</option>
+                                <option value="technical">Technical</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="property">Property</label>
+                            <select id="property">
+                                <option value="">Select property</option>
+                                <option value="beach-villa" selected>Beach Villa Resort</option>
+                                <option value="mountain-lodge">Mountain Lodge</option>
+                                <option value="city-apartments">City Apartments</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit">Unit Number</label>
+                            <input type="text" id="unit" value="A-101" placeholder="e.g., A-101">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reporter">Reporter Email</label>
+                            <input type="email" id="reporter" value="guest@example.com" placeholder="reporter@example.com">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="resetDemo()">Cancel</button>
+                    <button class="btn btn-primary" onclick="showTasksModal()">
+                        ✨ Generate Tasks
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 4px;">
+                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 2: Review AI Tasks -->
+        <div class="overlay hidden" id="modal2">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Review AI-Generated Tasks</h2>
+                    <button class="close-btn" onclick="resetDemo()">&times;</button>
+                </div>
+                
+                <div class="modal-content">
+                    <div class="ai-header">
+                        <div class="ai-icon">✨</div>
+                        <div class="ai-text">
+                            <h3>AI Task Suggestions</h3>
+                            <p>Review and select which tasks to include with this case</p>
+                        </div>
+                    </div>
+
+                    <div class="task-count">
+                        <span id="taskCount">5 of 5</span> tasks selected
+                    </div>
+
+                    <div class="bulk-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="selectAll()">
+                            ✓ Select All
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="deselectAll()">
+                            ✗ Deselect All
+                        </button>
+                    </div>
+
+                    <div class="task-list">
+                        <!-- Task 1 -->
+                        <div class="task-item" data-task="1">
+                            <div class="task-header">
+                                <input type="checkbox" class="task-checkbox" id="task1" checked onchange="updateCount()">
+                                <div class="task-content">
+                                    <div class="task-label">Task 1</div>
+                                    <div class="task-title">Emergency inspection and assessment</div>
+                                    <div class="task-meta">
+                                        <div class="task-meta-item">
+                                            <span>📋</span>
+                                            <span>Property Management - DE</span>
+                                        </div>
+                                        <div class="task-meta-item">
+                                            <span>👤</span>
+                                            <span>Unassigned</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="subtask-list">
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" id="subtask1-1" checked onchange="updateCount()">
+                                    <div class="subtask-title">
+                                        <strong>Subtask 1.1:</strong> Check unit above (A-201) for plumbing issues
+                                    </div>
+                                </div>
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" id="subtask1-2" checked onchange="updateCount()">
+                                    <div class="subtask-title">
+                                        <strong>Subtask 1.2:</strong> Document damage with photos
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Task 2 -->
+                        <div class="task-item" data-task="2">
+                            <div class="task-header">
+                                <input type="checkbox" class="task-checkbox" id="task2" checked onchange="updateCount()">
+                                <div class="task-content">
+                                    <div class="task-label">Task 2</div>
+                                    <div class="task-title">Repair plumbing and ceiling</div>
+                                    <div class="task-meta">
+                                        <div class="task-meta-item">
+                                            <span>📋</span>
+                                            <span>Property Management - DE</span>
+                                        </div>
+                                        <div class="task-meta-item">
+                                            <span>👤</span>
+                                            <span>Unassigned</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Task 3 -->
+                        <div class="task-item" data-task="3">
+                            <div class="task-header">
+                                <input type="checkbox" class="task-checkbox" id="task3" checked onchange="updateCount()">
+                                <div class="task-content">
+                                    <div class="task-label">Task 3</div>
+                                    <div class="task-title">Coordinate with guest for unit access</div>
+                                    <div class="task-meta">
+                                        <div class="task-meta-item">
+                                            <span>📋</span>
+                                            <span>Guest Services - EN</span>
+                                        </div>
+                                        <div class="task-meta-item">
+                                            <span>👤</span>
+                                            <span>Unassigned</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="backToCase()">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-right: 4px;">
+                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="btn btn-secondary" onclick="skipTasks()">Skip All Tasks</button>
+                    <button class="btn btn-primary" onclick="createCase()" id="createBtn">
+                        Create Case
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Controls -->
+        <div class="demo-controls">
+            <h3>🎮 Demo Controls</h3>
+            <button class="btn btn-secondary" onclick="showModal1()">Show Modal 1 (Create Case)</button>
+            <button class="btn btn-secondary" onclick="showModal2()">Show Modal 2 (Review Tasks)</button>
+            <button class="btn btn-primary" onclick="resetDemo()">Reset Demo</button>
+        </div>
+    </div>
+
+    <script>
+        function showModal1() {
+            document.getElementById('modal1').classList.remove('hidden');
+            document.getElementById('modal2').classList.add('hidden');
+        }
+
+        function showModal2() {
+            document.getElementById('modal1').classList.add('hidden');
+            document.getElementById('modal2').classList.remove('hidden');
+        }
+
+        function showTasksModal() {
+            // Simulate AI processing delay
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="spin">
+                    <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" fill="none" opacity="0.3"/>
+                    <path d="M8 2 A6 6 0 0 1 14 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                </svg>
+                Generating tasks...
+            `;
+
+            setTimeout(() => {
+                showModal2();
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }, 1500);
+        }
+
+        function backToCase() {
+            showModal1();
+        }
+
+        function selectAll() {
+            document.querySelectorAll('.task-checkbox').forEach(cb => {
+                cb.checked = true;
+                const taskItem = cb.closest('.task-item');
+                if (taskItem) {
+                    taskItem.classList.remove('rejected');
+                }
+            });
+            updateCount();
+        }
+
+        function deselectAll() {
+            document.querySelectorAll('.task-checkbox').forEach(cb => {
+                cb.checked = false;
+                const taskItem = cb.closest('.task-item');
+                if (taskItem) {
+                    taskItem.classList.add('rejected');
+                }
+            });
+            updateCount();
+        }
+
+        function updateCount() {
+            const allCheckboxes = document.querySelectorAll('.task-checkbox');
+            const checked = Array.from(allCheckboxes).filter(cb => cb.checked).length;
+            const total = allCheckboxes.length;
+            document.getElementById('taskCount').textContent = `${checked} of ${total}`;
+
+            // Update visual state of task items
+            document.querySelectorAll('.task-item').forEach(item => {
+                const checkbox = item.querySelector('.task-checkbox');
+                if (checkbox && !checkbox.checked) {
+                    item.classList.add('rejected');
+                } else {
+                    item.classList.remove('rejected');
+                }
+            });
+
+            // Enable/disable create button
+            const createBtn = document.getElementById('createBtn');
+            createBtn.disabled = checked === 0;
+        }
+
+        function skipTasks() {
+            if (confirm('Are you sure you want to skip all AI-generated tasks? You can add tasks manually later.')) {
+                createCase(true);
+            }
+        }
+
+        function createCase(skipTasks = false) {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            
+            if (skipTasks) {
+                btn.innerHTML = '⏭️ Creating case without tasks...';
+            } else {
+                const count = document.querySelectorAll('.task-checkbox:checked').length;
+                btn.innerHTML = `✓ Creating case with ${count} tasks...`;
+            }
+
+            setTimeout(() => {
+                alert(`✅ Success!\n\nCase created successfully${skipTasks ? ' without tasks' : ' with selected tasks'}.\n\nThis is a UX mockup - no actual data was saved.`);
+                resetDemo();
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }, 1000);
+        }
+
+        function resetDemo() {
+            showModal1();
+            selectAll();
+        }
+
+        // Add spin animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            .spin {
+                animation: spin 1s linear infinite;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        updateCount();
+    </script>
+</body>
+</html>
+
