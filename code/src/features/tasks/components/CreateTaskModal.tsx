@@ -75,7 +75,7 @@ export function CreateTaskModal({ open, onOpenChange, caseId, parentTaskId }: Cr
         }
         return null;
       };
-      
+
       const found = findTask(foundCase.tasks || []);
       setParentTask(found);
     }
@@ -269,8 +269,7 @@ export function CreateTaskModal({ open, onOpenChange, caseId, parentTaskId }: Cr
                       <SelectItem value="PROPERTY_MANAGEMENT_DE">Property Management - DE</SelectItem>
                       <SelectItem value="PROPERTY_MANAGEMENT_AT">Property Management - AT</SelectItem>
                       <SelectSeparator />
-                      <SelectItem value="GUEST_COMM_DE">Guest Comm - DE</SelectItem>
-                      <SelectItem value="GUEST_COMM_AT">Guest Comm - AT</SelectItem>
+                      <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
                       <SelectSeparator />
                       <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
                       <SelectSeparator />
@@ -357,8 +356,8 @@ export function CreateTaskModal({ open, onOpenChange, caseId, parentTaskId }: Cr
                     ? 'Creating Subtask...'
                     : 'Creating Task...'
                   : isSubtask
-                  ? 'Create Subtask'
-                  : 'Create Task'}
+                    ? 'Create Subtask'
+                    : 'Create Task'}
               </Button>
             </div>
           </form>

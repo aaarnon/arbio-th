@@ -29,7 +29,7 @@ function loadFiltersFromStorage(): FilterState {
   } catch (error) {
     console.error('Failed to load filters from localStorage:', error);
   }
-  
+
   return {
     status: [],
     team: [],
@@ -103,13 +103,15 @@ export function useCaseFilters(cases: Case[]) {
         const matchesTitle = c.title.toLowerCase().includes(searchLower);
         const matchesDescription = c.description.toLowerCase().includes(searchLower);
         const matchesId = c.id.toLowerCase().includes(searchLower);
-        
+
         if (!matchesTitle && !matchesDescription && !matchesId) {
           return false;
         }
       }
 
       return true;
+    }).sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
   }, [cases, filters]);
 

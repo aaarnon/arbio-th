@@ -108,7 +108,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         data.title,
         data.team
       );
-      
+
       setGeneratedTasks(tasks);
     } catch (error) {
       toast.error('Failed to generate tasks', {
@@ -124,11 +124,11 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
   const handleTaskAcceptanceChange = (taskPath: number[], accepted: boolean) => {
     setGeneratedTasks(prevTasks => {
       const newTasks = [...prevTasks];
-      
+
       // Navigate to the task using the path
       let current: GeneratedTask[] | undefined = newTasks;
       let task: GeneratedTask | undefined;
-      
+
       for (let i = 0; i < taskPath.length; i++) {
         const index = taskPath[i];
         if (i === taskPath.length - 1) {
@@ -145,7 +145,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
           }
         }
       }
-      
+
       return newTasks;
     });
   };
@@ -154,7 +154,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
     setGeneratedTasks(prevTasks => {
       // If all are already accepted, reset to neutral. Otherwise, accept all.
       const shouldReset = areAllTasksAccepted(prevTasks);
-      
+
       const toggleAcceptAll = (tasks: GeneratedTask[]): GeneratedTask[] => {
         return tasks.map(task => ({
           ...task,
@@ -170,7 +170,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
     setGeneratedTasks(prevTasks => {
       // If all are already rejected, reset to neutral. Otherwise, reject all.
       const shouldReset = areAllTasksRejected(prevTasks);
-      
+
       const toggleRejectAll = (tasks: GeneratedTask[]): GeneratedTask[] => {
         return tasks.map(task => ({
           ...task,
@@ -225,7 +225,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
 
   const handleCreateCase = async () => {
     if (!formData) return;
-    
+
     // Check if all tasks have been decided
     if (!allDecided) {
       toast.error('Please review all tasks', {
@@ -241,14 +241,14 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
       });
       return;
     }
-    
+
     setIsSubmitting(true);
 
     try {
       // Parse search value to extract propertyId or reservationId
       let propertyId: string | undefined;
       let reservationId: string | undefined;
-      
+
       if (formData.search.startsWith('property:')) {
         propertyId = formData.search.replace('property:', '');
       } else if (formData.search.startsWith('reservation:')) {
@@ -260,7 +260,7 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
 
       // Convert explicitly accepted tasks to actual Task objects with IDs
       const tasks = convertToTasks(
-        generatedTasks.filter(t => t.accepted === true), 
+        generatedTasks.filter(t => t.accepted === true),
         caseId
       );
 
@@ -344,120 +344,119 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
           {currentStep === 1 ? (
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmitStep1)} className="space-y-3 bg-white rounded-lg p-4">
-            {/* Search Field */}
-            <FormField
-              control={form.control}
-              name="search"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Property or Reservation Details *</FormLabel>
-                  <FormControl>
-                    <SearchableSelect
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      options={searchOptions}
-                      placeholder="Search by Property (SKU, Address) or Reservation (ID, Guest Name)"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                {/* Search Field */}
+                <FormField
+                  control={form.control}
+                  name="search"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Property or Reservation Details *</FormLabel>
+                      <FormControl>
+                        <SearchableSelect
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          options={searchOptions}
+                          placeholder="Search by Property (SKU, Address) or Reservation (ID, Guest Name)"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Description */}
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description *</FormLabel>
-                  <FormDescription>
-                    Provide a detailed description of the issue. AI will use this information to generate tasks automatically.
-                  </FormDescription>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Detailed description of the issue..."
-                      rows={3}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                {/* Description */}
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description *</FormLabel>
+                      <FormDescription>
+                        Provide a detailed description of the issue. AI will use this information to generate tasks automatically.
+                      </FormDescription>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Detailed description of the issue..."
+                          rows={3}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Title */}
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title *</FormLabel>
-                  <FormDescription>
-                    Title is auto-generated from the description.
-                  </FormDescription>
-                  <FormControl>
-                    <Input placeholder="Brief description of the issue" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                {/* Title */}
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Title *</FormLabel>
+                      <FormDescription>
+                        Title is auto-generated from the description.
+                      </FormDescription>
+                      <FormControl>
+                        <Input placeholder="Brief description of the issue" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Team */}
-            <FormField
-              control={form.control}
-              name="team"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Team *</FormLabel>
-                  <FormDescription>
-                    Delegate to the team responsible for completing this case.
-                  </FormDescription>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select team" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="PROPERTY_MANAGEMENT_DE">Property Management - DE</SelectItem>
-                      <SelectItem value="PROPERTY_MANAGEMENT_AT">Property Management - AT</SelectItem>
-                      <SelectSeparator />
-                      <SelectItem value="GUEST_COMM_DE">Guest Comm - DE</SelectItem>
-                      <SelectItem value="GUEST_COMM_AT">Guest Comm - AT</SelectItem>
-                      <SelectSeparator />
-                      <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
-                      <SelectSeparator />
-                      <SelectItem value="FINOPS">FinOps</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                {/* Team */}
+                <FormField
+                  control={form.control}
+                  name="team"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Team *</FormLabel>
+                      <FormDescription>
+                        Delegate to the team responsible for completing this case.
+                      </FormDescription>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select team" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="PROPERTY_MANAGEMENT_DE">Property Management - DE</SelectItem>
+                          <SelectItem value="PROPERTY_MANAGEMENT_AT">Property Management - AT</SelectItem>
+                          <SelectSeparator />
+                          <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
+                          <SelectSeparator />
+                          <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
+                          <SelectSeparator />
+                          <SelectItem value="FINOPS">FinOps</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Attachment */}
-            <FormField
-              control={form.control}
-              name="attachments"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Attachment (optional)</FormLabel>
-                  <FormControl>
-                    <FileUpload
-                      multiple
-                      onFilesChange={(files) => field.onChange(files)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            </form>
-          </Form>
+                {/* Attachment */}
+                <FormField
+                  control={form.control}
+                  name="attachments"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Attachment (optional)</FormLabel>
+                      <FormControl>
+                        <FileUpload
+                          multiple
+                          onFilesChange={(files) => field.onChange(files)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
           ) : isGenerating ? (
-            <ThinkingLoader 
+            <ThinkingLoader
               title="AI Agents Processing"
               description="Analyzing your case and generating intelligent task recommendations..."
             />
@@ -471,8 +470,8 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                   <p className="text-sm text-neutral-700 mt-0.5">Review and select which tasks to include with this case</p>
                 </div>
               </div>
-              
-              <TaskReviewStep 
+
+              <TaskReviewStep
                 tasks={generatedTasks}
                 onTaskAcceptanceChange={handleTaskAcceptanceChange}
                 onAcceptAll={handleAcceptAll}
@@ -488,8 +487,8 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         {/* Footer Actions */}
         {currentStep === 1 ? (
           <div className="flex items-center justify-end gap-3 pt-3 mt-2 border-t border-neutral-100">
-            <Button 
-              onClick={form.handleSubmit(onSubmitStep1)} 
+            <Button
+              onClick={form.handleSubmit(onSubmitStep1)}
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Generating Tasks...' : 'Step 1: Generate Tasks →'}
@@ -497,15 +496,15 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
           </div>
         ) : !isGenerating ? (
           <div className="flex items-center justify-between gap-3 pt-3 mt-2 border-t border-neutral-100">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               onClick={handleBack}
               disabled={isSubmitting}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
-            <Button 
+            <Button
               onClick={handleCreateCase}
               disabled={isSubmitting}
             >

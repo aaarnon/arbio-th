@@ -36,11 +36,11 @@ interface CreateSubtaskFormProps {
  * Create Subtask Form Component
  * Inline form to add a subtask to an existing task
  */
-export function CreateSubtaskForm({ 
-  caseId, 
-  parentTask, 
-  onSuccess, 
-  onCancel 
+export function CreateSubtaskForm({
+  caseId,
+  parentTask,
+  onSuccess,
+  onCancel
 }: CreateSubtaskFormProps) {
   const { dispatch } = useCaseContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -162,7 +162,8 @@ export function CreateSubtaskForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
+                    <SelectItem value="PROPERTY_MANAGEMENT_DE">Property Management - DE</SelectItem>
+                    <SelectItem value="PROPERTY_MANAGEMENT_AT">Property Management - AT</SelectItem>
                     <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
                     <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
                     <SelectItem value="FINOPS">FinOps</SelectItem>

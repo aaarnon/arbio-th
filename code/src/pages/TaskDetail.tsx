@@ -35,7 +35,7 @@ export function TaskDetail() {
   const formatStatusText = (text: string) => {
     // Handle special case for TODO -> To Do
     if (text === 'TODO') return 'To Do';
-    
+
     return text
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -195,20 +195,20 @@ export function TaskDetail() {
     // e.g., TK-2848.3.1.1 -> [TK-2848.3, TK-2848.3.1, TK-2848.3.1.1]
     const taskIdParts = task.id.split('.');
     const caseIdPart = taskIdParts[0]; // e.g., TK-2848
-    
+
     // Build parent task IDs and find their titles
     for (let i = 1; i < taskIdParts.length; i++) {
       const parentTaskId = [caseIdPart, ...taskIdParts.slice(1, i + 1)].join('.');
       const parentTask = findTask(caseData.tasks || [], parentTaskId);
       const taskTitle = parentTask ? truncateText(parentTask.title) : parentTaskId;
-      
+
       // Don't link the current task (last item)
       if (i === taskIdParts.length - 1) {
         breadcrumbs.push({ label: taskTitle });
       } else {
-        breadcrumbs.push({ 
-          label: taskTitle, 
-          to: `/cases/${caseId}/tasks/${parentTaskId}` 
+        breadcrumbs.push({
+          label: taskTitle,
+          to: `/cases/${caseId}/tasks/${parentTaskId}`
         });
       }
     }
@@ -219,7 +219,7 @@ export function TaskDetail() {
   // Determine parent (case or parent task)
   const getParentInfo = (): { name: string; link: string; id: string } | null => {
     const taskIdParts = task.id.split('.');
-    
+
     // If task is TK-2847.1, parent is case TK-2847
     if (taskIdParts.length === 2) {
       return {
@@ -228,12 +228,12 @@ export function TaskDetail() {
         link: `/cases/${caseId}`,
       };
     }
-    
+
     // If task is TK-2847.1.1 or deeper, parent is the task one level up
     if (taskIdParts.length > 2) {
       const parentTaskId = taskIdParts.slice(0, -1).join('.');
       const parentTask = findTask(caseData.tasks || [], parentTaskId);
-      
+
       if (parentTask) {
         return {
           id: parentTask.id,
@@ -242,7 +242,7 @@ export function TaskDetail() {
         };
       }
     }
-    
+
     return null;
   };
 
@@ -351,7 +351,7 @@ export function TaskDetail() {
                 {/* Team */}
                 {(task.team || caseData.team) && (
                   <div className="relative">
-                    <button 
+                    <button
                       className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                       onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
                     >
@@ -386,21 +386,10 @@ export function TaskDetail() {
                         </button>
                         <button
                           className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
-                          onClick={() => handleTeamChange('GUEST_COMM_DE')}
+                          onClick={() => handleTeamChange('GUEST_COMM')}
                         >
-                          <span className="text-neutral-900">Guest Comm - DE</span>
-                          {task.team === 'GUEST_COMM_DE' && (
-                            <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
-                        </button>
-                        <button
-                          className="w-full flex items-center justify-between px-3 py-2.5 text-sm hover:bg-neutral-50 transition-colors cursor-pointer"
-                          onClick={() => handleTeamChange('GUEST_COMM_AT')}
-                        >
-                          <span className="text-neutral-900">Guest Comm - AT</span>
-                          {task.team === 'GUEST_COMM_AT' && (
+                          <span className="text-neutral-900">Guest Comm</span>
+                          {task.team === 'GUEST_COMM' && (
                             <svg className="h-4 w-4 text-neutral-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
@@ -435,7 +424,7 @@ export function TaskDetail() {
 
                 {/* Assigned To */}
                 <div className="relative">
-                  <button 
+                  <button
                     className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                     onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
                   >
@@ -530,7 +519,7 @@ export function TaskDetail() {
                   ))}
                 </div>
               )}
-              
+
               {/* Add Subtask Button */}
               <Button
                 variant="ghost"
@@ -561,14 +550,14 @@ export function TaskDetail() {
           {/* Comments Section - Unified (from parent case) */}
           <div className="bg-white rounded-card p-8 space-y-6">
             <h2 className="text-xs font-medium text-neutral-900 uppercase tracking-wider mb-4">COMMENTS</h2>
-            
+
             {/* Existing Comments */}
             {caseData.comments && caseData.comments.length > 0 && (
               <div className="divide-y divide-neutral-100">
                 {caseData.comments.map((comment) => {
                   const author = mockUsers.find((u) => u.id === comment.author);
                   const timeAgo = comment.createdAt;
-                  
+
                   return (
                     <div key={comment.id} className="py-6 first:pt-0">
                       <div className="flex gap-3">
@@ -577,7 +566,7 @@ export function TaskDetail() {
                             {author?.name.split(' ').map(n => n[0]).join('').toUpperCase() || '?'}
                           </div>
                         </div>
-                        
+
                         <div className="flex-1 min-w-0">
                           <div className="flex items-baseline gap-2 mb-2">
                             <span className="text-sm font-medium text-neutral-900">
@@ -597,7 +586,7 @@ export function TaskDetail() {
                 })}
               </div>
             )}
-            
+
             {/* Add Comment Form */}
             <div className="pt-4">
               <AddCommentForm caseId={caseData.id} showMainCaseCheckbox={true} />

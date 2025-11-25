@@ -184,7 +184,8 @@ export function CreateSubtaskModal({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="PROPERTY_MANAGEMENT">Property Management</SelectItem>
+                      <SelectItem value="PROPERTY_MANAGEMENT_DE">Property Management - DE</SelectItem>
+                      <SelectItem value="PROPERTY_MANAGEMENT_AT">Property Management - AT</SelectItem>
                       <SelectItem value="GUEST_COMM">Guest Comm</SelectItem>
                       <SelectItem value="GUEST_EXPERIENCE">Guest Experience</SelectItem>
                       <SelectItem value="FINOPS">FinOps</SelectItem>

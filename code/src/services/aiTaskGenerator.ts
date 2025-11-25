@@ -30,32 +30,32 @@ export const aiTaskGenerator = {
     await new Promise(resolve => setTimeout(resolve, 20000));
 
     const descriptionLower = description.toLowerCase();
-    
+
     // Template-based generation based on keywords
     if (descriptionLower.includes('plumbing') || descriptionLower.includes('pipe') || descriptionLower.includes('leak')) {
       return generatePlumbingTasks(team);
     }
-    
+
     if (descriptionLower.includes('electrical') || descriptionLower.includes('power') || descriptionLower.includes('light')) {
       return generateElectricalTasks(team);
     }
-    
+
     if (descriptionLower.includes('hvac') || descriptionLower.includes('heating') || descriptionLower.includes('cooling') || descriptionLower.includes('air condition')) {
       return generateHVACTasks(team);
     }
-    
+
     if (descriptionLower.includes('cleaning') || descriptionLower.includes('housekeeping')) {
       return generateCleaningTasks(team);
     }
-    
+
     if (descriptionLower.includes('damage') || descriptionLower.includes('repair') || descriptionLower.includes('broken')) {
       return generateRepairTasks(team);
     }
-    
+
     if (descriptionLower.includes('guest') || descriptionLower.includes('complaint') || descriptionLower.includes('communication')) {
       return generateGuestCommTasks(team);
     }
-    
+
     // Default to WiFi issues template
     return generateWiFiTasks(team);
   }
@@ -90,7 +90,7 @@ function generateWiFiTasks(_team?: TeamType): GeneratedTask[] {
     },
     {
       title: 'Send resolution confirmation to guest via Conduit',
-      team: 'GUEST_COMM_DE',
+      team: 'GUEST_COMM',
       accepted: undefined,
     }
   ];
@@ -430,14 +430,14 @@ export function convertToTasks(
   caseId: string
 ): Task[] {
   let taskCounter = 1;
-  
+
   function convertTask(genTask: GeneratedTask, parentId?: string): Task | null {
-    const taskId = parentId 
+    const taskId = parentId
       ? `${caseId}.${taskCounter}`
       : `${caseId}.${taskCounter}`;
-    
+
     taskCounter++;
-    
+
     const task: Task = {
       id: taskId,
       title: genTask.title,
@@ -447,7 +447,7 @@ export function convertToTasks(
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    
+
     // Process subtasks recursively, filtering only accepted ones
     if (genTask.subtasks && genTask.subtasks.length > 0) {
       const acceptedSubtasks = genTask.subtasks.filter(st => st.accepted === true);
@@ -455,16 +455,16 @@ export function convertToTasks(
         const convertedSubtasks = acceptedSubtasks
           .map(subtask => convertTask(subtask, taskId))
           .filter((t): t is Task => t !== null);
-        
+
         if (convertedSubtasks.length > 0) {
           task.subtasks = convertedSubtasks;
         }
       }
     }
-    
+
     return task;
   }
-  
+
   return generatedTasks
     .map(genTask => convertTask(genTask))
     .filter((t): t is Task => t !== null);

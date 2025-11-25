@@ -42,7 +42,7 @@ export const ACTIVE_STATUS_THEME: 'colored' | 'monochrome' = 'colored';
 /**
  * Current status badge styling configuration
  */
-export const STATUS_STYLES: Record<Status, string> = 
+export const STATUS_STYLES: Record<Status, string> =
   ACTIVE_STATUS_THEME === 'colored' ? STATUS_STYLES_COLORED : STATUS_STYLES_MONOCHROME;
 
 /**
@@ -66,17 +66,15 @@ export const MAX_NESTING_DEPTH = 10;
  */
 export const formatTeam = (team?: string) => {
   if (!team) return 'No Team';
-  
+
   // Special mapping for team names to preserve exact formatting
   const teamMapping: Record<string, string> = {
     'PROPERTY_MANAGEMENT_DE': 'Property Management - DE',
     'PROPERTY_MANAGEMENT_AT': 'Property Management - AT',
-    'GUEST_COMM_DE': 'Guest Comm - DE',
-    'GUEST_COMM_AT': 'Guest Comm - AT',
+    'GUEST_COMM': 'Guest Comm',
     'GUEST_EXPERIENCE': 'Guest Experience',
     'FINOPS': 'FinOps',
   };
-  
+
   return teamMapping[team] || team;
 };
-

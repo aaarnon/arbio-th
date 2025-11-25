@@ -55,7 +55,7 @@ export function EntityHeader({
   const formatStatusText = (text: string) => {
     // Handle special case for TODO -> To Do
     if (text === 'TODO') return 'To Do';
-    
+
     return text
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -112,8 +112,7 @@ export function EntityHeader({
     { value: 'PROPERTY_MANAGEMENT_DE', label: 'Property Management - DE' },
     { value: 'PROPERTY_MANAGEMENT_AT', label: 'Property Management - AT' },
     { value: 'separator1', label: '', isSeparator: true },
-    { value: 'GUEST_COMM_DE', label: 'Guest Comm - DE' },
-    { value: 'GUEST_COMM_AT', label: 'Guest Comm - AT' },
+    { value: 'GUEST_COMM', label: 'Guest Comm' },
     { value: 'separator2', label: '', isSeparator: true },
     { value: 'GUEST_EXPERIENCE', label: 'Guest Experience' },
     { value: 'separator3', label: '', isSeparator: true },
@@ -197,7 +196,7 @@ export function EntityHeader({
               <div className="relative">
                 {onTeamChange ? (
                   <>
-                    <button 
+                    <button
                       className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                       onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
                     >
@@ -246,7 +245,7 @@ export function EntityHeader({
 
             {onAssignedToChange && (
               <div className="relative">
-                <button 
+                <button
                   className="inline-flex items-center px-3 py-1 rounded-md hover:bg-neutral-200 transition-colors text-sm text-neutral-900"
                   onClick={() => setOpenDropdown(openDropdown === 'assignedTo' ? null : 'assignedTo')}
                 >

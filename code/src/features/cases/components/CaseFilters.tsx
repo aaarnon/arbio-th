@@ -49,8 +49,7 @@ export function CaseFilters({
   const teamOptions = [
     { label: 'Property Management - DE', value: 'PROPERTY_MANAGEMENT_DE' },
     { label: 'Property Management - AT', value: 'PROPERTY_MANAGEMENT_AT' },
-    { label: 'Guest Comm - DE', value: 'GUEST_COMM_DE' },
-    { label: 'Guest Comm - AT', value: 'GUEST_COMM_AT' },
+    { label: 'Guest Comm', value: 'GUEST_COMM' },
     { label: 'Guest Experience', value: 'GUEST_EXPERIENCE' },
     { label: 'FinOps', value: 'FINOPS' },
   ];

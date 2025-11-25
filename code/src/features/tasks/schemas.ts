@@ -6,7 +6,7 @@ import { z } from 'zod';
 export const taskSchema = z.object({
   title: z.string().min(1, 'This field is required'),
   description: z.string().optional(),
-  team: z.enum(['PROPERTY_MANAGEMENT_DE', 'PROPERTY_MANAGEMENT_AT', 'GUEST_COMM_DE', 'GUEST_COMM_AT', 'GUEST_EXPERIENCE', 'FINOPS'], { message: 'This field is required' }),
+  team: z.enum(['PROPERTY_MANAGEMENT_DE', 'PROPERTY_MANAGEMENT_AT', 'GUEST_COMM', 'GUEST_EXPERIENCE', 'FINOPS'], { message: 'This field is required' }),
   assignedTo: z.string().optional(),
   attachments: z.array(z.any()).optional(),
   sendToBreezeway: z.boolean(),
