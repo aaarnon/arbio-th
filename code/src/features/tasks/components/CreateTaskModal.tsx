@@ -218,7 +218,10 @@ export function CreateTaskModal({ open, onOpenChange, caseId, parentTaskId }: Cr
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description *</FormLabel>
+                  <FormLabel>
+                    Description{' '}
+                    <span className="text-neutral-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Detailed description of the task..."
@@ -237,7 +240,10 @@ export function CreateTaskModal({ open, onOpenChange, caseId, parentTaskId }: Cr
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title *</FormLabel>
+                  <FormLabel>
+                    Title{' '}
+                    <span className="text-neutral-500">*</span>
+                  </FormLabel>
                   <FormDescription>
                     Title is auto-generated from the description.
                   </FormDescription>
@@ -255,7 +261,10 @@ export function CreateTaskModal({ open, onOpenChange, caseId, parentTaskId }: Cr
               name="team"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Team *</FormLabel>
+                  <FormLabel>
+                    Team{' '}
+                    <span className="text-neutral-500">*</span>
+                  </FormLabel>
                   <FormDescription>
                     Assign to the team responsible for completing this task.
                   </FormDescription>

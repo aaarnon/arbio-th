@@ -101,7 +101,7 @@ export function SearchableSelect({
   }
 
   return (
-    <div ref={containerRef} className={cn("relative", className)}>
+    <div ref={containerRef} className="relative">
       {/* Search Input */}
       <div className="relative">
         <input
@@ -112,7 +112,10 @@ export function SearchableSelect({
           onKeyDown={handleKeyDown}
           onFocus={handleInputFocus}
           placeholder={placeholder}
-          className="flex h-10 w-full rounded-md border border-neutral-200 bg-white px-3 py-2 pr-10 text-sm text-neutral-800 transition-colors duration-150 placeholder:text-neutral-300 focus-visible:outline-none focus-visible:border-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
+          className={cn(
+            "flex h-10 w-full rounded-md border border-neutral-200 bg-white px-3 py-2 pr-10 text-sm text-neutral-800 transition-colors duration-150 placeholder:text-neutral-300 focus-visible:outline-none focus-visible:border-neutral-800 disabled:cursor-not-allowed disabled:opacity-50",
+            className
+          )}
         />
         <button
           type="button"

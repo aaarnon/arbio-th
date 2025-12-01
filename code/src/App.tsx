@@ -1,11 +1,16 @@
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
+import { Home } from '@/pages/Home';
 import { CaseList } from '@/features/cases/components/CaseList';
 import { CaseDetail } from '@/features/case-detail/components/CaseDetail';
 import { TaskDetail } from '@/pages/TaskDetail';
 import { Notifications } from '@/pages/Notifications';
 import { Tasks } from '@/pages/Tasks';
 import { Teams } from '@/pages/Teams';
+import { Reservations } from '@/pages/Reservations';
+import { Listings } from '@/pages/Listings';
+import { ListingDetail } from '@/pages/ListingDetail';
+import { Reservations2 } from '@/pages/Reservations2';
 import { Reports } from '@/pages/Reports';
 import { AIAgents } from '@/pages/AIAgents';
 import { Settings } from '@/pages/Settings';
@@ -22,9 +27,14 @@ function App() {
       {/* Protected routes WITH sidebar/layout */}
       <Route path="/" element={<Layout />}>
         <Route index element={<CaseList />} />
+        <Route path="home" element={<Home />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="tasks" element={<Tasks />} />
         <Route path="teams" element={<Teams />} />
+        <Route path="reservations" element={<Reservations />} />
+        <Route path="listings" element={<Listings />} />
+        <Route path="listings/:listingId" element={<ListingDetail />} />
+        <Route path="reservations2" element={<Reservations2 />} />
         <Route path="reports" element={<Reports />} />
         <Route path="ai-agents" element={<AIAgents />} />
         <Route path="settings" element={<Settings />} />

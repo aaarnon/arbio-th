@@ -21,6 +21,8 @@ export function CaseList() {
     setTeamFilter,
     setDateFilter,
     setSearchFilter,
+    setReservationsFilter,
+    setApartmentsFilter,
   } = useCaseFilters(cases);
 
   // Infinite scroll state
@@ -95,10 +97,14 @@ export function CaseList() {
           teamFilter={filters.team}
           dateFilter={filters.date}
           searchFilter={filters.search}
+          reservationsFilter={filters.reservations}
+          apartmentsFilter={filters.apartments}
           onStatusChange={setStatusFilter}
           onTeamChange={setTeamFilter}
           onDateChange={setDateFilter}
           onSearchChange={setSearchFilter}
+          onReservationsChange={setReservationsFilter}
+          onApartmentsChange={setApartmentsFilter}
         />
       </div>
 

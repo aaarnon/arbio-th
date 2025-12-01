@@ -343,14 +343,17 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
         <div className="flex-1 overflow-y-auto">
           {currentStep === 1 ? (
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmitStep1)} className="space-y-3 bg-white rounded-lg p-4">
+              <form onSubmit={form.handleSubmit(onSubmitStep1)} className="space-y-3 p-4">
                 {/* Search Field */}
                 <FormField
                   control={form.control}
                   name="search"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Property or Reservation Details *</FormLabel>
+                      <FormLabel>
+                        Property or Reservation Details{' '}
+                        <span className="text-neutral-500">*</span>
+                      </FormLabel>
                       <FormControl>
                         <SearchableSelect
                           value={field.value}
@@ -370,7 +373,10 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description *</FormLabel>
+                      <FormLabel>
+                        Description{' '}
+                        <span className="text-neutral-500">*</span>
+                      </FormLabel>
                       <FormDescription>
                         Provide a detailed description of the issue. AI will use this information to generate tasks automatically.
                       </FormDescription>
@@ -392,7 +398,10 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Title *</FormLabel>
+                      <FormLabel>
+                        Title{' '}
+                        <span className="text-neutral-500">*</span>
+                      </FormLabel>
                       <FormDescription>
                         Title is auto-generated from the description.
                       </FormDescription>
@@ -410,7 +419,10 @@ export function CreateCaseModal({ open, onOpenChange }: CreateCaseModalProps) {
                   name="team"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Team *</FormLabel>
+                      <FormLabel>
+                        Team{' '}
+                        <span className="text-neutral-500">*</span>
+                      </FormLabel>
                       <FormDescription>
                         Delegate to the team responsible for completing this case.
                       </FormDescription>

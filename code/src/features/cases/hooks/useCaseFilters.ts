@@ -6,6 +6,8 @@ interface FilterState {
   team: TeamType[];
   date: string;
   search: string;
+  reservations: string[];
+  apartments: string[];
 }
 
 const FILTER_STORAGE_KEY = 'ticketing-hub-case-filters';
@@ -24,6 +26,8 @@ function loadFiltersFromStorage(): FilterState {
         team: Array.isArray(parsed.team) ? parsed.team : [],
         date: parsed.date || 'ALL',
         search: parsed.search || '',
+        reservations: Array.isArray(parsed.reservations) ? parsed.reservations : [],
+        apartments: Array.isArray(parsed.apartments) ? parsed.apartments : [],
       };
     }
   } catch (error) {
@@ -35,6 +39,8 @@ function loadFiltersFromStorage(): FilterState {
     team: [],
     date: 'ALL',
     search: '',
+    reservations: [],
+    apartments: [],
   };
 }
 
@@ -71,6 +77,16 @@ export function useCaseFilters(cases: Case[]) {
 
       // Team filter - show all if empty array, otherwise check if team is in the array
       if (filters.team.length > 0 && c.team && !filters.team.includes(c.team)) {
+        return false;
+      }
+
+      // Reservation filter - show all if empty array, otherwise check if reservationId is in the array
+      if (filters.reservations.length > 0 && (!c.reservationId || !filters.reservations.includes(c.reservationId))) {
+        return false;
+      }
+
+      // Apartment filter - show all if empty array, otherwise check if propertyId is in the array
+      if (filters.apartments.length > 0 && (!c.propertyId || !filters.apartments.includes(c.propertyId))) {
         return false;
       }
 
@@ -132,6 +148,14 @@ export function useCaseFilters(cases: Case[]) {
     setFilters((prev) => ({ ...prev, search }));
   };
 
+  const setReservationsFilter = (reservations: string[]) => {
+    setFilters((prev) => ({ ...prev, reservations }));
+  };
+
+  const setApartmentsFilter = (apartments: string[]) => {
+    setFilters((prev) => ({ ...prev, apartments }));
+  };
+
   // Reset all filters
   const resetFilters = () => {
     setFilters({
@@ -139,6 +163,8 @@ export function useCaseFilters(cases: Case[]) {
       team: [],
       date: 'ALL',
       search: '',
+      reservations: [],
+      apartments: [],
     });
   };
 
@@ -149,6 +175,8 @@ export function useCaseFilters(cases: Case[]) {
     setTeamFilter,
     setDateFilter,
     setSearchFilter,
+    setReservationsFilter,
+    setApartmentsFilter,
     resetFilters,
   };
 }

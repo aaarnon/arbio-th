@@ -10,4 +10,6 @@ export * from './reservation';
 export * from './comment';
 export * from './attachment';
 export * from './notification';
+export * from './conversation';
+export * from './note';
 
