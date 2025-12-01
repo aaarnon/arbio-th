@@ -71,9 +71,9 @@ export function ListingDetail() {
         {/* Title */}
         <div className="flex items-center gap-3 mb-6">
           <button
-            onClick={() => navigate('/listings')}
+            onClick={() => navigate(-1)}
             className="text-neutral-900 hover:text-neutral-600 transition-colors"
-            aria-label="Back to listings"
+            aria-label="Back to previous page"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
@@ -256,7 +256,12 @@ export function ListingDetail() {
           <div className="w-full max-w-[50.16rem]">
             {/* Section 1: Access Method */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Access Method</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-semibold text-neutral-900">Access Method</h2>
+                <button className="text-xs text-neutral-600 px-2 py-1 rounded hover:bg-neutral-100 transition-colors">
+                  Edit
+                </button>
+              </div>
               
               {/* Access Method Table */}
               <div className="overflow-x-auto">
@@ -290,14 +295,26 @@ export function ListingDetail() {
                       <td className="py-2 px-2 text-xs text-neutral-900">Nuki</td>
                       <td className="py-2 px-2 text-xs text-neutral-900">Lock Subtype: Opener, Keypad</td>
                     </tr>
+                    {/* Smart lock row */}
+                    <tr className="border-b border-neutral-100">
+                      <td className="py-2 px-2 text-xs text-neutral-900">Smart lock</td>
+                      <td className="py-2 px-2 text-xs text-neutral-900">-</td>
+                      <td className="py-2 px-2 text-xs text-neutral-900">-</td>
+                      <td className="py-2 px-2 text-xs text-neutral-900">-</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            {/* Section 2: Check-in Details */}
+            {/* Section 2: Check-in Guide */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Check-in Details</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-semibold text-neutral-900">Check-in Guide</h2>
+                <button className="text-xs text-neutral-600 px-2 py-1 rounded hover:bg-neutral-100 transition-colors">
+                  Edit
+                </button>
+              </div>
               
               <div className="space-y-4">
                 {/* Step 1: Locate the Key Box */}
@@ -392,23 +409,89 @@ export function ListingDetail() {
                 </div>
               </div>
             </div>
-
-            {/* Section 3: Smart Lock */}
-            <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Smart Lock</h2>
-              <div className="text-sm text-neutral-500 py-4">
-                Smart lock information will be displayed here
-              </div>
-            </div>
           </div>
         )}
 
         {/* Details Tab Content */}
         {activeTab === 'details' && (
           <div className="w-full max-w-[50.16rem]">
-            {/* Section 1: Profile */}
+            {/* Section 1: Property Handbook */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Profile</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-semibold text-neutral-900">Property Handbook</h2>
+                <button className="text-xs text-neutral-600 px-2 py-1 rounded hover:bg-neutral-100 transition-colors">
+                  Edit
+                </button>
+              </div>
+              <div className="space-y-4">
+                {/* Emergency Contacts */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-semibold text-neutral-900">Emergency Contacts</span>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-neutral-500">Property Manager:</span>
+                      <span className="text-xs text-neutral-900">+49 30 1234 5678</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-neutral-500">Emergency Services:</span>
+                      <span className="text-xs text-neutral-900">112</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-neutral-500">Police:</span>
+                      <span className="text-xs text-neutral-900">110</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* House Rules */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-semibold text-neutral-900">House Rules</span>
+                  <ul className="space-y-1.5 ml-4">
+                    <li className="text-xs text-neutral-600 flex items-start gap-2">
+                      <span className="text-neutral-400 mt-0.5">•</span>
+                      <span>Check-in: 3:00 PM - Check-out: 11:00 AM</span>
+                    </li>
+                    <li className="text-xs text-neutral-600 flex items-start gap-2">
+                      <span className="text-neutral-400 mt-0.5">•</span>
+                      <span>No smoking inside the property</span>
+                    </li>
+                    <li className="text-xs text-neutral-600 flex items-start gap-2">
+                      <span className="text-neutral-400 mt-0.5">•</span>
+                      <span>Quiet hours: 10:00 PM - 8:00 AM</span>
+                    </li>
+                    <li className="text-xs text-neutral-600 flex items-start gap-2">
+                      <span className="text-neutral-400 mt-0.5">•</span>
+                      <span>Pets not allowed</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Garbage & Recycling */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-semibold text-neutral-900">Garbage & Recycling</span>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    Separate waste bins are located in the kitchen. Please sort: Paper (blue), Plastic (yellow), Glass (white), and Organic waste (brown). General waste goes in the grey bin.
+                  </p>
+                </div>
+
+                {/* Parking */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-semibold text-neutral-900">Parking</span>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    Free street parking available on Hauptstraße. Parking garage entrance at Nebenstraße 12. Use code 2404 for access.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 2: Profile */}
+            <div className="bg-white rounded-lg p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-semibold text-neutral-900">Profile</h2>
+                <button className="text-xs text-neutral-600 px-2 py-1 rounded hover:bg-neutral-100 transition-colors">
+                  Edit
+                </button>
+              </div>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-neutral-500">Property Type:</span>
@@ -435,7 +518,12 @@ export function ListingDetail() {
 
             {/* Section 2: Extra-services */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Extra-services</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-semibold text-neutral-900">Extra-services</h2>
+                <button className="text-xs text-neutral-600 px-2 py-1 rounded hover:bg-neutral-100 transition-colors">
+                  Edit
+                </button>
+              </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-neutral-500">Airport Transfer:</span>
@@ -458,7 +546,12 @@ export function ListingDetail() {
 
             {/* Section 3: Amenities */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Amenities</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-semibold text-neutral-900">Amenities</h2>
+                <button className="text-xs text-neutral-600 px-2 py-1 rounded hover:bg-neutral-100 transition-colors">
+                  Edit
+                </button>
+              </div>
               <div className="grid grid-cols-3 gap-3">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-neutral-900">✓ WiFi</span>
@@ -492,6 +585,33 @@ export function ListingDetail() {
                 </div>
               </div>
             </div>
+
+            {/* Section 4: Specific Instructions */}
+            <div className="bg-white rounded-lg p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-semibold text-neutral-900">SPECIFIC INSTRUCTIONS</h2>
+                <button className="text-xs text-neutral-600 px-2 py-1 rounded hover:bg-neutral-100 transition-colors">
+                  Edit
+                </button>
+              </div>
+              <div className="space-y-4">
+                {/* Heating System Operation */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-semibold text-neutral-900">Heating System Operation</span>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    The heating system is controlled by the thermostat on the wall in the living room. Set your desired temperature between 18-24°C. The system will automatically maintain the temperature. For night mode, press the moon button to reduce heating during sleeping hours.
+                  </p>
+                </div>
+
+                {/* Laundry Instructions */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs font-semibold text-neutral-900">Laundry Instructions</span>
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    The washing machine is located in the bathroom. Use the provided detergent pods in the drawer. Select the appropriate program: 30°C for delicates, 40°C for colors, and 60°C for whites. Do not overload the machine. Hang clothes to dry on the drying rack provided in the utility closet.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -500,7 +620,7 @@ export function ListingDetail() {
           <div className="w-full max-w-[50.16rem]">
             {/* Section 1: Mandatory Contracts */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-xs font-semibold text-neutral-900 uppercase tracking-wider mb-3">Mandatory Contracts</h2>
+              <h2 className="text-base font-semibold text-neutral-900 uppercase tracking-wider mb-4">Mandatory Contracts</h2>
               
               {/* Contract List */}
               <div className="space-y-0">
@@ -628,7 +748,7 @@ export function ListingDetail() {
 
             {/* Section 2: Others */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-xs font-semibold text-neutral-900 uppercase tracking-wider mb-3">Others</h2>
+              <h2 className="text-base font-semibold text-neutral-900 uppercase tracking-wider mb-4">Others</h2>
               
               {/* Contract List */}
               <div className="space-y-0">

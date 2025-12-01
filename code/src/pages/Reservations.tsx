@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { GuestReservationsModal } from '@/components/shared/GuestReservationsModal';
 import { AIChat } from '@/components/shared/AIChat';
 import { ConversationHistory } from '@/components/shared/ConversationHistory';
@@ -22,9 +22,13 @@ type ReservationStatus = 'CONFIRMED' | 'IN_HOUSE' | 'CHECKED_IN' | 'CHECKED_OUT'
 
 export function Reservations() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('search');
+  const [activeTab, setActiveTab] = useState(() => {
+    const saved = sessionStorage.getItem('reservations-activeTab');
+    return saved || 'search';
+  });
   const [searchType, setSearchType] = useState('Guest Name');
   // const [searchMode, setSearchMode] = useState('Normal');
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
@@ -32,7 +36,31 @@ export function Reservations() {
   const [showModal, setShowModal] = useState(false);
   const [selectedGuestReservations, setSelectedGuestReservations] = useState<Reservation[]>([]);
   const [selectedGuestName, setSelectedGuestName] = useState('');
-  const [openTabs, setOpenTabs] = useState<ReservationTab[]>([]);
+  const [openTabs, setOpenTabs] = useState<ReservationTab[]>(() => {
+    const saved = sessionStorage.getItem('reservations-openTabs');
+    if (saved) {
+      try {
+        const savedIds = JSON.parse(saved) as string[];
+        // Restore full reservation data from mockReservations
+        return savedIds
+          .map(id => {
+            const reservation = mockReservations.find(r => r.id === id);
+            if (reservation) {
+              return {
+                id: reservation.id,
+                guestName: reservation.guestName,
+                reservation: reservation,
+              };
+            }
+            return null;
+          })
+          .filter((tab): tab is ReservationTab => tab !== null);
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
   const [isCreateCaseModalOpen, setIsCreateCaseModalOpen] = useState(false);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const typeDropdownRef = useRef<HTMLDivElement>(null);
@@ -44,6 +72,41 @@ export function Reservations() {
   const [dateRangeFilter, setDateRangeFilter] = useState<string>('ALL');
   const [quickFilter, setQuickFilter] = useState<string | null>('check-ins needing action');
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['check-ins needing action']));
+
+  // Persist openTabs to sessionStorage (only save IDs)
+  useEffect(() => {
+    const tabIds = openTabs.map(tab => tab.id);
+    sessionStorage.setItem('reservations-openTabs', JSON.stringify(tabIds));
+  }, [openTabs]);
+
+  // Persist activeTab to sessionStorage
+  useEffect(() => {
+    sessionStorage.setItem('reservations-activeTab', activeTab);
+  }, [activeTab]);
+
+  // Handle URL query parameter for direct reservation navigation
+  useEffect(() => {
+    const reservationId = searchParams.get('id');
+    if (reservationId) {
+      const reservation = mockReservations.find(r => r.id === reservationId);
+      if (reservation) {
+        const existingTab = openTabs.find(tab => tab.id === reservation.id);
+        if (!existingTab) {
+          // Add new tab
+          const newTab: ReservationTab = {
+            id: reservation.id,
+            guestName: reservation.guestName,
+            reservation: reservation,
+          };
+          setOpenTabs(prev => [...prev, newTab]);
+        }
+        // Set as active tab
+        setActiveTab(reservation.id);
+        // Clear the query parameter
+        setSearchParams({});
+      }
+    }
+  }, [searchParams, openTabs, setSearchParams]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -530,16 +593,9 @@ export function Reservations() {
                       
                       <div className="space-y-3">
                         {/* Reservation ID */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-neutral-500">Reservation ID:</span>
-                            <span className="text-xs font-medium text-neutral-900">{reservation.id}</span>
-                          </div>
-                          <button className="text-neutral-400 hover:text-neutral-600">
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                          </button>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-neutral-500">Reservation ID:</span>
+                          <span className="text-xs font-medium text-neutral-900">{reservation.id}</span>
                         </div>
 
                         {/* Hostaway ID */}
@@ -617,7 +673,12 @@ export function Reservations() {
                         {/* Unit ID */}
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-neutral-500">Listing Unit:</span>
-                          <span className="text-xs font-medium text-neutral-900">{property?.id || 'N/A'}</span>
+                          <a 
+                            href="http://localhost:5186/listings/LST-001"
+                            className="text-xs font-medium text-neutral-900 underline"
+                          >
+                            DE_BER_001_Darius_01_068_02_01_A001
+                          </a>
                         </div>
 
                         {/* Address */}
@@ -630,6 +691,12 @@ export function Reservations() {
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-neutral-500">Property Type:</span>
                           <span className="text-xs font-medium text-neutral-900">Single Unit</span>
+                        </div>
+
+                        {/* OTA Listing */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-neutral-500">OTA Listing:</span>
+                          <span className="text-xs font-medium text-neutral-900">Booking.com</span>
                         </div>
 
                         {/* Property Handbook */}
@@ -656,16 +723,16 @@ export function Reservations() {
                     const getGuestJourney = (status: string) => {
                       switch (status) {
                         case 'CONFIRMED':
-                          return 'Pre-check-in';
+                          return 'Pre Check-in';
                         case 'IN_HOUSE':
                         case 'CHECKED_IN':
                           return 'Check-in';
                         case 'CHECKED_OUT':
-                          return 'Post-check-out';
+                          return 'Post Check-out';
                         case 'PENDING':
-                          return 'Pre-check-out';
+                          return 'During Stay';
                         default:
-                          return 'Pre-check-in';
+                          return 'Booking';
                       }
                     };
 
@@ -673,60 +740,141 @@ export function Reservations() {
                     
                     return (
                       <div className="mt-6 bg-white rounded-lg p-6">
-                        <h2 className="text-base font-semibold text-neutral-900 mb-4">Guest Journey</h2>
+                        <h2 className="text-base font-semibold text-neutral-900 mb-2">Guest Journey</h2>
                         
                         {/* Guest Journey */}
                         <div className="mb-4">
                           {/* Journey Timeline */}
-                          <div className="flex items-center justify-center max-w-3xl mx-auto relative py-4">
-                            {/* Pre-check-in */}
-                            <div className={`relative z-10 w-32 h-9 flex items-center justify-center rounded-md text-xs font-medium transition-colors ${
-                              guestJourney === 'Pre-check-in'
-                                ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                                : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
-                            }`}>
-                              Pre-check-in
+                          <div className="flex items-end justify-center max-w-3xl mx-auto relative py-2">
+                            {/* Booking */}
+                            <div className="relative flex flex-col items-center">
+                              <div className="h-3 mb-0.5">
+                                {guestJourney === 'Booking' && (
+                                  <div className="text-[8px] font-semibold text-neutral-400 uppercase tracking-wide">
+                                    Current
+                                  </div>
+                                )}
+                              </div>
+                              <div className={`relative z-10 w-24 h-9 flex items-center justify-center rounded-md text-[10px] font-medium transition-colors ${
+                                guestJourney === 'Booking'
+                                  ? 'bg-purple-50 text-purple-700 border border-purple-200'
+                                  : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
+                              }`}>
+                                Booking
+                              </div>
                             </div>
                             
                             {/* Connector 1 */}
-                            <div className="w-12 h-[2px] bg-neutral-300" />
+                            <div className="w-6 h-[2px] bg-neutral-300 mb-4" />
                             
-                            {/* Check-in */}
-                            <div className={`relative z-10 w-32 h-9 flex items-center justify-center rounded-md text-xs font-medium transition-colors ${
-                              guestJourney === 'Check-in'
-                                ? 'bg-green-50 text-green-700 border border-green-200'
-                                : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
-                            }`}>
-                              Check-in
+                            {/* Pre Check-in */}
+                            <div className="relative flex flex-col items-center">
+                              <div className="h-3 mb-0.5">
+                                {guestJourney === 'Pre Check-in' && (
+                                  <div className="text-[8px] font-semibold text-neutral-400 uppercase tracking-wide">
+                                    Current
+                                  </div>
+                                )}
+                              </div>
+                              <div className={`relative z-10 w-24 h-9 flex items-center justify-center rounded-md text-[10px] font-medium transition-colors ${
+                                guestJourney === 'Pre Check-in'
+                                  ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                  : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
+                              }`}>
+                                Pre Check-in
+                              </div>
                             </div>
                             
                             {/* Connector 2 */}
-                            <div className="w-12 h-[2px] bg-neutral-300" />
+                            <div className="w-6 h-[2px] bg-neutral-300 mb-4" />
                             
-                            {/* Pre-check-out */}
-                            <div className={`relative z-10 w-32 h-9 flex items-center justify-center rounded-md text-xs font-medium transition-colors ${
-                              guestJourney === 'Pre-check-out'
-                                ? 'bg-orange-50 text-orange-700 border border-orange-200'
-                                : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
-                            }`}>
-                              Pre-check-out
+                            {/* Check-in */}
+                            <div className="relative flex flex-col items-center">
+                              <div className="h-3 mb-0.5">
+                                {guestJourney === 'Check-in' && (
+                                  <div className="text-[8px] font-semibold text-neutral-400 uppercase tracking-wide">
+                                    Current
+                                  </div>
+                                )}
+                              </div>
+                              <div className={`relative z-10 w-24 h-9 flex items-center justify-center rounded-md text-[10px] font-medium transition-colors ${
+                                guestJourney === 'Check-in'
+                                  ? 'bg-green-50 text-green-700 border border-green-200'
+                                  : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
+                              }`}>
+                                Check-in
+                              </div>
                             </div>
                             
                             {/* Connector 3 */}
-                            <div className="w-12 h-[2px] bg-neutral-300" />
+                            <div className="w-6 h-[2px] bg-neutral-300 mb-4" />
                             
-                            {/* Post-check-out */}
-                            <div className={`relative z-10 w-32 h-9 flex items-center justify-center rounded-md text-xs font-medium transition-colors ${
-                              guestJourney === 'Post-check-out'
-                                ? 'bg-neutral-100 text-neutral-700 border border-neutral-300'
-                                : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
-                            }`}>
-                              Post-check-out
+                            {/* During Stay */}
+                            <div className="relative flex flex-col items-center">
+                              <div className="h-3 mb-0.5">
+                                {guestJourney === 'During Stay' && (
+                                  <div className="text-[8px] font-semibold text-neutral-400 uppercase tracking-wide">
+                                    Current
+                                  </div>
+                                )}
+                              </div>
+                              <div className={`relative z-10 w-24 h-9 flex items-center justify-center rounded-md text-[10px] font-medium transition-colors ${
+                                guestJourney === 'During Stay'
+                                  ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                                  : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
+                              }`}>
+                                During Stay
+                              </div>
+                            </div>
+                            
+                            {/* Connector 4 */}
+                            <div className="w-6 h-[2px] bg-neutral-300 mb-4" />
+                            
+                            {/* Check-out */}
+                            <div className="relative flex flex-col items-center">
+                              <div className="h-3 mb-0.5">
+                                {guestJourney === 'Check-out' && (
+                                  <div className="text-[8px] font-semibold text-neutral-400 uppercase tracking-wide">
+                                    Current
+                                  </div>
+                                )}
+                              </div>
+                              <div className={`relative z-10 w-24 h-9 flex items-center justify-center rounded-md text-[10px] font-medium transition-colors ${
+                                guestJourney === 'Check-out'
+                                  ? 'bg-orange-50 text-orange-700 border border-orange-200'
+                                  : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
+                              }`}>
+                                Check-out
+                              </div>
+                            </div>
+                            
+                            {/* Connector 5 */}
+                            <div className="w-6 h-[2px] bg-neutral-300 mb-4" />
+                            
+                            {/* Post Check-out */}
+                            <div className="relative flex flex-col items-center">
+                              <div className="h-3 mb-0.5">
+                                {guestJourney === 'Post Check-out' && (
+                                  <div className="text-[8px] font-semibold text-neutral-400 uppercase tracking-wide">
+                                    Current
+                                  </div>
+                                )}
+                              </div>
+                              <div className={`relative z-10 w-24 h-9 flex items-center justify-center rounded-md text-[10px] font-medium transition-colors ${
+                                guestJourney === 'Post Check-out'
+                                  ? 'bg-neutral-100 text-neutral-700 border border-neutral-300'
+                                  : 'bg-neutral-50 text-neutral-500 border border-neutral-200 shadow-sm'
+                              }`}>
+                                Post Check-out
+                              </div>
                             </div>
                           </div>
                           
+                          {/* AI Summary Subtitle */}
+                          <h3 className="mt-4 text-xs text-neutral-500">AI Summary:</h3>
+                          
                           {/* Summary Bullet Points */}
-                          <ul className="mt-4 space-y-0.5 list-none text-sm text-neutral-600 pl-6">
+                          <ul className="mt-2 space-y-0.5 list-none text-xs text-neutral-900">
                             <li className="before:content-['-'] before:mr-2">Chen requested early check-in due to 8 AM flight arrival; approved for 10 AM at no charge.</li>
                             <li className="before:content-['-'] before:mr-2">Payment issue with card validation; Chen confirms card update and team retries payment.</li>
                             <li className="before:content-['-'] before:mr-2">Chen follows up to confirm payment status and resolution of the validation issue.</li>

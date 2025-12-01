@@ -3,6 +3,7 @@ import { mockReservations } from '@/data/mockReservations';
 import type { Listing } from '@/data/mockListings';
 import { Copy, Check } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface ListingSidebarProps {
   listing: Listing;
@@ -14,6 +15,7 @@ interface ListingSidebarProps {
  */
 export function ListingSidebar({ listing }: ListingSidebarProps) {
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
 
   // WiFi credentials
   const wifiUsername = 'gigacube-32A9';
@@ -76,7 +78,7 @@ export function ListingSidebar({ listing }: ListingSidebarProps) {
             <dd className="text-xs text-neutral-900 font-medium">{listing.id}</dd>
           </div>
           <div className="flex items-center justify-between">
-            <dt className="text-xs text-neutral-500">SKU</dt>
+            <dt className="text-xs text-neutral-500">Unit SKU</dt>
             <dd className="text-xs text-neutral-900 font-medium">{listing.sku}</dd>
           </div>
           <div className="flex items-center justify-between">
@@ -86,6 +88,10 @@ export function ListingSidebar({ listing }: ListingSidebarProps) {
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Address</dt>
             <dd className="text-xs text-neutral-900 text-right">{listing.address}</dd>
+          </div>
+          <div className="flex items-center justify-between">
+            <dt className="text-xs text-neutral-500">Deal SKU</dt>
+            <dd className="text-xs text-neutral-900 font-medium">{listing.dealSku}</dd>
           </div>
         </div>
       </section>
@@ -130,16 +136,12 @@ export function ListingSidebar({ listing }: ListingSidebarProps) {
             <div className="flex items-center justify-between">
               <dt className="text-xs text-neutral-500">Reservation ID</dt>
               <dd>
-                <a
-                  href="#"
+                <button
                   className="text-xs text-neutral-900 underline hover:text-neutral-600 transition-colors"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    console.log('Navigate to reservation:', currentReservation.id);
-                  }}
+                  onClick={() => navigate(`/reservations?id=${currentReservation.id}`)}
                 >
                   {currentReservation.id}
-                </a>
+                </button>
               </dd>
             </div>
             <div className="flex items-center justify-between">
@@ -201,16 +203,12 @@ export function ListingSidebar({ listing }: ListingSidebarProps) {
             <div className="flex items-center justify-between">
               <dt className="text-xs text-neutral-500">Reservation ID</dt>
               <dd>
-                <a
-                  href="#"
+                <button
                   className="text-xs text-neutral-900 underline hover:text-neutral-600 transition-colors"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    console.log('Navigate to reservation:', nextReservation.id);
-                  }}
+                  onClick={() => navigate(`/reservations?id=${nextReservation.id}`)}
                 >
                   {nextReservation.id}
-                </a>
+                </button>
               </dd>
             </div>
             <div className="flex items-center justify-between">

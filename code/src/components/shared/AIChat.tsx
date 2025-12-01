@@ -130,9 +130,40 @@ export function AIChat({ context }: AIChatProps) {
               </svg>
             </div>
             <p className="text-sm text-neutral-500 mb-2">Start a conversation</p>
-            <p className="text-xs text-neutral-400 max-w-xs">
+            <p className="text-xs text-neutral-400 max-w-xs mb-6">
               Ask questions about this reservation, get assistance, or request information.
             </p>
+            
+            {/* Prompt Suggestions */}
+            <div className="w-full max-w-xs space-y-1.5">
+              <button
+                onClick={() => {
+                  setInputValue('What is the Wi-Fi credential?');
+                  setTimeout(() => textareaRef.current?.focus(), 0);
+                }}
+                className="w-full text-left px-3 py-2 text-xs text-neutral-600 bg-neutral-100 rounded-md hover:bg-neutral-200 transition-colors"
+              >
+                What is the Wi-Fi credential?
+              </button>
+              <button
+                onClick={() => {
+                  setInputValue('Provide the list of amenities of this property');
+                  setTimeout(() => textareaRef.current?.focus(), 0);
+                }}
+                className="w-full text-left px-3 py-2 text-xs text-neutral-600 bg-neutral-100 rounded-md hover:bg-neutral-200 transition-colors"
+              >
+                Provide the list of amenities of this property
+              </button>
+              <button
+                onClick={() => {
+                  setInputValue('Display the check-in guide');
+                  setTimeout(() => textareaRef.current?.focus(), 0);
+                }}
+                className="w-full text-left px-3 py-2 text-xs text-neutral-600 bg-neutral-100 rounded-md hover:bg-neutral-200 transition-colors"
+              >
+                Display the check-in guide
+              </button>
+            </div>
           </div>
         ) : (
           <div className="space-y-4">

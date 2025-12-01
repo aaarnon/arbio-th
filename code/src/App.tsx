@@ -10,6 +10,8 @@ import { Teams } from '@/pages/Teams';
 import { Reservations } from '@/pages/Reservations';
 import { Listings } from '@/pages/Listings';
 import { ListingDetail } from '@/pages/ListingDetail';
+import { Deals } from '@/pages/Deals';
+import { DealDetail } from '@/pages/DealDetail';
 import { Reservations2 } from '@/pages/Reservations2';
 import { Reports } from '@/pages/Reports';
 import { AIAgents } from '@/pages/AIAgents';
@@ -34,6 +36,8 @@ function App() {
         <Route path="reservations" element={<Reservations />} />
         <Route path="listings" element={<Listings />} />
         <Route path="listings/:listingId" element={<ListingDetail />} />
+        <Route path="deals" element={<Deals />} />
+        <Route path="deals/:dealId" element={<DealDetail />} />
         <Route path="reservations2" element={<Reservations2 />} />
         <Route path="reports" element={<Reports />} />
         <Route path="ai-agents" element={<AIAgents />} />

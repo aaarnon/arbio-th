@@ -6,7 +6,7 @@ import type { Reservation } from '@/types/reservation';
  */
 export const mockReservations: Reservation[] = [
   {
-    id: 'rsv-644f5e4aac88',
+    id: 'rsv-9375c9f22eba',
     propertyId: 'DE_BER_001_Darius_01_068_02_01_A001', // LST-001: Luxury Beachfront Villa - Miami
     guestName: 'Sarah Martinez',
     guestEmail: 'sarah.martinez@email.com',
@@ -18,19 +18,19 @@ export const mockReservations: Reservation[] = [
     status: 'CONFIRMED',
   },
   {
-    id: 'res-current-001',
+    id: 'rsv-2a8d4f7b3c1e',
     propertyId: 'DE_BER_001_Darius_01_068_02_01_A001', // LST-001: Luxury Beachfront Villa - Miami
     guestName: 'Maria Garcia',
     guestEmail: 'maria.garcia@email.com',
     guestPhone: '+1 (555) 987-6543',
     checkIn: '2025-11-28T15:00:00Z',
-    checkOut: '2025-12-05T11:00:00Z',
+    checkOut: '2025-11-29T11:00:00Z',
     numberOfGuests: 2,
     totalValue: 3200.00,
-    status: 'IN_HOUSE',
+    status: 'CHECKED_OUT',
   },
   {
-    id: 'res-3',
+    id: 'rsv-6b5e9d3a7c2f',
     propertyId: 'DE_BER_002_Nicola_01_056_01_01_A001', // LST-002: Modern Downtown Apartment
     guestName: 'David Lee',
     guestEmail: 'david.lee@email.com',
@@ -43,7 +43,7 @@ export const mockReservations: Reservation[] = [
   },
   // Sarah Chen reservations
   {
-    id: 'DE_KOB_LohrStay_01_00_02_W',
+    id: 'rsv-1f8c4e6a9b2d',
     propertyId: 'DE_BER_003_Constantin_01_038_01_01_A001',
     guestName: 'Sarah Chen',
     guestEmail: 'sarah.chen@email.com',
@@ -55,8 +55,8 @@ export const mockReservations: Reservation[] = [
     status: 'CHECKED_OUT',
   },
   {
-    id: 'DE_KOB_008_LohrStay_008',
-    propertyId: 'DE_BER_012_Darius_02_145_03_02_B205',
+    id: 'rsv-4d7a2b9e3f1c',
+    propertyId: 'DE_BER_001_Darius_01_068_02_01_A001', // LST-001: Luxury Beachfront Villa - Miami
     guestName: 'Sarah Chen',
     guestEmail: 'sarah.chen@email.com',
     guestPhone: '+1 (555) 789-1234',
@@ -67,7 +67,7 @@ export const mockReservations: Reservation[] = [
     status: 'IN_HOUSE',
   },
   {
-    id: 'DE_KOB_LohrStay_03_00_05_X',
+    id: 'rsv-8e3b5c1f7a9d',
     propertyId: 'DE_BER_087_Darius_04_312_01_05_C302',
     guestName: 'Sarah Chen',
     guestEmail: 'sarah.chen@email.com',

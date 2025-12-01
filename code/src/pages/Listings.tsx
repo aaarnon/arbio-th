@@ -82,13 +82,46 @@ export function Listings() {
     return tags;
   };
   
-  // Filter listings based on search query
+  // Filter listings based on search query and selected filters
   const filteredListings = mockListings.filter((listing) => {
+    // Search filter
     const searchLower = searchQuery.toLowerCase();
-    return (
+    const matchesSearch = 
       listing.name.toLowerCase().includes(searchLower) ||
-      listing.sku.toLowerCase().includes(searchLower)
-    );
+      listing.sku.toLowerCase().includes(searchLower);
+    
+    if (!matchesSearch) return false;
+
+    // Apply selected filters
+    for (const [category, values] of Object.entries(selectedFilters)) {
+      if (values.length === 0) continue;
+
+      if (category === 'Availability') {
+        const availabilityMatch = values.some(value => 
+          listing.availability === value.toLowerCase()
+        );
+        if (!availabilityMatch) return false;
+      }
+
+      if (category === 'Readiness') {
+        const readinessMatch = values.some(value => {
+          // Map filter values to data values
+          const valueMap: Record<string, string> = {
+            'Clean': 'ready',
+            'Needs cleaning': 'needs-cleaning',
+            'Maintenance': 'maintenance'
+          };
+          const normalizedValue = valueMap[value] || value.toLowerCase().replace(' ', '-');
+          return listing.readiness === normalizedValue;
+        });
+        if (!readinessMatch) return false;
+      }
+
+      // Add other filter categories as needed
+      // For now, we'll allow other filters to pass through
+    }
+
+    return true;
   });
 
   const getSanityColor = (percentage: number) => {
@@ -211,6 +244,38 @@ export function Listings() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                       <span className="text-xs text-neutral-900">Date created</span>
+                    </div>
+                    <svg className="h-3 w-3 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+
+                  {/* Availability */}
+                  <button
+                    onClick={() => setActiveSubmenu(activeSubmenu === 'availability' ? null : 'availability')}
+                    className="w-full px-3 py-1.5 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left"
+                  >
+                    <div className="flex items-center gap-2">
+                      <svg className="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="text-xs text-neutral-900">Availability</span>
+                    </div>
+                    <svg className="h-3 w-3 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+
+                  {/* Readiness */}
+                  <button
+                    onClick={() => setActiveSubmenu(activeSubmenu === 'readiness' ? null : 'readiness')}
+                    className="w-full px-3 py-1.5 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left"
+                  >
+                    <div className="flex items-center gap-2">
+                      <svg className="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-xs text-neutral-900">Readiness</span>
                     </div>
                     <svg className="h-3 w-3 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -419,6 +484,59 @@ export function Listings() {
                               onChange={() => handleFilterToggle('Date created', 'Last 180 days')}
                             />
                             <span className="text-xs text-neutral-900">Last 180 days</span>
+                          </label>
+                        </>
+                      )}
+                      {activeSubmenu === 'availability' && (
+                        <>
+                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              className="rounded border-neutral-300 w-3 h-3" 
+                              checked={isFilterSelected('Availability', 'Free')}
+                              onChange={() => handleFilterToggle('Availability', 'Free')}
+                            />
+                            <span className="text-xs text-neutral-900">Free</span>
+                          </label>
+                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              className="rounded border-neutral-300 w-3 h-3" 
+                              checked={isFilterSelected('Availability', 'Occupied')}
+                              onChange={() => handleFilterToggle('Availability', 'Occupied')}
+                            />
+                            <span className="text-xs text-neutral-900">Occupied</span>
+                          </label>
+                        </>
+                      )}
+                      {activeSubmenu === 'readiness' && (
+                        <>
+                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              className="rounded border-neutral-300 w-3 h-3" 
+                              checked={isFilterSelected('Readiness', 'Clean')}
+                              onChange={() => handleFilterToggle('Readiness', 'Clean')}
+                            />
+                            <span className="text-xs text-neutral-900">Clean</span>
+                          </label>
+                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              className="rounded border-neutral-300 w-3 h-3" 
+                              checked={isFilterSelected('Readiness', 'Needs cleaning')}
+                              onChange={() => handleFilterToggle('Readiness', 'Needs cleaning')}
+                            />
+                            <span className="text-xs text-neutral-900">Needs cleaning</span>
+                          </label>
+                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
+                            <input 
+                              type="checkbox" 
+                              className="rounded border-neutral-300 w-3 h-3" 
+                              checked={isFilterSelected('Readiness', 'Maintenance')}
+                              onChange={() => handleFilterToggle('Readiness', 'Maintenance')}
+                            />
+                            <span className="text-xs text-neutral-900">Maintenance</span>
                           </label>
                         </>
                       )}

@@ -389,16 +389,16 @@ export function CaseFilters({
                           </div>
                         </div>
                         {filteredReservations.map((reservation) => (
-                          <label key={reservation.id} className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
+                          <label key={reservation.id} className="px-2 py-1 flex items-center gap-1.5 hover:bg-neutral-50 cursor-pointer">
                             <input 
                               type="checkbox" 
-                              className="rounded border-neutral-300 w-3 h-3" 
+                              className="rounded border-neutral-300 w-3 h-3 flex-shrink-0" 
                               checked={reservationsFilter.includes(reservation.id)}
                               onChange={() => handleReservationToggle(reservation.id)}
                             />
-                            <div className="flex-1 min-w-0">
-                              <span className="text-xs text-neutral-900 block truncate">{reservation.guestName}</span>
-                              <span className="text-[10px] text-neutral-500">{reservation.id}</span>
+                            <div className="flex-1 min-w-0 flex items-baseline gap-1">
+                              <span className="text-[11px] text-neutral-900 truncate">{reservation.guestName}</span>
+                              <span className="text-[10px] text-neutral-400 flex-shrink-0">({reservation.id})</span>
                             </div>
                           </label>
                         ))}
@@ -435,17 +435,14 @@ export function CaseFilters({
                           </div>
                         </div>
                         {filteredApartments.map((listing) => (
-                          <label key={listing.id} className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
+                          <label key={listing.id} className="px-2 py-1 flex items-center gap-1.5 hover:bg-neutral-50 cursor-pointer">
                             <input 
                               type="checkbox" 
-                              className="rounded border-neutral-300 w-3 h-3" 
+                              className="rounded border-neutral-300 w-3 h-3 flex-shrink-0" 
                               checked={apartmentsFilter.includes(listing.sku)}
                               onChange={() => handleApartmentToggle(listing.sku)}
                             />
-                            <div className="flex-1 min-w-0">
-                              <span className="text-xs text-neutral-900 block truncate">{listing.name}</span>
-                              <span className="text-[10px] text-neutral-500">{listing.sku}</span>
-                            </div>
+                            <span className="text-[11px] text-neutral-900 truncate">{listing.sku}</span>
                           </label>
                         ))}
                         {filteredApartments.length === 0 && (
