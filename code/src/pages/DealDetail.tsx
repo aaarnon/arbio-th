@@ -82,41 +82,6 @@ export function DealDetail() {
     }).format(value);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'long', 
-      day: 'numeric', 
-      year: 'numeric' 
-    });
-  };
-
-  const formatStage = (stage: string) => {
-    return stage
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
-
-  const getStageColor = (stage: string) => {
-    switch (stage) {
-      case 'lead':
-        return 'bg-neutral-50 text-neutral-700 border-neutral-200';
-      case 'qualified':
-        return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'proposal':
-        return 'bg-purple-50 text-purple-700 border-purple-200';
-      case 'negotiation':
-        return 'bg-amber-50 text-amber-700 border-amber-200';
-      case 'closed-won':
-        return 'bg-green-50 text-green-700 border-green-200';
-      case 'closed-lost':
-        return 'bg-red-50 text-red-700 border-red-200';
-      default:
-        return 'bg-neutral-50 text-neutral-700 border-neutral-200';
-    }
-  };
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'signed':

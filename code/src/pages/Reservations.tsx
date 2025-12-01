@@ -720,13 +720,15 @@ export function Reservations() {
                   {/* Summary Section */}
                   {(() => {
                     // Determine guest journey based on reservation status
-                    const getGuestJourney = (status: string) => {
+                    const getGuestJourney = (status: string): 'Booking' | 'Pre Check-in' | 'Check-in' | 'During Stay' | 'Check-out' | 'Post Check-out' => {
                       switch (status) {
                         case 'CONFIRMED':
                           return 'Pre Check-in';
                         case 'IN_HOUSE':
                         case 'CHECKED_IN':
                           return 'Check-in';
+                        case 'CHECKING_OUT':
+                          return 'Check-out';
                         case 'CHECKED_OUT':
                           return 'Post Check-out';
                         case 'PENDING':

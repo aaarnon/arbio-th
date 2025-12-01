@@ -18,22 +18,6 @@ export function DealSidebar({ deal }: DealSidebarProps) {
     }).format(value);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
-    });
-  };
-
-  const formatStage = (stage: string) => {
-    return stage
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
-
   const formatStatusLabel = (status: string) => {
     switch (status) {
       case 'signed':
