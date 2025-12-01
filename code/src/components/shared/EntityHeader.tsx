@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { mockUsers } from '@/data/mockUsers';
 import { StatusDropdown } from './StatusDropdown';
 import { formatTeam } from '@/utils/constants';
@@ -18,6 +19,8 @@ interface EntityHeaderProps {
   reduceTitleMargin?: boolean;
   statusDisabled?: boolean;
   statusDisabledMessage?: string;
+  showBackButton?: boolean;
+  onBack?: () => void;
   onTitleChange?: (title: string) => void;
   onStatusChange?: (status: string) => void;
   onTeamChange?: (team: string) => void;
@@ -40,6 +43,8 @@ export function EntityHeader({
   reduceTitleMargin,
   statusDisabled = false,
   statusDisabledMessage,
+  showBackButton = false,
+  onBack,
   onTitleChange,
   onStatusChange,
   onTeamChange,
@@ -146,25 +151,36 @@ export function EntityHeader({
       <div className="h-12"></div>
 
       {/* Title - Inline Editable */}
-      {isEditingTitle ? (
-        <input
-          ref={titleInputRef}
-          type="text"
-          value={titleValue}
-          onChange={(e) => setTitleValue(e.target.value)}
-          onBlur={handleTitleBlur}
-          onKeyDown={handleTitleKeyDown}
-          className={`${reduceTitleMargin ? 'mb-2' : 'mb-6'} text-3xl font-normal text-neutral-900 bg-transparent border-none outline-none focus:outline-none w-full`}
-          placeholder="Enter title..."
-        />
-      ) : (
-        <h1
-          onClick={() => onTitleChange && setIsEditingTitle(true)}
-          className={`${reduceTitleMargin ? 'mb-2' : 'mb-6'} text-3xl font-normal text-neutral-900 ${onTitleChange ? 'cursor-text hover:bg-neutral-50 rounded px-2 -mx-2 transition-colors' : ''}`}
-        >
-          {title}
-        </h1>
-      )}
+      <div className={`flex items-center gap-3 ${reduceTitleMargin ? 'mb-2' : 'mb-6'}`}>
+        {showBackButton && (
+          <button
+            onClick={onBack}
+            className="text-neutral-900 hover:text-neutral-600 transition-colors"
+            aria-label="Back to previous page"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+        )}
+        {isEditingTitle ? (
+          <input
+            ref={titleInputRef}
+            type="text"
+            value={titleValue}
+            onChange={(e) => setTitleValue(e.target.value)}
+            onBlur={handleTitleBlur}
+            onKeyDown={handleTitleKeyDown}
+            className="text-3xl font-normal text-neutral-900 bg-transparent border-none outline-none focus:outline-none w-full"
+            placeholder="Enter title..."
+          />
+        ) : (
+          <h1
+            onClick={() => onTitleChange && setIsEditingTitle(true)}
+            className={`text-3xl font-normal text-neutral-900 ${onTitleChange ? 'cursor-text hover:bg-neutral-50 rounded px-2 -mx-2 transition-colors' : ''}`}
+          >
+            {title}
+          </h1>
+        )}
+      </div>
 
       {/* Status Row */}
       <div className="mb-3 flex items-center">

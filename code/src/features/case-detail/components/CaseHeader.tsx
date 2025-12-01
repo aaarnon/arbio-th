@@ -1,6 +1,7 @@
 import type { Case, Task } from '@/types';
 import { EntityHeader } from '@/components/shared/EntityHeader';
 import { useCaseContext } from '@/store/CaseContext';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 interface CaseHeaderProps {
@@ -13,6 +14,7 @@ interface CaseHeaderProps {
  */
 export function CaseHeader({ case: caseData }: CaseHeaderProps) {
   const { dispatch } = useCaseContext();
+  const navigate = useNavigate();
 
   const handleTitleChange = (newTitle: string) => {
     dispatch({
@@ -74,6 +76,8 @@ export function CaseHeader({ case: caseData }: CaseHeaderProps) {
       team={caseData.team}
       statusDisabled={isDoneDisabled}
       statusDisabledMessage={doneDisabledMessage}
+      showBackButton={true}
+      onBack={() => navigate(-1)}
       onTitleChange={handleTitleChange}
       onStatusChange={handleStatusChange}
     />
