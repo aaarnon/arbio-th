@@ -51,9 +51,9 @@ export function Reservations() {
       if (typeDropdownRef.current && !typeDropdownRef.current.contains(event.target as Node)) {
         setShowTypeDropdown(false);
       }
-      if (modeDropdownRef.current && !modeDropdownRef.current.contains(event.target as Node)) {
-        setShowModeDropdown(false);
-      }
+      // if (modeDropdownRef.current && !modeDropdownRef.current.contains(event.target as Node)) {
+      //   setShowModeDropdown(false);
+      // }
       if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target as Node)) {
         setShowFilterDropdown(false);
       }
