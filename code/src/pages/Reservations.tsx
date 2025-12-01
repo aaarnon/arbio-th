@@ -26,9 +26,9 @@ export function Reservations() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('search');
   const [searchType, setSearchType] = useState('Guest Name');
-  const [searchMode, setSearchMode] = useState('Normal');
+  // const [searchMode, setSearchMode] = useState('Normal');
   const [showTypeDropdown, setShowTypeDropdown] = useState(false);
-  const [showModeDropdown, setShowModeDropdown] = useState(false);
+  // const [showModeDropdown, setShowModeDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedGuestReservations, setSelectedGuestReservations] = useState<Reservation[]>([]);
   const [selectedGuestName, setSelectedGuestName] = useState('');
@@ -513,13 +513,13 @@ export function Reservations() {
             });
           };
 
-          const formatTime = (date: Date) => {
-            return date.toLocaleTimeString('en-US', {
-              hour: 'numeric',
-              minute: '2-digit',
-              hour12: true,
-            }).replace(' ', '').toLowerCase();
-          };
+          // const formatTime = (date: Date) => {
+          //   return date.toLocaleTimeString('en-US', {
+          //     hour: 'numeric',
+          //     minute: '2-digit',
+          //     hour12: true,
+          //   }).replace(' ', '').toLowerCase();
+          // };
           
           return (
           <div key={currentTab.id} className="w-full max-w-[50.16rem]">
@@ -662,6 +662,8 @@ export function Reservations() {
                           return 'Check-in';
                         case 'CHECKED_OUT':
                           return 'Post-check-out';
+                        case 'PENDING':
+                          return 'Pre-check-out';
                         default:
                           return 'Pre-check-in';
                       }

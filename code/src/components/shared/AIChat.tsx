@@ -12,7 +12,7 @@ interface AIChatProps {
   guestName?: string;
 }
 
-export function AIChat({ context, guestName }: AIChatProps) {
+export function AIChat({ context }: AIChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);

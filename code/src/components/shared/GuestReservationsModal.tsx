@@ -92,7 +92,7 @@ export function GuestReservationsModal({
             <div className="divide-y divide-neutral-100">
               {sortedReservations.map((reservation) => {
                 const status = getReservationStatus(reservation);
-                const property = getPropertyInfo(reservation.propertyId);
+                // const property = getPropertyInfo(reservation.propertyId);
                 const checkIn = new Date(reservation.checkIn);
                 const checkOut = new Date(reservation.checkOut);
 

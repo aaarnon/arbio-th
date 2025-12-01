@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { mockListings, type Listing } from '@/data/mockListings';
+import { mockListings } from '@/data/mockListings';
 
 /**
  * Listings Component
