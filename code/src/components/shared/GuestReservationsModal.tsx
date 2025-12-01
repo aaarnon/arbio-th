@@ -1,5 +1,5 @@
 import type { Reservation } from '@/types/reservation';
-import { mockProperties } from '@/data/mockProperties';
+// import { mockProperties } from '@/data/mockProperties';
 import { format } from 'date-fns';
 
 interface GuestReservationsModalProps {

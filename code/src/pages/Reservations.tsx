@@ -36,7 +36,7 @@ export function Reservations() {
   const [isCreateCaseModalOpen, setIsCreateCaseModalOpen] = useState(false);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const typeDropdownRef = useRef<HTMLDivElement>(null);
-  const modeDropdownRef = useRef<HTMLDivElement>(null);
+  // const modeDropdownRef = useRef<HTMLDivElement>(null);
   const filterDropdownRef = useRef<HTMLDivElement>(null);
 
   // Filter states
