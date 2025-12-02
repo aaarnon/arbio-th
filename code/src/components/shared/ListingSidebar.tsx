@@ -1,5 +1,6 @@
 import { formatDate } from '@/utils/date';
 import { mockReservations } from '@/data/mockReservations';
+import { mockDeals } from '@/data/mockDeals';
 import type { Listing } from '@/data/mockListings';
 import { Copy, Check } from 'lucide-react';
 import { useState } from 'react';
@@ -65,6 +66,9 @@ export function ListingSidebar({ listing }: ListingSidebarProps) {
     return diffDays;
   };
 
+  // Find the corresponding deal based on the dealSku
+  const relatedDeal = mockDeals.find(deal => deal.sku === listing.dealSku);
+
   return (
     <aside className="h-full overflow-y-auto bg-white border-l border-neutral-200">
       {/* Basic Information */}
@@ -91,7 +95,20 @@ export function ListingSidebar({ listing }: ListingSidebarProps) {
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Deal SKU</dt>
-            <dd className="text-xs text-neutral-900 font-medium">{listing.dealSku}</dd>
+            <dd className="text-xs text-neutral-900 font-medium">
+              {relatedDeal ? (
+                <button
+                  onClick={() => navigate(`/deals/${relatedDeal.id}`)}
+                  className="text-xs text-neutral-900 font-medium underline hover:text-neutral-600 transition-colors"
+                >
+                  {listing.dealSku}
+                </button>
+              ) : (
+                <span className="text-xs text-neutral-900 font-medium">
+                  {listing.dealSku}
+                </span>
+              )}
+            </dd>
           </div>
         </div>
       </section>

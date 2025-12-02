@@ -35,5 +35,8 @@ export interface Reservation {
   
   /** Reservation status */
   status: 'CONFIRMED' | 'IN_HOUSE' | 'CHECKED_IN' | 'CHECKED_OUT' | 'CANCELLED';
+  
+  /** Payment status */
+  paidStatus?: 'Paid' | 'Pending' | 'Not Paid';
 }
 

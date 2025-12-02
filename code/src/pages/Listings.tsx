@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mockListings } from '@/data/mockListings';
+import { mockDeals } from '@/data/mockDeals';
 
 /**
  * Listings Component
@@ -12,6 +13,7 @@ export function Listings() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+  const [dealsSearchQuery, setDealsSearchQuery] = useState('');
   const filterRef = useRef<HTMLDivElement>(null);
   
   // Close dropdown when clicking outside
@@ -20,6 +22,7 @@ export function Listings() {
       if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
         setIsFilterOpen(false);
         setActiveSubmenu(null);
+        setDealsSearchQuery('');
       }
     }
     
@@ -234,16 +237,16 @@ export function Listings() {
                     </svg>
                   </button>
 
-                  {/* Date created */}
+                  {/* Deals */}
                   <button
-                    onClick={() => setActiveSubmenu(activeSubmenu === 'date' ? null : 'date')}
+                    onClick={() => setActiveSubmenu(activeSubmenu === 'deals' ? null : 'deals')}
                     className="w-full px-3 py-1.5 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left"
                   >
                     <div className="flex items-center gap-2">
                       <svg className="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="text-xs text-neutral-900">Date created</span>
+                      <span className="text-xs text-neutral-900">Deals</span>
                     </div>
                     <svg className="h-3 w-3 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -447,44 +450,55 @@ export function Listings() {
                           </label>
                         </>
                       )}
-                      {activeSubmenu === 'date' && (
+                      {activeSubmenu === 'deals' && (
                         <>
-                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
-                            <input 
-                              type="checkbox" 
-                              className="rounded border-neutral-300 w-3 h-3" 
-                              checked={isFilterSelected('Date created', 'Last 7 days')}
-                              onChange={() => handleFilterToggle('Date created', 'Last 7 days')}
-                            />
-                            <span className="text-xs text-neutral-900">Last 7 days</span>
-                          </label>
-                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
-                            <input 
-                              type="checkbox" 
-                              className="rounded border-neutral-300 w-3 h-3" 
-                              checked={isFilterSelected('Date created', 'Last 30 days')}
-                              onChange={() => handleFilterToggle('Date created', 'Last 30 days')}
-                            />
-                            <span className="text-xs text-neutral-900">Last 30 days</span>
-                          </label>
-                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
-                            <input 
-                              type="checkbox" 
-                              className="rounded border-neutral-300 w-3 h-3" 
-                              checked={isFilterSelected('Date created', 'Last 90 days')}
-                              onChange={() => handleFilterToggle('Date created', 'Last 90 days')}
-                            />
-                            <span className="text-xs text-neutral-900">Last 90 days</span>
-                          </label>
-                          <label className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer">
-                            <input 
-                              type="checkbox" 
-                              className="rounded border-neutral-300 w-3 h-3" 
-                              checked={isFilterSelected('Date created', 'Last 180 days')}
-                              onChange={() => handleFilterToggle('Date created', 'Last 180 days')}
-                            />
-                            <span className="text-xs text-neutral-900">Last 180 days</span>
-                          </label>
+                          {/* Search input for deals */}
+                          <div className="px-3 py-2 border-b border-neutral-100">
+                            <div className="relative">
+                              <svg
+                                className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                />
+                              </svg>
+                              <input
+                                type="text"
+                                placeholder="Filter..."
+                                value={dealsSearchQuery}
+                                onChange={(e) => setDealsSearchQuery(e.target.value)}
+                                className="w-full pl-8 pr-3 py-1.5 text-xs border border-neutral-200 rounded focus:outline-none focus:ring-1 focus:ring-neutral-900 focus:border-neutral-900"
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                            </div>
+                          </div>
+                          {/* Deal checkboxes */}
+                          {mockDeals
+                            .filter(deal => 
+                              dealsSearchQuery === '' || 
+                              deal.sku.toLowerCase().includes(dealsSearchQuery.toLowerCase()) ||
+                              deal.name.toLowerCase().includes(dealsSearchQuery.toLowerCase())
+                            )
+                            .map(deal => (
+                              <label 
+                                key={deal.id}
+                                className="px-3 py-1.5 flex items-center gap-2 hover:bg-neutral-50 cursor-pointer"
+                              >
+                                <input 
+                                  type="checkbox" 
+                                  className="rounded border-neutral-300 w-3 h-3" 
+                                  checked={isFilterSelected('Deals', deal.sku)}
+                                  onChange={() => handleFilterToggle('Deals', deal.sku)}
+                                />
+                                <span className="text-xs text-neutral-900">{deal.sku}</span>
+                              </label>
+                            ))}
                         </>
                       )}
                       {activeSubmenu === 'availability' && (
@@ -617,18 +631,18 @@ export function Listings() {
         <div className="bg-white rounded-card p-3">
           <table className="w-full table-fixed">
             <colgroup>
-              <col style={{ width: '30%' }} />
-              <col style={{ width: '50%' }} />
-              <col style={{ width: '15%' }} />
+              <col style={{ width: '40%' }} />
+              <col style={{ width: '38%' }} />
+              <col style={{ width: '17%' }} />
               <col style={{ width: '5%' }} />
             </colgroup>
             <thead>
               <tr className="border-b border-neutral-100">
-                <th className="text-left pl-3 pr-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                  Apartment
+                <th className="text-left pl-3 pr-12 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  SKU
                 </th>
                 <th className="text-left px-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                  SKU
+                  Apartment
                 </th>
                 <th className="text-left px-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Sanity %
@@ -643,11 +657,11 @@ export function Listings() {
                   onClick={() => navigate(`/listings/${listing.id}`)}
                   className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50 transition-colors cursor-pointer"
                 >
-                  <td className="pl-3 pr-3 py-3">
-                    <div className="text-sm text-neutral-900">{listing.name}</div>
+                  <td className="pl-3 pr-12 py-3">
+                    <div className="text-sm text-neutral-600">{listing.sku}</div>
                   </td>
                   <td className="px-3 py-3">
-                    <div className="text-sm text-neutral-600">{listing.sku}</div>
+                    <div className="text-sm text-neutral-900">{listing.name}</div>
                   </td>
                   <td className="px-3 py-3">
                     <div className={`text-sm font-medium ${getSanityColor(listing.sanityPercentage)}`}>

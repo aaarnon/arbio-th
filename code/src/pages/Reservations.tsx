@@ -531,8 +531,14 @@ export function Reservations() {
                     </div>
 
                     {/* Paid Status */}
-                    <div className="text-sm font-medium text-green-600">
-                      Paid
+                    <div className={`text-sm font-medium ${
+                      reservation.paidStatus === 'Paid' 
+                        ? 'text-green-600' 
+                        : reservation.paidStatus === 'Pending'
+                        ? 'text-amber-600'
+                        : 'text-red-600'
+                    }`}>
+                      {reservation.paidStatus || 'Paid'}
                     </div>
 
                     {/* Arrow */}
@@ -644,8 +650,14 @@ export function Reservations() {
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-neutral-500">Total Value:</span>
                           <span className="text-xs font-medium text-neutral-900">{reservation.totalValue.toFixed(2)} EUR</span>
-                          <span className="inline-flex px-2 py-0.5 text-xs font-medium rounded-full bg-neutral-500 text-white">
-                            Paid
+                          <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${
+                            reservation.paidStatus === 'Paid'
+                              ? 'bg-green-600 text-white'
+                              : reservation.paidStatus === 'Pending'
+                              ? 'bg-amber-500 text-white'
+                              : 'bg-red-600 text-white'
+                          }`}>
+                            {reservation.paidStatus || 'Paid'}
                           </span>
                           <a 
                             href="#" 
@@ -923,7 +935,7 @@ export function Reservations() {
                           <h2 className="text-base font-semibold text-neutral-900">Tickets</h2>
                           <button 
                             onClick={() => navigate('/cases')}
-                            className="text-xs text-neutral-500 hover:text-neutral-700 transition-colors"
+                            className="text-xs text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 transition-colors px-3 py-1.5 rounded-md"
                           >
                             View history
                           </button>

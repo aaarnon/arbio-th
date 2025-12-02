@@ -77,7 +77,7 @@ export function ListingDetail() {
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
-          <h1 className="text-xl font-bold text-neutral-900">{listing.name}</h1>
+          <h1 className="text-xl font-bold text-neutral-900">{listing.sku}</h1>
         </div>
         
         {/* Tabs Navigation */}
@@ -165,7 +165,7 @@ export function ListingDetail() {
                 <h2 className="text-base font-semibold text-neutral-900">Tickets</h2>
                 <button 
                   onClick={() => navigate('/cases')}
-                  className="text-xs text-neutral-500 hover:text-neutral-700 transition-colors"
+                  className="text-xs text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 transition-colors px-3 py-1.5 rounded-md"
                 >
                   View history
                 </button>

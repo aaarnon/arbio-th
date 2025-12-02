@@ -202,10 +202,10 @@ export function DealDetail() {
                           className="border-b border-neutral-100 hover:bg-neutral-50 cursor-pointer transition-colors"
                         >
                           <td className="py-2.5 px-0">
-                            <span className="text-xs text-neutral-900">{listing.name}</span>
+                            <span className="text-sm text-neutral-900">{listing.name}</span>
                           </td>
                           <td className="py-2.5 px-0">
-                            <span className="text-xs text-neutral-900 font-mono">{listing.sku}</span>
+                            <span className="text-sm text-neutral-600">{listing.sku}</span>
                           </td>
                           <td className="py-2.5 px-0">
                             <ChevronRight className="h-4 w-4 text-neutral-400" />

@@ -7,7 +7,7 @@ import type { ConversationThread } from '@/types/conversation';
 export const mockConversations: ConversationThread[] = [
   {
     id: 'conv-001',
-    reservationId: 'DE_KOB_008_LohrStay_008',
+    reservationId: 'rsv-4d7a2b9e3f1c', // Sarah Chen's IN_HOUSE reservation
     createdAt: '2025-10-16T11:11:00Z',
     updatedAt: '2025-10-16T19:36:00Z',
     messages: [
@@ -41,7 +41,7 @@ export const mockConversations: ConversationThread[] = [
   },
   {
     id: 'conv-002',
-    reservationId: 'DE_KOB_008_LohrStay_008',
+    reservationId: 'rsv-4d7a2b9e3f1c', // Sarah Chen's IN_HOUSE reservation
     createdAt: '2025-10-10T14:20:00Z',
     updatedAt: '2025-10-10T15:45:00Z',
     messages: [
@@ -74,7 +74,7 @@ export const mockConversations: ConversationThread[] = [
   },
   {
     id: 'conv-003',
-    reservationId: 'DE_KOB_008_LohrStay_008',
+    reservationId: 'rsv-4d7a2b9e3f1c', // Sarah Chen's IN_HOUSE reservation
     createdAt: '2025-09-25T09:15:00Z',
     updatedAt: '2025-09-25T10:30:00Z',
     messages: [
