@@ -13,7 +13,7 @@ export const mockReservations: Reservation[] = [
     guestEmail: 'sarah.chen@email.com',
     guestPhone: '+1 (555) 789-1234',
     checkIn: '2025-11-30T15:00:00Z',
-    checkOut: '2025-12-02T11:00:00Z',
+    checkOut: '2027-12-02T11:00:00Z',
     numberOfGuests: 2,
     totalValue: 640.00,
     status: 'IN_HOUSE',
