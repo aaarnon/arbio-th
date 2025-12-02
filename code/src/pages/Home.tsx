@@ -98,14 +98,6 @@ export function Home() {
 
   // Filter only unread notifications for Updates section
   const unreadNotifications = notifications.filter(n => !n.read);
-  
-  // Sort notifications to show unread first, then by timestamp
-  const sortedNotifications = [...notifications].sort((a, b) => {
-    if (a.read === b.read) {
-      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-    }
-    return a.read ? 1 : -1;
-  });
 
   const getStatusColor = (status: string) => {
     switch (status) {

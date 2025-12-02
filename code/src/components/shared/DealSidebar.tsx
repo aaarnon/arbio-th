@@ -9,28 +9,6 @@ interface DealSidebarProps {
  * Displays deal basic information in the right panel
  */
 export function DealSidebar({ deal }: DealSidebarProps) {
-  const formatCurrency = (value: number, currency: string) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
-  const formatStatusLabel = (status: string) => {
-    switch (status) {
-      case 'signed':
-        return 'Signed';
-      case 'listing-units':
-        return 'Listing Units';
-      case 'live':
-        return 'Live';
-      default:
-        return status;
-    }
-  };
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
