@@ -9,4 +9,6 @@ export interface Deal {
   stage: 'lead' | 'qualified' | 'proposal' | 'negotiation' | 'closed-won' | 'closed-lost';
   expectedCloseDate: string;
   owner: string;
+  totalUnits: number;
+  dateSigned: string;
 }

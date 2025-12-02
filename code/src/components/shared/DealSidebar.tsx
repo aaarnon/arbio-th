@@ -31,6 +31,15 @@ export function DealSidebar({ deal }: DealSidebarProps) {
     }
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
   return (
     <aside className="h-full overflow-y-auto bg-white border-l border-neutral-200">
       {/* Basic Information */}
@@ -52,14 +61,8 @@ export function DealSidebar({ deal }: DealSidebarProps) {
             <dd className="text-xs text-neutral-900">{deal.name}</dd>
           </div>
           <div className="flex items-center justify-between">
-            <dt className="text-xs text-neutral-500">Value</dt>
-            <dd className="text-xs text-neutral-900 font-medium">
-              {formatCurrency(deal.value, deal.currency)}
-            </dd>
-          </div>
-          <div className="flex items-center justify-between">
-            <dt className="text-xs text-neutral-500">Status</dt>
-            <dd className="text-xs text-neutral-900">{formatStatusLabel(deal.status)}</dd>
+            <dt className="text-xs text-neutral-500">Date Signed</dt>
+            <dd className="text-xs text-neutral-900">{formatDate(deal.dateSigned)}</dd>
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-xs text-neutral-500">Owner</dt>

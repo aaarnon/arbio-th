@@ -28,8 +28,8 @@ function App() {
       
       {/* Protected routes WITH sidebar/layout */}
       <Route path="/" element={<Layout />}>
-        <Route index element={<CaseList />} />
-        <Route path="home" element={<Home />} />
+        <Route index element={<Home />} />
+        <Route path="cases" element={<CaseList />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="tasks" element={<Tasks />} />
         <Route path="teams" element={<Teams />} />

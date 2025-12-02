@@ -247,6 +247,43 @@ export function Reservations() {
     return tags;
   };
 
+  // Filter reservations based on selected filters
+  const getFilteredReservations = () => {
+    let filtered = [...mockReservations];
+
+    // Apply quick filters
+    if (selectedFilters.has('unpaid reservations')) {
+      filtered = filtered.filter(r => 
+        r.paidStatus === 'Pending' || r.paidStatus === 'Not Paid'
+      );
+    }
+
+    if (selectedFilters.has('arrivals today')) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      filtered = filtered.filter(r => {
+        const checkIn = new Date(r.checkIn);
+        checkIn.setHours(0, 0, 0, 0);
+        return checkIn.getTime() === today.getTime();
+      });
+    }
+
+    if (selectedFilters.has('check-ins needing action')) {
+      // For now, keeping all reservations for this filter
+      // You can add specific logic here if needed
+      filtered = filtered;
+    }
+
+    // Apply status filters
+    if (statusFilter.length > 0) {
+      filtered = filtered.filter(r => statusFilter.includes(r.status));
+    }
+
+    return filtered;
+  };
+
+  const filteredReservations = getFilteredReservations();
+
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className={`w-full px-8 pt-6 ${activeTab !== 'search' && activeTab !== 'filter' ? 'mr-[420px]' : ''}`}>
@@ -478,7 +515,7 @@ export function Reservations() {
             {/* Results Count */}
             <div className="mb-3 max-w-5xl mx-auto">
               <p className="text-xs text-neutral-400">
-                Showing {mockReservations.length} of {mockReservations.length} reservations
+                Showing {filteredReservations.length} of {mockReservations.length} reservations
               </p>
             </div>
 
@@ -502,7 +539,7 @@ export function Reservations() {
               </div>
 
               {/* Reservation Rows */}
-              {mockReservations.map((reservation) => {
+              {filteredReservations.map((reservation) => {
                 const arrivalDate = new Date(reservation.checkIn).toLocaleDateString('en-US', {
                   month: '2-digit',
                   day: '2-digit',

@@ -82,6 +82,15 @@ export function DealDetail() {
     }).format(value);
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'signed':
@@ -164,9 +173,21 @@ export function DealDetail() {
                 {/* Value */}
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-neutral-500">Deal Value:</span>
-                  <span className="text-sm font-medium text-neutral-900">
+                  <span className="text-xs text-neutral-900">
                     {formatCurrency(deal.value, deal.currency)}
                   </span>
+                </div>
+
+                {/* Total Units */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-neutral-500">Total Units:</span>
+                  <span className="text-xs text-neutral-900">{deal.totalUnits}</span>
+                </div>
+
+                {/* Date Signed */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-neutral-500">Date Signed:</span>
+                  <span className="text-xs text-neutral-900">{formatDate(deal.dateSigned)}</span>
                 </div>
 
                 {/* Owner */}

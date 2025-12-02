@@ -12,6 +12,8 @@ export const mockDeals: Deal[] = [
     stage: 'negotiation',
     expectedCloseDate: '2024-12-15',
     owner: 'Sarah Johnson',
+    totalUnits: 68,
+    dateSigned: '2024-10-15',
   },
   {
     id: 'DEA-002',
@@ -24,6 +26,8 @@ export const mockDeals: Deal[] = [
     stage: 'proposal',
     expectedCloseDate: '2024-12-10',
     owner: 'Michael Chen',
+    totalUnits: 56,
+    dateSigned: '2024-10-20',
   },
   {
     id: 'DEA-003',
@@ -36,6 +40,8 @@ export const mockDeals: Deal[] = [
     stage: 'qualified',
     expectedCloseDate: '2024-12-20',
     owner: 'Emma Davis',
+    totalUnits: 38,
+    dateSigned: '2024-11-05',
   },
   {
     id: 'DEA-004',
@@ -48,6 +54,8 @@ export const mockDeals: Deal[] = [
     stage: 'negotiation',
     expectedCloseDate: '2024-12-05',
     owner: 'James Wilson',
+    totalUnits: 35,
+    dateSigned: '2024-09-28',
   },
   {
     id: 'DEA-005',
@@ -60,6 +68,8 @@ export const mockDeals: Deal[] = [
     stage: 'closed-won',
     expectedCloseDate: '2024-11-28',
     owner: 'Linda Martinez',
+    totalUnits: 26,
+    dateSigned: '2024-10-10',
   },
   {
     id: 'DEA-006',
@@ -72,6 +82,8 @@ export const mockDeals: Deal[] = [
     stage: 'proposal',
     expectedCloseDate: '2024-12-18',
     owner: 'Robert Brown',
+    totalUnits: 26,
+    dateSigned: '2024-11-12',
   },
   {
     id: 'DEA-007',
@@ -84,6 +96,8 @@ export const mockDeals: Deal[] = [
     stage: 'negotiation',
     expectedCloseDate: '2024-12-12',
     owner: 'Patricia Garcia',
+    totalUnits: 43,
+    dateSigned: '2024-10-05',
   },
   {
     id: 'DEA-008',
@@ -96,6 +110,8 @@ export const mockDeals: Deal[] = [
     stage: 'lead',
     expectedCloseDate: '2024-12-25',
     owner: 'David Thompson',
+    totalUnits: 43,
+    dateSigned: '2024-11-08',
   },
   {
     id: 'DEA-009',
@@ -108,6 +124,8 @@ export const mockDeals: Deal[] = [
     stage: 'negotiation',
     expectedCloseDate: '2024-12-08',
     owner: 'Jennifer Lee',
+    totalUnits: 34,
+    dateSigned: '2024-10-18',
   },
   {
     id: 'DEA-010',
@@ -120,6 +138,8 @@ export const mockDeals: Deal[] = [
     stage: 'proposal',
     expectedCloseDate: '2024-12-14',
     owner: 'Christopher White',
+    totalUnits: 42,
+    dateSigned: '2024-11-20',
   },
   {
     id: 'DEA-011',
@@ -132,6 +152,8 @@ export const mockDeals: Deal[] = [
     stage: 'closed-won',
     expectedCloseDate: '2024-11-30',
     owner: 'Amanda Harris',
+    totalUnits: 36,
+    dateSigned: '2024-09-15',
   },
   {
     id: 'DEA-012',
@@ -144,6 +166,8 @@ export const mockDeals: Deal[] = [
     stage: 'qualified',
     expectedCloseDate: '2024-12-22',
     owner: 'Daniel Martinez',
+    totalUnits: 55,
+    dateSigned: '2024-11-25',
   },
   {
     id: 'DEA-013',
@@ -156,6 +180,8 @@ export const mockDeals: Deal[] = [
     stage: 'closed-lost',
     expectedCloseDate: '2024-11-15',
     owner: 'Michelle Anderson',
+    totalUnits: 48,
+    dateSigned: '2024-11-18',
   },
   {
     id: 'DEA-014',
@@ -168,6 +194,8 @@ export const mockDeals: Deal[] = [
     stage: 'negotiation',
     expectedCloseDate: '2024-12-16',
     owner: 'Kevin Thomas',
+    totalUnits: 39,
+    dateSigned: '2024-10-22',
   },
   {
     id: 'DEA-015',
@@ -180,6 +208,8 @@ export const mockDeals: Deal[] = [
     stage: 'lead',
     expectedCloseDate: '2024-12-28',
     owner: 'Stephanie Clark',
+    totalUnits: 62,
+    dateSigned: '2024-11-22',
   },
 ];
 

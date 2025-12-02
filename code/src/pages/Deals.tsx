@@ -296,9 +296,10 @@ export function Deals() {
         <div className="bg-white rounded-card p-3">
           <table className="w-full table-fixed">
             <colgroup>
-              <col style={{ width: '35%' }} />
-              <col style={{ width: '25%' }} />
+              <col style={{ width: '30%' }} />
               <col style={{ width: '20%' }} />
+              <col style={{ width: '18%' }} />
+              <col style={{ width: '12%' }} />
               <col style={{ width: '15%' }} />
               <col style={{ width: '5%' }} />
             </colgroup>
@@ -312,6 +313,9 @@ export function Deals() {
                 </th>
                 <th className="text-left px-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Value
+                </th>
+                <th className="text-left px-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                  Total Units
                 </th>
                 <th className="text-left px-3 pb-3 pt-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">
                   Status
@@ -337,6 +341,9 @@ export function Deals() {
                     <div className="text-sm font-medium text-neutral-900">
                       {formatCurrency(deal.value, deal.currency)}
                     </div>
+                  </td>
+                  <td className="px-3 py-3">
+                    <div className="text-sm text-neutral-900">{deal.totalUnits}</div>
                   </td>
                   <td className="px-3 py-3">
                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadgeColor(deal.status)}`}>

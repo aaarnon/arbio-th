@@ -57,16 +57,6 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
       ),
-      path: '/home',
-    },
-    {
-      id: 'ticketing-hub',
-      label: 'Ticketing Hub',
-      icon: (
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-        </svg>
-      ),
       path: '/',
     },
     {
@@ -79,6 +69,16 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
       ),
       path: '/notifications',
       badge: 6,
+    },
+    {
+      id: 'ticketing-hub',
+      label: 'Ticketing Hub',
+      icon: (
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg>
+      ),
+      path: '/cases',
     },
   ];
 
@@ -230,20 +230,28 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
         </div>
       </nav>
 
+      {/* Bug Report */}
+      <div className="px-3">
+        <Link
+          to="/bug-report"
+          className="flex items-center gap-2.5 px-3 py-1.5 rounded-md text-xs transition-colors text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
+        >
+          <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Bug Report</span>
+        </Link>
+      </div>
+
       {/* User Profile */}
       <div className="p-3 relative" ref={userMenuRef}>
         <button 
           onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
           className="flex items-center gap-2.5 w-full px-3 py-1.5 rounded-md hover:bg-neutral-50 transition-colors"
         >
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-neutral-200 flex-shrink-0">
-            <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </div>
           <div className="flex-1 text-left min-w-0">
-            <div className="text-xs font-medium text-neutral-900 truncate">{currentUser.name}</div>
-            <div className="text-[10px] text-neutral-500 truncate">{currentUser.role}</div>
+            <div className="text-sm font-medium text-neutral-900 truncate">{currentUser.name}</div>
+            <div className="text-xs text-neutral-500 truncate">{currentUser.role}</div>
           </div>
           <svg className="h-4 w-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
