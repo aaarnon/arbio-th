@@ -6,6 +6,26 @@ import type { Property } from '@/types';
  */
 export const mockProperties: Property[] = [
   {
+    id: 'DE_BER_001_Darius_01_068_02_01_A001',
+    unitId: 'A-001',
+    address: '456 Beachfront Avenue, Miami Beach, FL 33139',
+    status: 'ACTIVE',
+    bedrooms: 3,
+    bathrooms: 2,
+    multiUnit: false,
+    handbookUrl: 'https://example.com/handbooks/property-a001',
+  },
+  {
+    id: 'DE_BER_002_Nicola_01_056_01_01_A001',
+    unitId: 'A-002',
+    address: '789 Downtown Street, Miami, FL 33130',
+    status: 'ACTIVE',
+    bedrooms: 2,
+    bathrooms: 1.5,
+    multiUnit: true,
+    handbookUrl: 'https://example.com/handbooks/property-a002',
+  },
+  {
     id: 'DE_BER_003_Constantin_01_038_01_01_A001',
     unitId: 'A-101',
     address: '123 Ocean View Drive, Miami Beach, FL 33139',

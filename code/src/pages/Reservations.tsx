@@ -7,6 +7,7 @@ import { NotesSection } from '@/components/shared/NotesSection';
 import { CreateCaseModal } from '@/features/cases/components/CreateCaseModal';
 import { mockReservations } from '@/data/mockReservations';
 import { mockProperties } from '@/data/mockProperties';
+import { mockListings } from '@/data/mockListings';
 import { mockCases } from '@/data/mockCases';
 import { mockConversations } from '@/data/mockConversations';
 import { mockNotes } from '@/data/mockNotes';
@@ -522,12 +523,15 @@ export function Reservations() {
             {/* Reservations List Section */}
             <div className="bg-white rounded-lg overflow-hidden max-w-5xl mx-auto">
               {/* Column Headers */}
-              <div className="grid grid-cols-[2.5fr,2fr,1.5fr,1fr,auto] gap-8 px-6 py-3">
+              <div className="grid grid-cols-[2fr,1.5fr,2fr,1.5fr,1fr,auto] gap-6 px-6 py-3">
                 <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
                   Reservation ID
                 </div>
                 <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
                   Guest Name
+                </div>
+                <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+                  Property Street
                 </div>
                 <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
                   Arrival Date
@@ -546,11 +550,15 @@ export function Reservations() {
                   year: 'numeric',
                 });
 
+                // Get property and extract street address
+                const property = mockProperties.find(p => p.id === reservation.propertyId);
+                const propertyStreet = property?.address.split(',')[0] || 'N/A';
+
                 return (
                   <div
                     key={reservation.id}
                     onClick={() => handleSelectReservation(reservation)}
-                    className="grid grid-cols-[2.5fr,2fr,1.5fr,1fr,auto] gap-8 px-6 py-4 border-t border-neutral-100 hover:bg-neutral-50 cursor-pointer transition-colors items-center group"
+                    className="grid grid-cols-[2fr,1.5fr,2fr,1.5fr,1fr,auto] gap-6 px-6 py-4 border-t border-neutral-100 hover:bg-neutral-50 cursor-pointer transition-colors items-center group"
                   >
                     {/* Reservation ID */}
                     <div className="text-sm text-neutral-600">
@@ -560,6 +568,11 @@ export function Reservations() {
                     {/* Guest Name */}
                     <div className="text-sm text-neutral-900 font-normal">
                       {reservation.guestName}
+                    </div>
+
+                    {/* Property Street */}
+                    <div className="text-sm text-neutral-600">
+                      {propertyStreet}
                     </div>
 
                     {/* Arrival Date */}
@@ -722,12 +735,29 @@ export function Reservations() {
                         {/* Unit ID */}
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-neutral-500">Listing Unit:</span>
-                          <a 
-                            href="http://localhost:5186/listings/LST-001"
-                            className="text-xs font-medium text-neutral-900 underline"
-                          >
-                            DE_BER_001_Darius_01_068_02_01_A001
-                          </a>
+                          {(() => {
+                            // Find the listing that matches this property ID (SKU)
+                            const listing = mockListings.find(l => l.sku === reservation.propertyId);
+                            if (listing) {
+                              return (
+                                <a 
+                                  href={`/listings/${listing.id}`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate(`/listings/${listing.id}`);
+                                  }}
+                                  className="text-xs font-medium text-neutral-900 underline hover:text-neutral-700 transition-colors cursor-pointer"
+                                >
+                                  {reservation.propertyId}
+                                </a>
+                              );
+                            }
+                            return (
+                              <span className="text-xs font-medium text-neutral-900">
+                                {reservation.propertyId}
+                              </span>
+                            );
+                          })()}
                         </div>
 
                         {/* Address */}
