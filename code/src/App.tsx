@@ -10,6 +10,8 @@ import { Teams } from '@/pages/Teams';
 import { Reservations } from '@/pages/Reservations';
 import { Listings } from '@/pages/Listings';
 import { ListingDetail } from '@/pages/ListingDetail';
+import { Listings2 } from '@/pages/Listings2';
+import { ListingDetail2 } from '@/pages/ListingDetail2';
 import { Deals } from '@/pages/Deals';
 import { DealDetail } from '@/pages/DealDetail';
 import { Reservations2 } from '@/pages/Reservations2';
@@ -36,6 +38,8 @@ function App() {
         <Route path="reservations" element={<Reservations />} />
         <Route path="listings" element={<Listings />} />
         <Route path="listings/:listingId" element={<ListingDetail />} />
+        <Route path="listings-2" element={<Listings2 />} />
+        <Route path="listings-2/:listingId" element={<ListingDetail2 />} />
         <Route path="deals" element={<Deals />} />
         <Route path="deals/:dealId" element={<DealDetail />} />
         <Route path="reservations2" element={<Reservations2 />} />

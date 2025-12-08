@@ -45,7 +45,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-neutral-900/20 backdrop-blur-sm"
@@ -76,7 +76,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
         <div className="max-h-[60vh] overflow-y-auto">
           {!search && (
             <div className="p-8 text-center text-sm text-neutral-500">
-              Start typing to search cases...
+              Start typing to see results...
             </div>
           )}
 

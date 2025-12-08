@@ -26,6 +26,7 @@ export function Reservations() {
   const [searchParams, setSearchParams] = useSearchParams();
   
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [activeTab, setActiveTab] = useState(() => {
     const saved = sessionStorage.getItem('reservations-activeTab');
     return saved || 'search';
@@ -71,8 +72,8 @@ export function Reservations() {
   // Filter states
   const [statusFilter, setStatusFilter] = useState<ReservationStatus[]>([]);
   const [dateRangeFilter, setDateRangeFilter] = useState<string>('ALL');
-  const [quickFilter, setQuickFilter] = useState<string | null>('check-ins needing action');
-  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set(['check-ins needing action']));
+  const [quickFilter, setQuickFilter] = useState<string | null>(null);
+  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set());
 
   // Persist openTabs to sessionStorage (only save IDs)
   useEffect(() => {
@@ -128,20 +129,8 @@ export function Reservations() {
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return;
-
-    // Search by guest name
-    if (searchType === 'Guest Name') {
-      const reservations = mockReservations.filter(
-        (res) => res.guestName.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      
-      if (reservations.length > 0) {
-        setSelectedGuestReservations(reservations);
-        setSelectedGuestName(reservations[0].guestName);
-        setShowModal(true);
-      }
-    }
-    // Add other search types as needed
+    // Mark search as submitted to show results immediately
+    setSearchSubmitted(true);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -189,7 +178,6 @@ export function Reservations() {
 
   const allTabs = [
     { id: 'search', label: 'Search', isCloseable: false, isFixed: true },
-    { id: 'filter', label: 'Filter', isCloseable: false, isFixed: true },
     ...openTabs.map(tab => ({
       id: tab.id,
       label: tab.guestName,
@@ -248,9 +236,30 @@ export function Reservations() {
     return tags;
   };
 
-  // Filter reservations based on selected filters
+  // Filter reservations based on selected filters and search
   const getFilteredReservations = () => {
+    const hasSearch = searchQuery.trim().length >= 5 || (searchSubmitted && searchQuery.trim().length > 0);
+    
+    // If no filters are selected and no valid search, return empty array
+    if (selectedFilters.size === 0 && statusFilter.length === 0 && !hasSearch) {
+      return [];
+    }
+
     let filtered = [...mockReservations];
+
+    // Apply search query if 5 or more characters OR if search was submitted with Enter
+    if (hasSearch) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(r => {
+        // Search across multiple fields
+        return (
+          r.guestName.toLowerCase().includes(query) ||
+          r.id.toLowerCase().includes(query) ||
+          r.propertyId.toLowerCase().includes(query) ||
+          r.guestEmail.toLowerCase().includes(query)
+        );
+      });
+    }
 
     // Apply quick filters
     if (selectedFilters.has('unpaid reservations')) {
@@ -287,7 +296,7 @@ export function Reservations() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className={`w-full px-8 pt-6 ${activeTab !== 'search' && activeTab !== 'filter' ? 'mr-[420px]' : ''}`}>
+      <div className={`w-full px-8 pt-6 ${activeTab !== 'search' ? 'mr-[420px]' : ''}`}>
         {/* Title */}
         <div className="mb-6">
           <h1 className="text-xl font-normal text-neutral-900">Reservations</h1>
@@ -334,87 +343,18 @@ export function Reservations() {
 
         {/* Search Content */}
         {activeTab === 'search' && (
-          <div className="w-full max-w-xl mx-auto mt-32">
-            {/* Search Box Container */}
-            <div className="border border-neutral-200 rounded-xl bg-white p-4 shadow-sm">
-              <textarea
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder={`Search reservations by ${searchType}`}
-                rows={1}
-                className="w-full text-sm text-neutral-700 placeholder:text-neutral-400 border-0 focus:outline-none resize-none min-h-[32px]"
-              />
-              
-              {/* Bottom Controls */}
-              <div className="flex items-center justify-between mt-2">
-                <div className="flex items-center gap-4">
-                  {/* Search Type Dropdown */}
-                  <div className="relative" ref={typeDropdownRef}>
-                    <button
-                      onClick={() => setShowTypeDropdown(!showTypeDropdown)}
-                      className="flex items-center gap-2 text-xs text-neutral-600 hover:text-neutral-900 transition-colors"
-                    >
-                      <svg className="w-3.5 h-3.5 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                      <span>{searchType}</span>
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    
-                    {showTypeDropdown && (
-                      <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 z-10">
-                        {['Guest Name', 'Reservation ID', 'Property Address', 'Arrival Date'].map((type) => (
-                          <button
-                            key={type}
-                            onClick={() => {
-                              setSearchType(type);
-                              setShowTypeDropdown(false);
-                            }}
-                            className={`w-full text-left px-4 py-2.5 text-xs transition-colors ${
-                              searchType === type
-                                ? 'bg-neutral-100 text-neutral-900 font-medium'
-                                : 'text-neutral-600 hover:bg-neutral-50'
-                            }`}
-                          >
-                            {type}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Send Button */}
-                <button 
-                  onClick={handleSearch}
-                  className="w-8 h-8 rounded-full bg-neutral-200 hover:bg-neutral-300 flex items-center justify-center transition-colors"
-                >
-                  <svg className="w-4 h-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Filter Content */}
-        {activeTab === 'filter' && (
           <div className="w-full">
-            {/* Filter Tags Section */}
-            <div className="bg-white rounded-lg p-4 shadow-sm mb-6 max-w-5xl mx-auto">
-              <div className="flex items-center gap-3 flex-wrap">
-                {/* Filter Icon and Text with Dropdown */}
+            {/* Filter and Search Section */}
+            <div className="bg-white rounded-lg mb-6 max-w-5xl mx-auto">
+              <div className="flex items-center gap-4 p-4">
+                {/* Filter Button with Dropdown */}
                 <div className="relative" ref={filterDropdownRef}>
                   <button
                     onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-                    className="flex items-center gap-2 hover:bg-neutral-50 px-2 py-1 rounded transition-colors"
+                    className="flex items-center gap-2 hover:bg-neutral-50 px-3 py-2 rounded transition-colors"
                   >
                     <svg
-                      className="h-4 w-4 text-neutral-500"
+                      className="h-4 w-4 text-neutral-600"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -475,55 +415,82 @@ export function Reservations() {
                   )}
                 </div>
 
-                {/* Filter Tags */}
-                {getFilterTags().map((tag, index) => (
-                  <div
-                    key={`${tag.type}-${tag.value}-${index}`}
-                    className="inline-flex items-center gap-2 px-2.5 py-1 text-xs text-neutral-700 bg-neutral-100 border border-neutral-200 rounded-full"
+                {/* Search Input */}
+                <div className="flex-1 relative">
+                  <svg
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <span>{tag.label}</span>
-                    <button
-                      onClick={() => {
-                        if (tag.type === 'status') {
-                          removeStatusFilter(tag.value as ReservationStatus);
-                        } else if (tag.type === 'date') {
-                          setDateRangeFilter('ALL');
-                        } else if (tag.type === 'quick') {
-                          toggleFilter(tag.value);
-                        }
-                      }}
-                      className="hover:text-neutral-900 transition-colors"
-                    >
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      // Reset search submitted state when user types
+                      if (searchSubmitted && e.target.value.trim().length < 5) {
+                        setSearchSubmitted(false);
+                      }
+                    }}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Search reservations..."
+                    autoComplete="off"
+                    spellCheck="false"
+                    className="w-full pl-10 pr-4 py-2 text-sm text-neutral-700 placeholder:text-neutral-400 bg-white border border-neutral-200 rounded focus:outline-none focus:border-neutral-300"
+                  />
+                </div>
+              </div>
 
-                {/* Clear All */}
-                {hasActiveFilters && (
+              {/* Active Filters Section */}
+              {selectedFilters.size > 0 && (
+                <div className="flex items-center gap-3 px-4 pb-4 flex-wrap">
+                  {Array.from(selectedFilters).map((filter) => (
+                    <div
+                      key={filter}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-neutral-700 bg-neutral-100 rounded-full"
+                    >
+                      <span className="capitalize">{filter}</span>
+                      <button
+                        onClick={() => toggleFilter(filter)}
+                        className="hover:text-neutral-900 transition-colors"
+                      >
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                  
+                  {/* Clear All Button */}
                   <button
                     onClick={clearAllFilters}
-                    className="text-xs text-neutral-500 hover:text-neutral-900 transition-colors px-2"
+                    className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors"
                   >
                     Clear All
                   </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Results Count */}
             <div className="mb-3 max-w-5xl mx-auto">
-              <p className="text-xs text-neutral-400">
-                Showing {filteredReservations.length} of {mockReservations.length} reservations
+              <p className="text-sm text-neutral-400">
+                Showing {filteredReservations.length} reservations
               </p>
             </div>
 
-            {/* Reservations List Section */}
+            {/* Reservations Table */}
             <div className="bg-white rounded-lg overflow-hidden max-w-5xl mx-auto">
               {/* Column Headers */}
-              <div className="grid grid-cols-[2fr,1.5fr,2fr,1.5fr,1fr,auto] gap-6 px-6 py-3">
+              <div className="grid grid-cols-[minmax(140px,1.5fr),minmax(140px,1.5fr),minmax(140px,1.5fr),minmax(180px,2fr),minmax(120px,1fr),minmax(100px,1fr),auto] gap-6 px-6 py-3 border-b border-neutral-100">
                 <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
                   Reservation ID
                 </div>
@@ -531,16 +498,28 @@ export function Reservations() {
                   Guest Name
                 </div>
                 <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+                  Guest Journey
+                </div>
+                <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
                   Property Street
                 </div>
                 <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
                   Arrival Date
                 </div>
-                <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide">
+                <div className="text-xs font-medium text-neutral-400 uppercase tracking-wide text-right">
                   Paid Status
                 </div>
                 <div className="w-6"></div>
               </div>
+
+              {/* Empty State */}
+              {filteredReservations.length === 0 && (
+                <div className="flex items-center justify-center py-32">
+                  <p className="text-sm text-neutral-400">
+                    The search result will be displayed here
+                  </p>
+                </div>
+              )}
 
               {/* Reservation Rows */}
               {filteredReservations.map((reservation) => {
@@ -550,6 +529,27 @@ export function Reservations() {
                   year: 'numeric',
                 });
 
+                // Determine guest journey based on reservation status
+                const getGuestJourney = (status: string): 'Booking' | 'Pre Check-in' | 'Check-in' | 'During Stay' | 'Check-out' | 'Post Check-out' => {
+                  switch (status) {
+                    case 'CONFIRMED':
+                      return 'Pre Check-in';
+                    case 'IN_HOUSE':
+                    case 'CHECKED_IN':
+                      return 'Check-in';
+                    case 'CHECKING_OUT':
+                      return 'Check-out';
+                    case 'CHECKED_OUT':
+                      return 'Post Check-out';
+                    case 'PENDING':
+                      return 'During Stay';
+                    default:
+                      return 'Booking';
+                  }
+                };
+
+                const guestJourney = getGuestJourney(reservation.status);
+
                 // Get property and extract street address
                 const property = mockProperties.find(p => p.id === reservation.propertyId);
                 const propertyStreet = property?.address.split(',')[0] || 'N/A';
@@ -558,16 +558,21 @@ export function Reservations() {
                   <div
                     key={reservation.id}
                     onClick={() => handleSelectReservation(reservation)}
-                    className="grid grid-cols-[2fr,1.5fr,2fr,1.5fr,1fr,auto] gap-6 px-6 py-4 border-t border-neutral-100 hover:bg-neutral-50 cursor-pointer transition-colors items-center group"
+                    className="grid grid-cols-[minmax(140px,1.5fr),minmax(140px,1.5fr),minmax(140px,1.5fr),minmax(180px,2fr),minmax(120px,1fr),minmax(100px,1fr),auto] gap-6 px-6 py-4 border-b border-neutral-100 hover:bg-neutral-50 cursor-pointer transition-colors items-center group last:border-b-0"
                   >
                     {/* Reservation ID */}
-                    <div className="text-sm text-neutral-600">
+                    <div className="text-sm text-neutral-600 font-normal">
                       {reservation.id}
                     </div>
 
                     {/* Guest Name */}
                     <div className="text-sm text-neutral-900 font-normal">
                       {reservation.guestName}
+                    </div>
+
+                    {/* Guest Journey */}
+                    <div className="text-sm text-neutral-600">
+                      {guestJourney}
                     </div>
 
                     {/* Property Street */}
@@ -581,14 +586,16 @@ export function Reservations() {
                     </div>
 
                     {/* Paid Status */}
-                    <div className={`text-sm font-medium ${
-                      reservation.paidStatus === 'Paid' 
-                        ? 'text-green-600' 
-                        : reservation.paidStatus === 'Pending'
-                        ? 'text-amber-600'
-                        : 'text-red-600'
-                    }`}>
-                      {reservation.paidStatus || 'Paid'}
+                    <div className="text-right">
+                      <span className={`text-sm font-medium ${
+                        reservation.paidStatus === 'Paid' 
+                          ? 'text-green-600' 
+                          : reservation.paidStatus === 'Pending'
+                          ? 'text-amber-600'
+                          : 'text-red-600'
+                      }`}>
+                        {reservation.paidStatus || 'Paid'}
+                      </span>
                     </div>
 
                     {/* Arrow */}
@@ -613,6 +620,7 @@ export function Reservations() {
             </div>
           </div>
         )}
+
 
         {/* Reservation Tab Content - Dynamically rendered for each open tab */}
         {openTabs.map(tab => tab.id).includes(activeTab) && (() => {
@@ -1100,7 +1108,7 @@ export function Reservations() {
       />
 
       {/* Fixed Right AI Chat Panel - Only show when viewing a reservation */}
-      {activeTab !== 'search' && activeTab !== 'filter' && (() => {
+      {activeTab !== 'search' && (() => {
         const currentTab = openTabs.find(tab => tab.id === activeTab);
         return (
           <div className="fixed top-0 right-0 bottom-0 w-[420px] z-30 border-l border-neutral-200 bg-white">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockListings, type Listing } from '@/data/mockListings';
 import { mockCases } from '@/data/mockCases';
@@ -6,11 +6,28 @@ import { ListingSidebar } from '@/components/shared/ListingSidebar';
 import { Badge } from '@/components/ui/badge';
 import { Plus, ArrowLeft } from 'lucide-react';
 
+interface Contract {
+  id: string;
+  name: string;
+  description: string;
+  file: string | null;
+  isEditing: boolean;
+}
+
 export function ListingDetail() {
   const { listingId } = useParams<{ listingId: string }>();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [listing, setListing] = useState<Listing | null>(null);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  
+  // Contract management state
+  const [contracts, setContracts] = useState<Contract[]>([
+    { id: 'rental', name: 'Rental Contract', description: 'Signed by both landlord and tenant.', file: 'rental_contract.pdf', isEditing: false },
+    { id: 'vodafone', name: 'Vodafone Contract', description: 'Latest monthly invoice.', file: null, isEditing: false },
+    { id: 'breakfast', name: 'Breakfast Delivery', description: 'Service agreement for breakfast delivery.', file: null, isEditing: false },
+  ]);
 
   useEffect(() => {
     // Find the listing by ID
@@ -23,13 +40,24 @@ export function ListingDetail() {
     }
   }, [listingId, navigate]);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenuId(null);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   if (!listing) {
     return null;
   }
 
-  // Get all tickets for this listing
+  // Get open tickets for this listing (excluding DONE and CANCELLED)
   const listingTickets = mockCases
-    .filter(c => c.propertyId === listing.id)
+    .filter(c => c.propertyId === listing.id && c.status !== 'DONE' && c.status !== 'CANCELLED')
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   const getStatusColor = (status: string) => {
@@ -60,7 +88,7 @@ export function ListingDetail() {
     { id: 'overview', label: 'Overview' },
     { id: 'checkin', label: 'Check-in' },
     { id: 'details', label: 'Details' },
-    { id: 'contracts', label: 'Contracts' },
+    { id: 'contracts', label: 'External Services' },
     { id: 'custom-fields', label: 'Custom Fields' },
   ];
 
@@ -159,10 +187,10 @@ export function ListingDetail() {
               </div>
             </div>
 
-            {/* Section 2: Tickets */}
+            {/* Section 2: Open Tickets */}
             <div className="bg-white rounded-lg pt-6 px-6 pb-2 mb-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold text-neutral-900">Tickets</h2>
+                <h2 className="text-base font-semibold text-neutral-900">Open Tickets</h2>
                 <button 
                   onClick={() => navigate('/cases')}
                   className="text-xs text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 transition-colors px-3 py-1.5 rounded-md"
@@ -618,185 +646,160 @@ export function ListingDetail() {
         {/* Contracts Tab Content */}
         {activeTab === 'contracts' && (
           <div className="w-full max-w-[50.16rem]">
-            {/* Section 1: Mandatory Contracts */}
+            {/* Section 1: Contract Documents Table */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 uppercase tracking-wider mb-4">Mandatory Contracts</h2>
+              <h2 className="text-base font-semibold text-neutral-900 mb-4">Documents</h2>
               
-              {/* Contract List */}
-              <div className="space-y-0">
-                {/* Rental Contract */}
-                <div className="group flex items-center gap-2 py-1.5 px-2 hover:bg-neutral-50 rounded-md transition-colors">
-                  {/* PDF Icon */}
-                  <div className="flex-shrink-0 text-neutral-400">
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-
-                  {/* Contract Name */}
-                  <div className="flex-1 min-w-0">
-                    <span className="text-xs text-neutral-800 truncate">
-                      Rental contract
-                    </span>
-                  </div>
-
-                  {/* Download Button (shows on hover) */}
-                  <button
-                    onClick={() => window.open('#', '_blank')}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-neutral-800"
-                  >
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Vodafone Contract */}
-                <div className="group flex items-center gap-2 py-1.5 px-2 hover:bg-neutral-50 rounded-md transition-colors">
-                  {/* PDF Icon */}
-                  <div className="flex-shrink-0 text-neutral-400">
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-
-                  {/* Contract Name */}
-                  <div className="flex-1 min-w-0">
-                    <span className="text-xs text-neutral-800 truncate">
-                      Vodafone contract
-                    </span>
-                  </div>
-
-                  {/* Download Button (shows on hover) */}
-                  <button
-                    onClick={() => window.open('#', '_blank')}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-neutral-800"
-                  >
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Property Management Contract */}
-                <div className="group flex items-center gap-2 py-1.5 px-2 hover:bg-neutral-50 rounded-md transition-colors">
-                  {/* PDF Icon */}
-                  <div className="flex-shrink-0 text-neutral-400">
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-
-                  {/* Contract Name */}
-                  <div className="flex-1 min-w-0">
-                    <span className="text-xs text-neutral-800 truncate">
-                      Property management contract
-                    </span>
-                  </div>
-
-                  {/* Download Button (shows on hover) */}
-                  <button
-                    onClick={() => window.open('#', '_blank')}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-neutral-800"
-                  >
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                      />
-                    </svg>
-                  </button>
-                </div>
+              {/* Contract Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-neutral-200">
+                      <th className="text-left py-3 px-3 text-xs font-semibold text-neutral-900">Name</th>
+                      <th className="text-left py-3 px-3 text-xs font-semibold text-neutral-900">Description</th>
+                      <th className="text-left py-3 px-3 text-xs font-semibold text-neutral-900">File</th>
+                      <th className="text-left py-3 px-3 text-xs font-semibold text-neutral-900">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {contracts.map((contract) => (
+                      <tr key={contract.id} className="border-b border-neutral-100">
+                        {/* Name Column */}
+                        <td className="py-3 px-3 text-xs text-neutral-900">
+                          {contract.isEditing ? (
+                            <input
+                              type="text"
+                              value={contract.name}
+                              onChange={(e) => {
+                                setContracts(contracts.map(c => 
+                                  c.id === contract.id ? { ...c, name: e.target.value } : c
+                                ));
+                              }}
+                              placeholder="Contract name"
+                              className="w-full px-2 py-1 text-xs border border-neutral-300 rounded focus:outline-none focus:border-neutral-500"
+                            />
+                          ) : (
+                            contract.name
+                          )}
+                        </td>
+                        
+                        {/* Description Column */}
+                        <td className="py-3 px-3 text-xs text-neutral-600">
+                          {contract.isEditing ? (
+                            <input
+                              type="text"
+                              value={contract.description}
+                              onChange={(e) => {
+                                setContracts(contracts.map(c => 
+                                  c.id === contract.id ? { ...c, description: e.target.value } : c
+                                ));
+                              }}
+                              placeholder="Description"
+                              className="w-full px-2 py-1 text-xs border border-neutral-300 rounded focus:outline-none focus:border-neutral-500"
+                            />
+                          ) : (
+                            contract.description
+                          )}
+                        </td>
+                        
+                        {/* File Column */}
+                        <td className="py-3 px-3">
+                          {contract.file ? (
+                            <div className="flex items-center gap-2">
+                              <div className="flex-shrink-0 text-neutral-400">
+                                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                                  />
+                                </svg>
+                              </div>
+                              <span className="text-xs text-neutral-600">{contract.file}</span>
+                            </div>
+                          ) : (
+                            <button className="flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-700 transition-colors">
+                              <Plus className="h-3.5 w-3.5" />
+                              Upload Document
+                            </button>
+                          )}
+                        </td>
+                        
+                        {/* Action Column */}
+                        <td className="py-3 px-3">
+                          {contract.isEditing ? (
+                            <button
+                              onClick={() => {
+                                setContracts(contracts.map(c => 
+                                  c.id === contract.id ? { ...c, isEditing: false } : c
+                                ));
+                              }}
+                              className="text-xs text-green-600 hover:text-green-700 font-medium"
+                            >
+                              Save
+                            </button>
+                          ) : (
+                            <div className="relative" ref={openMenuId === contract.id ? menuRef : null}>
+                              <button 
+                                onClick={() => setOpenMenuId(openMenuId === contract.id ? null : contract.id)}
+                                className="text-neutral-400 hover:text-neutral-600 transition-colors"
+                              >
+                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                                  <circle cx="12" cy="5" r="1.5" />
+                                  <circle cx="12" cy="12" r="1.5" />
+                                  <circle cx="12" cy="19" r="1.5" />
+                                </svg>
+                              </button>
+                              {openMenuId === contract.id && (
+                                <div className="absolute right-0 mt-1 w-28 bg-white rounded-md shadow-lg border border-neutral-200 py-1 z-10">
+                                  <button 
+                                    onClick={() => {
+                                      setContracts(contracts.map(c => 
+                                        c.id === contract.id ? { ...c, isEditing: true } : c
+                                      ));
+                                      setOpenMenuId(null);
+                                    }}
+                                    className="w-full text-left px-3 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50 transition-colors"
+                                  >
+                                    Edit
+                                  </button>
+                                  <button 
+                                    onClick={() => {
+                                      setContracts(contracts.filter(c => c.id !== contract.id));
+                                      setOpenMenuId(null);
+                                    }}
+                                    className="w-full text-left px-3 py-1.5 text-xs text-red-600 hover:bg-neutral-50 transition-colors"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-
-              {/* Add Attachment Button */}
-              <button
-                onClick={() => {/* In a real app, this would open a file picker */}}
-                className="flex items-center justify-center gap-2 py-1.5 px-2 text-xs text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50 rounded-md transition-colors w-full mt-1"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                Add attachment
-              </button>
-            </div>
-
-            {/* Section 2: Others */}
-            <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 uppercase tracking-wider mb-4">Others</h2>
               
-              {/* Contract List */}
-              <div className="space-y-0">
-                {/* Breakfast Delivery Contract */}
-                <div className="group flex items-center gap-2 py-1.5 px-2 hover:bg-neutral-50 rounded-md transition-colors">
-                  {/* PDF Icon */}
-                  <div className="flex-shrink-0 text-neutral-400">
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-
-                  {/* Contract Name */}
-                  <div className="flex-1 min-w-0">
-                    <span className="text-xs text-neutral-800 truncate">
-                      Breakfast Delivery contract
-                    </span>
-                  </div>
-
-                  {/* Download Button (shows on hover) */}
-                  <button
-                    onClick={() => window.open('#', '_blank')}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-neutral-800"
-                  >
-                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              {/* Add Attachment Button */}
+              {/* Add Contract Button */}
               <button
-                onClick={() => {/* In a real app, this would open a file picker */}}
-                className="flex items-center justify-center gap-2 py-1.5 px-2 text-xs text-neutral-500 hover:text-neutral-800 hover:bg-neutral-50 rounded-md transition-colors w-full mt-1"
+                onClick={() => {
+                  const newContract = {
+                    id: `contract-${Date.now()}`,
+                    name: '',
+                    description: '',
+                    file: null,
+                    isEditing: true
+                  };
+                  setContracts([...contracts, newContract]);
+                }}
+                className="flex items-center justify-center gap-2 py-2 px-4 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 rounded-md transition-colors w-full mt-4"
               >
-                <Plus className="h-3.5 w-3.5" />
-                Add attachment
+                <Plus className="h-4 w-4" />
+                Add contract
               </button>
             </div>
           </div>

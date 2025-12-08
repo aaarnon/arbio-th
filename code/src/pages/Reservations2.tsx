@@ -32,12 +32,17 @@ export function Reservations2() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by Guest Name or Reservation ID"
-            className="w-full pl-12 pr-4 py-4 text-base border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-shadow"
+            autoComplete="off"
+            className="w-full pl-12 pr-4 py-4 text-base bg-white border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-shadow"
           />
         </div>
       </div>
     </div>
   );
 }
+
+
+
+
 
 

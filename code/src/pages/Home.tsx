@@ -12,6 +12,10 @@ export function Home() {
   const [currentDate] = useState(new Date());
   const [notifications, setNotifications] = useState(mockNotifications);
   
+  // Get current user (in a real app, this would come from auth context)
+  const currentUser = { name: 'Sarah Chen' };
+  const firstName = currentUser.name.split(' ')[0];
+  
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', { 
       weekday: 'long', 
@@ -126,7 +130,7 @@ export function Home() {
         <div className="mb-8">
           <div className="mb-2">
             <p className="text-xs text-neutral-500 mb-1">{formatDate(currentDate)}</p>
-            <h1 className="text-2xl font-semibold text-neutral-900">Daily briefing</h1>
+            <h1 className="text-2xl font-semibold text-neutral-900">Welcome, {firstName}</h1>
           </div>
         </div>
 

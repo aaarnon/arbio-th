@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { mockUsers } from '@/data/mockUsers';
 import { useState, useRef, useEffect } from 'react';
 import { CreateCaseModal } from '@/features/cases/components/CreateCaseModal';
+import { BugReportModal } from '@/components/shared/BugReportModal';
 
 interface SidebarProps {
   onSearchClick?: () => void;
@@ -16,6 +17,7 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
   const currentUser = mockUsers[0]; // For demo purposes
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isCreateCaseModalOpen, setIsCreateCaseModalOpen] = useState(false);
+  const [isBugReportModalOpen, setIsBugReportModalOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
@@ -102,6 +104,16 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
         </svg>
       ),
       path: '/listings',
+    },
+    {
+      id: 'listings-2',
+      label: 'Apartment - New',
+      icon: (
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+      ),
+      path: '/listings-2',
     },
     {
       id: 'deals',
@@ -232,15 +244,15 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
 
       {/* Bug Report */}
       <div className="px-3">
-        <Link
-          to="/bug-report"
-          className="flex items-center gap-2.5 px-3 py-1.5 rounded-md text-xs transition-colors text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
+        <button
+          onClick={() => setIsBugReportModalOpen(true)}
+          className="flex items-center gap-2.5 px-3 py-1.5 rounded-md text-xs transition-colors text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 w-full"
         >
           <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span>Bug Report</span>
-        </Link>
+        </button>
       </div>
 
       {/* User Profile */}
@@ -278,6 +290,12 @@ export function Sidebar({ onSearchClick }: SidebarProps) {
       <CreateCaseModal
         open={isCreateCaseModalOpen}
         onOpenChange={setIsCreateCaseModalOpen}
+      />
+
+      {/* Bug Report Modal */}
+      <BugReportModal
+        open={isBugReportModalOpen}
+        onOpenChange={setIsBugReportModalOpen}
       />
     </div>
   );
