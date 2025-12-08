@@ -31,13 +31,9 @@ export function Reservations() {
     const saved = sessionStorage.getItem('reservations-activeTab');
     return saved || 'search';
   });
-  const [searchType, setSearchType] = useState('Guest Name');
-  // const [searchMode, setSearchMode] = useState('Normal');
-  const [showTypeDropdown, setShowTypeDropdown] = useState(false);
-  // const [showModeDropdown, setShowModeDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [selectedGuestReservations, setSelectedGuestReservations] = useState<Reservation[]>([]);
-  const [selectedGuestName, setSelectedGuestName] = useState('');
+  const [selectedGuestReservations] = useState<Reservation[]>([]);
+  const [selectedGuestName] = useState('');
   const [openTabs, setOpenTabs] = useState<ReservationTab[]>(() => {
     const saved = sessionStorage.getItem('reservations-openTabs');
     if (saved) {
@@ -65,14 +61,10 @@ export function Reservations() {
   });
   const [isCreateCaseModalOpen, setIsCreateCaseModalOpen] = useState(false);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const typeDropdownRef = useRef<HTMLDivElement>(null);
-  // const modeDropdownRef = useRef<HTMLDivElement>(null);
   const filterDropdownRef = useRef<HTMLDivElement>(null);
 
   // Filter states
   const [statusFilter, setStatusFilter] = useState<ReservationStatus[]>([]);
-  const [dateRangeFilter, setDateRangeFilter] = useState<string>('ALL');
-  const [quickFilter, setQuickFilter] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set());
 
   // Persist openTabs to sessionStorage (only save IDs)
@@ -113,12 +105,6 @@ export function Reservations() {
   // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (typeDropdownRef.current && !typeDropdownRef.current.contains(event.target as Node)) {
-        setShowTypeDropdown(false);
-      }
-      // if (modeDropdownRef.current && !modeDropdownRef.current.contains(event.target as Node)) {
-      //   setShowModeDropdown(false);
-      // }
       if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target as Node)) {
         setShowFilterDropdown(false);
       }
@@ -187,14 +173,8 @@ export function Reservations() {
   ];
 
   // Helper functions for filters
-  const removeStatusFilter = (status: ReservationStatus) => {
-    setStatusFilter(statusFilter.filter(s => s !== status));
-  };
-
   const clearAllFilters = () => {
     setStatusFilter([]);
-    setDateRangeFilter('ALL');
-    setQuickFilter(null);
     setSelectedFilters(new Set());
   };
 
@@ -206,34 +186,6 @@ export function Reservations() {
       newFilters.add(filterValue);
     }
     setSelectedFilters(newFilters);
-    
-    // Set quickFilter to the last selected filter or null if none selected
-    if (newFilters.size > 0) {
-      setQuickFilter(Array.from(newFilters)[newFilters.size - 1]);
-    } else {
-      setQuickFilter(null);
-    }
-  };
-
-  const hasActiveFilters = statusFilter.length > 0 || dateRangeFilter !== 'ALL' || quickFilter !== null;
-
-  const getFilterTags = () => {
-    const tags: Array<{ type: 'status' | 'date' | 'quick'; value: string; label: string }> = [];
-    
-    statusFilter.forEach(status => {
-      const label = status.replace('_', ' ');
-      tags.push({ type: 'status', value: status, label: `Status: ${label}` });
-    });
-    
-    if (dateRangeFilter !== 'ALL') {
-      tags.push({ type: 'date', value: dateRangeFilter, label: `Date: ${dateRangeFilter}` });
-    }
-    
-    selectedFilters.forEach(filter => {
-      tags.push({ type: 'quick', value: filter, label: `Status: ${filter.toUpperCase()}` });
-    });
-    
-    return tags;
   };
 
   // Filter reservations based on selected filters and search

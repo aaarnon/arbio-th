@@ -90,22 +90,6 @@ export function ListingDetail2() {
     return date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
   };
 
-  // Generate a simplified SKU from the listing name
-  const getSimplifiedSku = (name: string) => {
-    // Extract unit number if present
-    const unitMatch = name.match(/Unit\s+(\d+)/i);
-    const cityMatch = name.match(/-(.*?)$/);
-    
-    if (unitMatch && cityMatch) {
-      const unitNum = unitMatch[1];
-      const city = cityMatch[1].trim().substring(0, 3).toUpperCase();
-      return `APT-${city}-${unitNum}`;
-    }
-    
-    // Fallback: use first 3 chars of name + last 2 chars of ID
-    return `APT-${name.substring(0, 3).toUpperCase()}-${listing.id.slice(-2)}`;
-  };
-
   const tabs = [
     { id: 'overview', label: 'Overview' },
     { id: 'checkin', label: 'Check-in' },

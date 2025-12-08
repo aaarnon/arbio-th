@@ -157,7 +157,7 @@ export function BugReportModal({ open, onOpenChange }: BugReportModalProps) {
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-200">
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             onClick={() => handleOpenChange(false)}
             disabled={isSubmitting}
           >
