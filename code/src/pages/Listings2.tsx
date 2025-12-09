@@ -692,3 +692,4 @@ export function Listings2() {
     </div>
   );
 }
+

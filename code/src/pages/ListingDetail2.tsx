@@ -4,7 +4,7 @@ import { mockListings, type Listing } from '@/data/mockListings';
 import { mockCases } from '@/data/mockCases';
 import { AIChat } from '@/components/shared/AIChat';
 import { Badge } from '@/components/ui/badge';
-import { Plus, ArrowLeft } from 'lucide-react';
+import { Plus, ArrowLeft, PanelRightClose, PanelRightOpen } from 'lucide-react';
 
 interface Contract {
   id: string;
@@ -34,6 +34,9 @@ export function ListingDetail2() {
   
   // Specific Instructions collapse state
   const [openInstructionId, setOpenInstructionId] = useState<string | null>(null);
+
+  // Chat panel visibility state
+  const [isChatPanelVisible, setIsChatPanelVisible] = useState(true);
 
   useEffect(() => {
     // Find the listing by ID
@@ -101,8 +104,26 @@ export function ListingDetail2() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Main Content - With right margin for chat */}
-      <div className="mr-[420px] w-full px-8 pt-6">
+      {/* Toggle Chat Panel Button - Fixed position */}
+      <button
+        onClick={() => setIsChatPanelVisible(!isChatPanelVisible)}
+        className="fixed top-4 right-4 z-40 flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-neutral-600 bg-white border border-neutral-200 rounded-md hover:bg-neutral-50 hover:text-neutral-900 transition-colors shadow-sm"
+      >
+        {isChatPanelVisible ? (
+          <>
+            <PanelRightClose className="h-4 w-4" />
+            Hide chat
+          </>
+        ) : (
+          <>
+            <PanelRightOpen className="h-4 w-4" />
+            Show chat
+          </>
+        )}
+      </button>
+
+      {/* Main Content - With right margin for chat when visible */}
+      <div className={`${isChatPanelVisible ? 'mr-[420px]' : 'mr-0'} w-full px-8 pt-6 transition-all duration-300`}>
         {/* Back Button and Title Section */}
         <div className="mb-6">
           {/* Back Button and Title on same line */}
@@ -1420,9 +1441,11 @@ export function ListingDetail2() {
       </div>
 
       {/* Fixed Right AI Chat Panel */}
-      <div className="fixed top-0 right-0 bottom-0 w-[420px] z-30 border-l border-neutral-200 bg-white">
-        <AIChat context={listing.sku} guestName={listing.name} />
-      </div>
+      {isChatPanelVisible && (
+        <div className="fixed top-0 right-0 bottom-0 w-[420px] z-30 border-l border-neutral-200 bg-white">
+          <AIChat context={listing.sku} guestName={listing.name} />
+        </div>
+      )}
     </div>
   );
 }

@@ -10,9 +10,10 @@ interface ChatMessage {
 interface AIChatProps {
   context?: string;
   guestName?: string;
+  onHide?: () => void;
 }
 
-export function AIChat({ context }: AIChatProps) {
+export function AIChat({ context, onHide }: AIChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -89,7 +90,7 @@ export function AIChat({ context }: AIChatProps) {
     <div className="flex flex-col h-full bg-white">
       {/* Header with New Chat Dropdown */}
       <div className="flex-shrink-0 px-4 py-3">
-        <div>
+        <div className="flex items-center justify-between">
           {/* New AI chat dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
@@ -117,6 +118,19 @@ export function AIChat({ context }: AIChatProps) {
               </div>
             )}
           </div>
+
+          {/* Hide button */}
+          {onHide && (
+            <button
+              onClick={onHide}
+              className="p-2 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 rounded-lg transition-colors"
+              aria-label="Hide chat panel"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 

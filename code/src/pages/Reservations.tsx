@@ -12,6 +12,7 @@ import { mockCases } from '@/data/mockCases';
 import { mockConversations } from '@/data/mockConversations';
 import { mockNotes } from '@/data/mockNotes';
 import type { Reservation } from '@/types/reservation';
+import { PanelRightClose, PanelRightOpen } from 'lucide-react';
 
 interface ReservationTab {
   id: string;
@@ -61,6 +62,7 @@ export function Reservations() {
   });
   const [isCreateCaseModalOpen, setIsCreateCaseModalOpen] = useState(false);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [isChatPanelVisible, setIsChatPanelVisible] = useState(true);
   const filterDropdownRef = useRef<HTMLDivElement>(null);
 
   // Filter states
@@ -248,7 +250,7 @@ export function Reservations() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className={`w-full px-8 pt-6 ${activeTab !== 'search' ? 'mr-[420px]' : ''}`}>
+      <div className={`w-full px-8 pt-6 ${activeTab !== 'search' && isChatPanelVisible ? 'mr-[420px]' : ''} transition-all duration-300`}>
         {/* Title */}
         <div className="mb-6">
           <h1 className="text-xl font-normal text-neutral-900">Reservations</h1>
@@ -323,46 +325,62 @@ export function Reservations() {
 
                   {/* Filter Dropdown */}
                   {showFilterDropdown && (
-                    <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-neutral-200 py-2 z-20">
-                      <button
-                        onClick={() => toggleFilter('unpaid reservations')}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
-                      >
-                        <div className="flex items-center justify-center w-4 h-4 border border-neutral-300 rounded bg-white flex-shrink-0">
-                          {selectedFilters.has('unpaid reservations') && (
-                            <svg className="w-3 h-3 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-neutral-200 z-20">
+                      <div className="py-1">
+                        {/* Unpaid Reservations */}
+                        <button
+                          onClick={() => toggleFilter('unpaid reservations')}
+                          className={`w-full px-3 py-1.5 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left ${
+                            selectedFilters.has('unpaid reservations') ? 'bg-neutral-50' : ''
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg className="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                          )}
-                        </div>
-                        <span className="flex-1 text-left">Unpaid reservations</span>
-                      </button>
-                      <button
-                        onClick={() => toggleFilter('arrivals today')}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
-                      >
-                        <div className="flex items-center justify-center w-4 h-4 border border-neutral-300 rounded bg-white flex-shrink-0">
-                          {selectedFilters.has('arrivals today') && (
-                            <svg className="w-3 h-3 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                            <span className="text-xs text-neutral-900">Unpaid reservations</span>
+                          </div>
+                          <svg className="h-3 w-3 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+
+                        {/* Arrivals Today */}
+                        <button
+                          onClick={() => toggleFilter('arrivals today')}
+                          className={`w-full px-3 py-1.5 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left ${
+                            selectedFilters.has('arrivals today') ? 'bg-neutral-50' : ''
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg className="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                          )}
-                        </div>
-                        <span className="flex-1 text-left">Arrivals today</span>
-                      </button>
-                      <button
-                        onClick={() => toggleFilter('check-ins needing action')}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
-                      >
-                        <div className="flex items-center justify-center w-4 h-4 border border-neutral-300 rounded bg-white flex-shrink-0">
-                          {selectedFilters.has('check-ins needing action') && (
-                            <svg className="w-3 h-3 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                            <span className="text-xs text-neutral-900">Arrivals today</span>
+                          </div>
+                          <svg className="h-3 w-3 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+
+                        {/* Check-ins Needing Action */}
+                        <button
+                          onClick={() => toggleFilter('check-ins needing action')}
+                          className={`w-full px-3 py-1.5 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left ${
+                            selectedFilters.has('check-ins needing action') ? 'bg-neutral-50' : ''
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <svg className="h-4 w-4 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
-                          )}
-                        </div>
-                        <span className="flex-1 text-left">Check-ins needing action</span>
-                      </button>
+                            <span className="text-xs text-neutral-900">Check-ins needing action</span>
+                          </div>
+                          <svg className="h-3 w-3 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1059,8 +1077,28 @@ export function Reservations() {
         onOpenChange={setIsCreateCaseModalOpen}
       />
 
+      {/* Toggle Chat Panel Button - Fixed position, only show when viewing a reservation */}
+      {activeTab !== 'search' && (
+        <button
+          onClick={() => setIsChatPanelVisible(!isChatPanelVisible)}
+          className="fixed top-4 right-4 z-40 flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-neutral-600 bg-white border border-neutral-200 rounded-md hover:bg-neutral-50 hover:text-neutral-900 transition-colors shadow-sm"
+        >
+          {isChatPanelVisible ? (
+            <>
+              <PanelRightClose className="h-4 w-4" />
+              Hide chat
+            </>
+          ) : (
+            <>
+              <PanelRightOpen className="h-4 w-4" />
+              Show chat
+            </>
+          )}
+        </button>
+      )}
+
       {/* Fixed Right AI Chat Panel - Only show when viewing a reservation */}
-      {activeTab !== 'search' && (() => {
+      {activeTab !== 'search' && isChatPanelVisible && (() => {
         const currentTab = openTabs.find(tab => tab.id === activeTab);
         return (
           <div className="fixed top-0 right-0 bottom-0 w-[420px] z-30 border-l border-neutral-200 bg-white">
