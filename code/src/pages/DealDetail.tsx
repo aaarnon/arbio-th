@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockDeals } from '@/data/mockDeals';
 import { mockListings } from '@/data/mockListings';
-import { DealSidebar } from '@/components/shared/DealSidebar';
 import { ArrowLeft, ChevronRight, Plus } from 'lucide-react';
 import type { Deal } from '@/types/deal';
 import {
@@ -16,6 +15,14 @@ import {
 import { SearchableSelect } from '@/components/ui/searchable-select';
 import type { SearchableSelectOption } from '@/components/ui/searchable-select';
 
+interface Contract {
+  id: string;
+  name: string;
+  description: string;
+  file: string | null;
+  isEditing: boolean;
+}
+
 export function DealDetail() {
   const { dealId } = useParams<{ dealId: string }>();
   const navigate = useNavigate();
@@ -24,6 +31,14 @@ export function DealDetail() {
   const [isAddApartmentModalOpen, setIsAddApartmentModalOpen] = useState(false);
   const [selectedApartmentSku, setSelectedApartmentSku] = useState<string>('');
   const [relatedListings, setRelatedListings] = useState<typeof mockListings>([]);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  
+  // Contract management state
+  const [contracts, setContracts] = useState<Contract[]>([
+    { id: 'rental', name: 'Rental Contract', description: 'Signed by both landlord and tenant.', file: 'rental_contract.pdf', isEditing: false },
+    { id: 'vodafone', name: 'Vodafone Contract', description: 'Latest monthly invoice.', file: null, isEditing: false },
+  ]);
 
   useEffect(() => {
     // Find the deal by ID
@@ -36,6 +51,17 @@ export function DealDetail() {
       navigate('/deals');
     }
   }, [dealId, navigate]);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenuId(null);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleAddApartment = () => {
     if (!selectedApartmentSku || !deal) return;
@@ -119,18 +145,34 @@ export function DealDetail() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Main Content - With right margin for sidebar */}
-      <div className="mr-[380px] w-full px-8 pt-6">
+      {/* Main Content */}
+      <div className="w-full px-8 pt-6">
         {/* Title */}
-        <div className="flex items-center gap-3 mb-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="text-neutral-900 hover:text-neutral-600 transition-colors"
-            aria-label="Back to previous page"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <h1 className="text-xl font-bold text-neutral-900">{deal.name}</h1>
+        <div className="mb-6">
+          {/* Back Button and Title on same line */}
+          <div className="flex items-center gap-3 mb-2">
+            <button
+              onClick={() => navigate(-1)}
+              className="text-neutral-900 hover:text-neutral-600 transition-colors flex-shrink-0"
+              aria-label="Back to previous page"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <h1 className="text-2xl font-semibold text-neutral-900">{deal.name}</h1>
+          </div>
+          
+          {/* Tags - aligned with title */}
+          <div className="flex items-center gap-2 flex-wrap ml-8">
+            {/* Deal ID Tag */}
+            <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-neutral-600 bg-neutral-100 rounded">
+              Deal ID: {deal.id}
+            </span>
+            
+            {/* Deal SKU Tag */}
+            <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-neutral-600 bg-neutral-100 rounded">
+              Deal SKU: {deal.sku}
+            </span>
+          </div>
         </div>
         
         {/* Tabs Navigation */}
@@ -198,9 +240,9 @@ export function DealDetail() {
               </div>
             </div>
 
-            {/* Section 2: Listing Related */}
+            {/* Section 2: Apartments Related */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Listing Related</h2>
+              <h2 className="text-base font-semibold text-neutral-900 mb-4">Apartments Related</h2>
               {relatedListings.length > 0 ? (
                 <div className="overflow-hidden">
                   <table className="w-full">
@@ -219,7 +261,7 @@ export function DealDetail() {
                       {relatedListings.map((listing) => (
                         <tr
                           key={listing.id}
-                          onClick={() => navigate(`/listings/${listing.id}`)}
+                          onClick={() => navigate(`/listings-2/${listing.id}`)}
                           className="border-b border-neutral-100 hover:bg-neutral-50 cursor-pointer transition-colors"
                         >
                           <td className="py-2.5 px-0">
@@ -259,11 +301,161 @@ export function DealDetail() {
         {/* Documents Tab Content */}
         {activeTab === 'documents' && (
           <div className="w-full max-w-[50.16rem]">
+            {/* Section 1: Contract Documents Table */}
             <div className="bg-white rounded-lg p-6 mb-6">
               <h2 className="text-base font-semibold text-neutral-900 mb-4">Documents</h2>
-              <div className="text-sm text-neutral-500 py-4 text-center">
-                Deal documents will be displayed here
+              
+              {/* Contract Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-neutral-200">
+                      <th className="text-left py-3 px-3 text-xs font-semibold text-neutral-900">Name</th>
+                      <th className="text-left py-3 px-3 text-xs font-semibold text-neutral-900">Description</th>
+                      <th className="text-left py-3 px-3 text-xs font-semibold text-neutral-900">File</th>
+                      <th className="text-left py-3 px-3 text-xs font-semibold text-neutral-900">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {contracts.map((contract) => (
+                      <tr key={contract.id} className="border-b border-neutral-100">
+                        {/* Name Column */}
+                        <td className="py-3 px-3 text-xs text-neutral-900">
+                          {contract.isEditing ? (
+                            <input
+                              type="text"
+                              value={contract.name}
+                              onChange={(e) => {
+                                setContracts(contracts.map(c => 
+                                  c.id === contract.id ? { ...c, name: e.target.value } : c
+                                ));
+                              }}
+                              placeholder="Contract name"
+                              className="w-full px-2 py-1 text-xs border border-neutral-300 rounded focus:outline-none focus:border-neutral-500"
+                            />
+                          ) : (
+                            contract.name
+                          )}
+                        </td>
+                        
+                        {/* Description Column */}
+                        <td className="py-3 px-3 text-xs text-neutral-600">
+                          {contract.isEditing ? (
+                            <input
+                              type="text"
+                              value={contract.description}
+                              onChange={(e) => {
+                                setContracts(contracts.map(c => 
+                                  c.id === contract.id ? { ...c, description: e.target.value } : c
+                                ));
+                              }}
+                              placeholder="Description"
+                              className="w-full px-2 py-1 text-xs border border-neutral-300 rounded focus:outline-none focus:border-neutral-500"
+                            />
+                          ) : (
+                            contract.description
+                          )}
+                        </td>
+                        
+                        {/* File Column */}
+                        <td className="py-3 px-3">
+                          {contract.file ? (
+                            <div className="flex items-center gap-2">
+                              <div className="flex-shrink-0 text-neutral-400">
+                                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                                  />
+                                </svg>
+                              </div>
+                              <span className="text-xs text-neutral-600">{contract.file}</span>
+                            </div>
+                          ) : (
+                            <button className="flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-700 transition-colors">
+                              <Plus className="h-3.5 w-3.5" />
+                              Upload Document
+                            </button>
+                          )}
+                        </td>
+                        
+                        {/* Action Column */}
+                        <td className="py-3 px-3">
+                          {contract.isEditing ? (
+                            <button
+                              onClick={() => {
+                                setContracts(contracts.map(c => 
+                                  c.id === contract.id ? { ...c, isEditing: false } : c
+                                ));
+                              }}
+                              className="text-xs text-green-600 hover:text-green-700 font-medium"
+                            >
+                              Save
+                            </button>
+                          ) : (
+                            <div className="relative" ref={openMenuId === contract.id ? menuRef : null}>
+                              <button 
+                                onClick={() => setOpenMenuId(openMenuId === contract.id ? null : contract.id)}
+                                className="text-neutral-400 hover:text-neutral-600 transition-colors"
+                              >
+                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                                  <circle cx="12" cy="5" r="1.5" />
+                                  <circle cx="12" cy="12" r="1.5" />
+                                  <circle cx="12" cy="19" r="1.5" />
+                                </svg>
+                              </button>
+                              {openMenuId === contract.id && (
+                                <div className="absolute right-0 mt-1 w-28 bg-white rounded-md shadow-lg border border-neutral-200 py-1 z-10">
+                                  <button 
+                                    onClick={() => {
+                                      setContracts(contracts.map(c => 
+                                        c.id === contract.id ? { ...c, isEditing: true } : c
+                                      ));
+                                      setOpenMenuId(null);
+                                    }}
+                                    className="w-full text-left px-3 py-1.5 text-xs text-neutral-700 hover:bg-neutral-50 transition-colors"
+                                  >
+                                    Edit
+                                  </button>
+                                  <button 
+                                    onClick={() => {
+                                      setContracts(contracts.filter(c => c.id !== contract.id));
+                                      setOpenMenuId(null);
+                                    }}
+                                    className="w-full text-left px-3 py-1.5 text-xs text-red-600 hover:bg-neutral-50 transition-colors"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
+              
+              {/* Add Contract Button */}
+              <button
+                onClick={() => {
+                  const newContract = {
+                    id: `contract-${Date.now()}`,
+                    name: '',
+                    description: '',
+                    file: null,
+                    isEditing: true
+                  };
+                  setContracts([...contracts, newContract]);
+                }}
+                className="flex items-center justify-center gap-2 py-2 px-4 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 rounded-md transition-colors w-full mt-4"
+              >
+                <Plus className="h-4 w-4" />
+                Add contract
+              </button>
             </div>
           </div>
         )}
@@ -279,11 +471,6 @@ export function DealDetail() {
             </div>
           </div>
         )}
-      </div>
-
-      {/* Right Sidebar - Fixed, Full-Height, Edge-to-Edge */}
-      <div className="fixed top-0 right-0 bottom-0 w-[380px] z-30">
-        <DealSidebar deal={deal} />
       </div>
 
       {/* Add Apartment Modal */}

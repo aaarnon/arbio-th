@@ -29,6 +29,13 @@ export function ListingDetail2() {
     { id: 'breakfast', name: 'Breakfast Delivery', description: 'Service agreement for breakfast delivery.', file: null, isEditing: false },
   ]);
 
+  // Service providers management state
+  const [serviceProviders, setServiceProviders] = useState<Contract[]>([
+    { id: 'cleaning', name: 'Cleaning Service', description: 'Weekly cleaning service.', file: 'cleaning-service-contract.pdf', isEditing: false },
+    { id: 'laundry', name: 'Laundry', description: 'Laundry pickup and delivery.', file: null, isEditing: false },
+    { id: 'breakfast-delivery', name: 'Breakfast Delivery', description: 'Daily breakfast delivery service.', file: null, isEditing: false },
+  ]);
+
   // FAQ collapse state
   const [openFaqId, setOpenFaqId] = useState<string | null>(null);
   
@@ -97,9 +104,8 @@ export function ListingDetail2() {
     { id: 'overview', label: 'Overview' },
     { id: 'checkin', label: 'Check-in' },
     { id: 'details', label: 'Details' },
-    { id: 'contracts', label: 'External Services' },
-    { id: 'help-manual', label: 'Help Manual' },
-    { id: 'custom-fields', label: 'Custom Fields' },
+    { id: 'contracts', label: 'Service Providers' },
+    { id: 'help-manual', label: 'Instructions' },
   ];
 
   return (
@@ -145,7 +151,7 @@ export function ListingDetail2() {
           <div className="flex items-center gap-2 flex-wrap ml-8">
             {/* ID Tag */}
             <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-neutral-600 bg-neutral-100 rounded">
-              ID: {listing.sku}
+              Unit SKU: {listing.sku}
             </span>
             
             {/* Deal SKU Tag (clickable) */}
@@ -1038,11 +1044,9 @@ export function ListingDetail2() {
         {/* Contracts Tab Content */}
         {activeTab === 'contracts' && (
           <div className="w-full max-w-[50.16rem]">
-            {/* Section 1: Contract Documents Table */}
+            {/* Service Providers Table */}
             <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Documents</h2>
-              
-              {/* Contract Table */}
+              {/* Service Providers Table */}
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
@@ -1054,49 +1058,49 @@ export function ListingDetail2() {
                     </tr>
                   </thead>
                   <tbody>
-                    {contracts.map((contract) => (
-                      <tr key={contract.id} className="border-b border-neutral-100">
+                    {serviceProviders.map((provider) => (
+                      <tr key={provider.id} className="border-b border-neutral-100">
                         {/* Name Column */}
                         <td className="py-3 px-3 text-xs text-neutral-900">
-                          {contract.isEditing ? (
+                          {provider.isEditing ? (
                             <input
                               type="text"
-                              value={contract.name}
+                              value={provider.name}
                               onChange={(e) => {
-                                setContracts(contracts.map(c => 
-                                  c.id === contract.id ? { ...c, name: e.target.value } : c
+                                setServiceProviders(serviceProviders.map(p => 
+                                  p.id === provider.id ? { ...p, name: e.target.value } : p
                                 ));
                               }}
-                              placeholder="Contract name"
+                              placeholder="Provider name"
                               className="w-full px-2 py-1 text-xs border border-neutral-300 rounded focus:outline-none focus:border-neutral-500"
                             />
                           ) : (
-                            contract.name
+                            provider.name
                           )}
                         </td>
                         
                         {/* Description Column */}
                         <td className="py-3 px-3 text-xs text-neutral-600">
-                          {contract.isEditing ? (
+                          {provider.isEditing ? (
                             <input
                               type="text"
-                              value={contract.description}
+                              value={provider.description}
                               onChange={(e) => {
-                                setContracts(contracts.map(c => 
-                                  c.id === contract.id ? { ...c, description: e.target.value } : c
+                                setServiceProviders(serviceProviders.map(p => 
+                                  p.id === provider.id ? { ...p, description: e.target.value } : p
                                 ));
                               }}
                               placeholder="Description"
                               className="w-full px-2 py-1 text-xs border border-neutral-300 rounded focus:outline-none focus:border-neutral-500"
                             />
                           ) : (
-                            contract.description
+                            provider.description
                           )}
                         </td>
                         
                         {/* File Column */}
                         <td className="py-3 px-3">
-                          {contract.file ? (
+                          {provider.file ? (
                             <div className="flex items-center gap-2">
                               <div className="flex-shrink-0 text-neutral-400">
                                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1108,23 +1112,23 @@ export function ListingDetail2() {
                                   />
                                 </svg>
                               </div>
-                              <span className="text-xs text-neutral-600">{contract.file}</span>
+                              <span className="text-xs text-neutral-600">{provider.file}</span>
                             </div>
                           ) : (
                             <button className="flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-700 transition-colors">
                               <Plus className="h-3.5 w-3.5" />
-                              Upload Document
+                              Upload Contract
                             </button>
                           )}
                         </td>
                         
                         {/* Action Column */}
                         <td className="py-3 px-3">
-                          {contract.isEditing ? (
+                          {provider.isEditing ? (
                             <button
                               onClick={() => {
-                                setContracts(contracts.map(c => 
-                                  c.id === contract.id ? { ...c, isEditing: false } : c
+                                setServiceProviders(serviceProviders.map(p => 
+                                  p.id === provider.id ? { ...p, isEditing: false } : p
                                 ));
                               }}
                               className="text-xs text-green-600 hover:text-green-700 font-medium"
@@ -1132,9 +1136,9 @@ export function ListingDetail2() {
                               Save
                             </button>
                           ) : (
-                            <div className="relative" ref={openMenuId === contract.id ? menuRef : null}>
+                            <div className="relative" ref={openMenuId === provider.id ? menuRef : null}>
                               <button 
-                                onClick={() => setOpenMenuId(openMenuId === contract.id ? null : contract.id)}
+                                onClick={() => setOpenMenuId(openMenuId === provider.id ? null : provider.id)}
                                 className="text-neutral-400 hover:text-neutral-600 transition-colors"
                               >
                                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -1143,12 +1147,12 @@ export function ListingDetail2() {
                                   <circle cx="12" cy="19" r="1.5" />
                                 </svg>
                               </button>
-                              {openMenuId === contract.id && (
+                              {openMenuId === provider.id && (
                                 <div className="absolute right-0 mt-1 w-28 bg-white rounded-md shadow-lg border border-neutral-200 py-1 z-10">
                                   <button 
                                     onClick={() => {
-                                      setContracts(contracts.map(c => 
-                                        c.id === contract.id ? { ...c, isEditing: true } : c
+                                      setServiceProviders(serviceProviders.map(p => 
+                                        p.id === provider.id ? { ...p, isEditing: true } : p
                                       ));
                                       setOpenMenuId(null);
                                     }}
@@ -1158,7 +1162,7 @@ export function ListingDetail2() {
                                   </button>
                                   <button 
                                     onClick={() => {
-                                      setContracts(contracts.filter(c => c.id !== contract.id));
+                                      setServiceProviders(serviceProviders.filter(p => p.id !== provider.id));
                                       setOpenMenuId(null);
                                     }}
                                     className="w-full text-left px-3 py-1.5 text-xs text-red-600 hover:bg-neutral-50 transition-colors"
@@ -1176,36 +1180,23 @@ export function ListingDetail2() {
                 </table>
               </div>
               
-              {/* Add Contract Button */}
+              {/* Add Service Provider Button */}
               <button
                 onClick={() => {
-                  const newContract = {
-                    id: `contract-${Date.now()}`,
+                  const newProvider = {
+                    id: `provider-${Date.now()}`,
                     name: '',
                     description: '',
                     file: null,
                     isEditing: true
                   };
-                  setContracts([...contracts, newContract]);
+                  setServiceProviders([...serviceProviders, newProvider]);
                 }}
                 className="flex items-center justify-center gap-2 py-2 px-4 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 rounded-md transition-colors w-full mt-4"
               >
                 <Plus className="h-4 w-4" />
-                Add contract
+                Add service provider
               </button>
-            </div>
-          </div>
-        )}
-
-        {/* Custom Fields Tab Content */}
-        {activeTab === 'custom-fields' && (
-          <div className="w-full max-w-[50.16rem]">
-            {/* Section 1: Custom Fields */}
-            <div className="bg-white rounded-lg p-6 mb-6">
-              <h2 className="text-base font-semibold text-neutral-900 mb-4">Custom Fields</h2>
-              <div className="text-sm text-neutral-500 py-4">
-                Custom fields information will be displayed here
-              </div>
             </div>
           </div>
         )}
@@ -1213,10 +1204,10 @@ export function ListingDetail2() {
         {/* Help Manual Tab Content */}
         {activeTab === 'help-manual' && (
           <div className="w-full max-w-[50.16rem]">
-            {/* Section 1: FAQ */}
+            {/* Section 1: General */}
             <div className="bg-white rounded-lg p-6 mb-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold text-neutral-900">FAQ</h2>
+                <h2 className="text-base font-semibold text-neutral-900">General</h2>
                 <button className="px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-md transition-colors">
                   Edit
                 </button>

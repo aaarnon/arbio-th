@@ -712,17 +712,17 @@ export function Reservations() {
                       <div className="space-y-3">
                         {/* Unit ID */}
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-neutral-500">Listing Unit:</span>
+                          <span className="text-xs text-neutral-500">Unit SKU:</span>
                           {(() => {
                             // Find the listing that matches this property ID (SKU)
                             const listing = mockListings.find(l => l.sku === reservation.propertyId);
                             if (listing) {
                               return (
                                 <a 
-                                  href={`/listings/${listing.id}`}
+                                  href={`/listings-2/${listing.id}`}
                                   onClick={(e) => {
                                     e.preventDefault();
-                                    navigate(`/listings/${listing.id}`);
+                                    navigate(`/listings-2/${listing.id}`);
                                   }}
                                   className="text-xs font-medium text-neutral-900 underline hover:text-neutral-700 transition-colors cursor-pointer"
                                 >

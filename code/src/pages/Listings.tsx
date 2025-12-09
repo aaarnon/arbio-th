@@ -654,7 +654,7 @@ export function Listings() {
               {filteredListings.map((listing) => (
                 <tr
                   key={listing.id}
-                  onClick={() => navigate(`/listings/${listing.id}`)}
+                  onClick={() => navigate(`/listings-2/${listing.id}`)}
                   className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50 transition-colors cursor-pointer"
                 >
                   <td className="pl-3 pr-12 py-3">
