@@ -22,13 +22,6 @@ export function ListingDetail2() {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   
-  // Contract management state
-  const [contracts, setContracts] = useState<Contract[]>([
-    { id: 'rental', name: 'Rental Contract', description: 'Signed by both landlord and tenant.', file: 'rental_contract.pdf', isEditing: false },
-    { id: 'vodafone', name: 'Vodafone Contract', description: 'Latest monthly invoice.', file: null, isEditing: false },
-    { id: 'breakfast', name: 'Breakfast Delivery', description: 'Service agreement for breakfast delivery.', file: null, isEditing: false },
-  ]);
-
   // Service providers management state
   const [serviceProviders, setServiceProviders] = useState<Contract[]>([
     { id: 'cleaning', name: 'Cleaning Service', description: 'Weekly cleaning service.', file: 'cleaning-service-contract.pdf', isEditing: false },
